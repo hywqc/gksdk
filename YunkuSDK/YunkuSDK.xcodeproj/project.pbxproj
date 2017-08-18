@@ -17,6 +17,7 @@
 		CB062E6A1F39C968000A9792 /* YKResource.bundle in Resources */ = {isa = PBXBuildFile; fileRef = CB062E691F39C968000A9792 /* YKResource.bundle */; };
 		CB062E6D1F39C9C4000A9792 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = CB062E6F1F39C9C4000A9792 /* Localizable.strings */; };
 		CB062E781F39CCF9000A9792 /* YKMountListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB062E771F39CCF9000A9792 /* YKMountListViewController.swift */; };
+		CB1ED3991F46E385006D82D3 /* YKPopView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB1ED3981F46E385006D82D3 /* YKPopView.swift */; };
 		CB305F651F3AB9EC003A4D8C /* YKMessageMainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB305F641F3AB9EC003A4D8C /* YKMessageMainViewController.swift */; };
 		CB305F671F3ABA14003A4D8C /* YKContactMainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB305F661F3ABA14003A4D8C /* YKContactMainViewController.swift */; };
 		CB305F6A1F3ABA57003A4D8C /* YKSettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB305F691F3ABA57003A4D8C /* YKSettingViewController.swift */; };
@@ -115,6 +116,7 @@
 		CB062E6E1F39C9C4000A9792 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		CB062E701F39C9DD000A9792 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		CB062E771F39CCF9000A9792 /* YKMountListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YKMountListViewController.swift; sourceTree = "<group>"; };
+		CB1ED3981F46E385006D82D3 /* YKPopView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YKPopView.swift; sourceTree = "<group>"; };
 		CB305F641F3AB9EC003A4D8C /* YKMessageMainViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YKMessageMainViewController.swift; sourceTree = "<group>"; };
 		CB305F661F3ABA14003A4D8C /* YKContactMainViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YKContactMainViewController.swift; sourceTree = "<group>"; };
 		CB305F691F3ABA57003A4D8C /* YKSettingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YKSettingViewController.swift; sourceTree = "<group>"; };
@@ -238,6 +240,7 @@
 				CB062E651F39B9CC000A9792 /* Login */,
 				CB062E611F39B9A6000A9792 /* YKBaseViewController.swift */,
 				CB305F7C1F3ACBDB003A4D8C /* YKBaseTableViewController.swift */,
+				CB1ED3981F46E385006D82D3 /* YKPopView.swift */,
 			);
 			path = ui;
 			sourceTree = "<group>";
@@ -643,6 +646,7 @@
 				CB305F7D1F3ACBDB003A4D8C /* YKBaseTableViewController.swift in Sources */,
 				CB305FE71F3B2F19003A4D8C /* YKCommon.swift in Sources */,
 				CB305FCF1F3AFA97003A4D8C /* UIImage+MultiFormat.m in Sources */,
+				CB1ED3991F46E385006D82D3 /* YKPopView.swift in Sources */,
 				CB305F831F3ADB09003A4D8C /* YKAppearance.swift in Sources */,
 				CB6084B51F3451B800CC0091 /* YKAppDelegate.swift in Sources */,
 				CB60845E1F34294F00CC0091 /* FMDatabaseAdditions.m in Sources */,

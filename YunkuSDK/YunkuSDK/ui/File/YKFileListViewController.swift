@@ -78,6 +78,10 @@ class YKFileListViewController: YKBaseTableViewController,YKFileItemCellDelegate
         displayConfig.selectCancelBlock?(self)
     }
     
+    func onBarMore() {
+        
+    }
+    
     override func setupTableView() {
         //self.tableView.rowHeight = 64
         self.tableView.allowsMultipleSelection = (displayConfig.selectMode == .Multi)
@@ -102,7 +106,8 @@ class YKFileListViewController: YKBaseTableViewController,YKFileItemCellDelegate
         }
     
         if displayConfig.selectMode == .None {
-            
+            self.navigationItem.leftBarButtonItems = [backBarButton]
+            self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: YKImage("iconMore"), style: .plain, target: self, action: #selector(onBarMore))
         } else {
             
             var rootpath = "/"
