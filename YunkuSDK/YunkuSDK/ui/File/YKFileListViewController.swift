@@ -17,7 +17,9 @@ class YKFileListViewController: YKBaseTableViewController,YKFileItemCellDelegate
     var magicID = 0
     var requestID: GKRequestID = 0
     
-    var files = [YKFileItemCellWrap]()
+    var addButton: UIButton?
+    
+    var files = [Any]()
     
     var displayConfig: YKFileDisplayConfig!
     
@@ -56,31 +58,29 @@ class YKFileListViewController: YKBaseTableViewController,YKFileItemCellDelegate
         self.automaticallyAdjustsScrollViewInsets = true
         self.hidesBottomBarWhenPushed = true
         self.load()
-        if displayConfig.selectMode == .Multi {
+        if displayConfig.selectMode == .None {
+          
+            if displayConfig.op == .Normal {
+                let btn = UIButton(type: .custom)
+                btn.setImage(YKImage("addFileBtn"), for: .normal)
+                btn.addTarget(self, action: #selector(onBtnAddFile), for: .touchUpInside)
+                self.view.addSubview(btn)
+                self.addButton = btn
+            }
+            
+        } else if displayConfig.selectMode == .Multi {
             onSelectChanged()
             NotificationCenter.default.addObserver(self, selector: #selector(onSelectChanged), name: NSNotification.Name(YKBaseDisplayConfig.SelectChangeNotification), object: nil)
         }
         self.setupNav()
     }
     
-    func onSelectChanged() {
-        let barstr = displayConfig.getSelectBarStr()
-        let newbar = UIBarButtonItem(title: barstr, style: .plain, target: self, action: #selector(onConfirmSelect))
-        newbar.isEnabled = !displayConfig.selectedData.isEmpty
-        self.navigationItem.rightBarButtonItem = newbar
+    override func viewWillLayoutSubviews() {
+        super.viewWillLayoutSubviews()
+        self.addButton?.frame = CGRect(x: self.view.frame.size.width - 30 - 64, y: self.view.frame.height - 70 - 64, width: 64, height: 64)
     }
     
-    func onConfirmSelect() {
-        displayConfig.selectFinishBlock?(displayConfig.selectedData,self)
-    }
     
-    func onCancelSelect() {
-        displayConfig.selectCancelBlock?(self)
-    }
-    
-    func onBarMore() {
-        
-    }
     
     override func setupTableView() {
         //self.tableView.rowHeight = 64
@@ -107,7 +107,7 @@ class YKFileListViewController: YKBaseTableViewController,YKFileItemCellDelegate
     
         if displayConfig.selectMode == .None {
             self.navigationItem.leftBarButtonItems = [backBarButton]
-            self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: YKImage("iconMore"), style: .plain, target: self, action: #selector(onBarMore))
+            self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: YKImage("iconMore"), style: .plain, target: self, action: #selector(onBarMore(send:event:)))
         } else {
             
             var rootpath = "/"
@@ -273,14 +273,159 @@ class YKFileListViewController: YKBaseTableViewController,YKFileItemCellDelegate
         }
     }
     
+    func onBtnAddFile() {
+        
+        let items: Array<YKBottomSheetView.Item> = [
+            YKBottomSheetView.Item(title: YKLocalizedString("文件夹"), id: 1, image: "AddFolder"),
+            YKBottomSheetView.Item(title: YKLocalizedString("相册"), id: 2, image: "AddPhoto"),
+            YKBottomSheetView.Item(title: YKLocalizedString("拍照"), id: 3, image: "AddCamera"),
+            YKBottomSheetView.Item(title: YKLocalizedString("文本"), id: 4, image: "AddTxt"),
+            YKBottomSheetView.Item(title: YKLocalizedString("录音"), id: 5, image: "AddRecord"),
+            YKBottomSheetView.Item(title: YKLocalizedString("扫描"), id: 6, image: "AddScan")
+        ]
+        YKBottomSheetView.show(items: items) { (id:Int, param: Any?) in
+            print("select \(id)")
+        }
+    }
+    
     func onBack() {
         if requestID > 0 { GKHttpEngine.default.cancelTask(requestID) }
         self.navigationController?.popViewController(animated: true)
     }
     
+    func onSelectChanged() {
+        let barstr = displayConfig.getSelectBarStr()
+        let newbar = UIBarButtonItem(title: barstr, style: .plain, target: self, action: #selector(onConfirmSelect))
+        newbar.isEnabled = !displayConfig.selectedData.isEmpty
+        self.navigationItem.rightBarButtonItem = newbar
+    }
+    
+    func onConfirmSelect() {
+        displayConfig.selectFinishBlock?(displayConfig.selectedData,self)
+    }
+    
+    func onCancelSelect() {
+        displayConfig.selectCancelBlock?(self)
+    }
+    
+    func onBarMore(send:Any,event:UIEvent) {
+        
+        let items = [
+            YKPopView.Item(text: YKLocalizedString("多选"), textColor: nil, image: nil, id: 1),
+            YKPopView.Item(text: YKLocalizedString("排序"), textColor: nil, image: nil, id: 2),
+            YKPopView.Item(text: YKLocalizedString("库设置"), textColor: nil, image: nil, id: 3),
+            YKPopView.Item(text: YKLocalizedString("首页"), textColor: nil, image: nil, id: 4)]
+        YKPopView .showItems(items, completion: { (id:Int) in
+            
+            switch id {
+            case 1:
+                self.barMultiSelect()
+            case 2:
+                self.barSortFiles()
+            case 3:
+                self.barLibSetting()
+            case 4:
+                self.barGotoHome()
+            default:
+                break
+            }
+            
+        }, event: event)
+    }
+    
+    func barMultiSelect() {
+        
+    }
+    
+    func barSortFiles() {
+        
+    }
+    
+    func barLibSetting() {
+        
+    }
+    
+    func barGotoHome() {
+        
+    }
+    
+    
+    
     //MARK: YKFileItemCellDelegate
     func didClickAccessortBtn(file: YKFileItemCellWrap) {
         self.showNextFileList(mountID: file.file.mount_id, fullpath: file.file.fullpath)
+    }
+    
+    func didClickArrow(cell:YKFileItemCell, fileItem:YKFileItemCellWrap, show:Bool) -> Void {
+        guard let indexpath = self.tableView.indexPathForRow(at: cell.center) else {
+            return
+        }
+        
+        guard let _ = (self.files[indexpath.row] as? YKFileItemCellWrap) else {
+            return
+        }
+        
+        let selrow = indexpath.row
+        if show {
+            var presheet = false
+            for index in 0..<files.count  {
+                if files[index] is String {
+                    if index < selrow {
+                        presheet = true
+                    }
+                    
+                    let f = files[index-1]
+                    
+                    let c = self.tableView.cellForRow(at: IndexPath(row: index-1, section: 0))
+                    if c is YKFileItemCell {
+                        (c as! YKFileItemCell).setFold(true)
+                    }
+                    
+                    files.remove(at: index)
+                    self.tableView.deleteRows(at: [IndexPath(row: index, section: 0)], with: .none)
+                    
+                    if f is YKFileItemCellWrap {
+                        (f as! YKFileItemCellWrap).fold = true
+                    }
+                    
+                    break
+                }
+            }
+            
+            let sheetid = "sheetcell"
+            let sheetrow = (presheet ? selrow : selrow+1)
+            files.insert(sheetid, at: sheetrow)
+            let f = files[sheetrow-1]
+            if f is YKFileItemCellWrap {
+                (f as! YKFileItemCellWrap).fold = false
+            }
+            
+            let insertpath = IndexPath(row: sheetrow, section: 0)
+            if sheetrow >= files.count-1 {
+                self.tableView.insertRows(at: [insertpath], with: .top)
+            } else {
+                self.tableView.insertRows(at: [insertpath], with: .none)
+            }
+            
+            self.tableView.scrollRectToVisible(self.tableView.rectForRow(at: insertpath), animated: true)
+            
+        } else {
+            
+            guard let _ = (files[selrow+1] as? String) else {
+                return
+            }
+            
+            files.remove(at: selrow+1)
+            let f = files[selrow]
+            if f is YKFileItemCellWrap {
+                (f as! YKFileItemCellWrap).fold = true
+            }
+            if indexpath.row == files.count-1 {
+                self.tableView.deleteRows(at: [IndexPath(row: selrow+1, section: 0)], with: .top)
+            } else {
+                self.tableView.deleteRows(at: [IndexPath(row: selrow+1, section: 0)], with: .none)
+            }
+        }
     }
     
     //MARK: UITableViewDataSource
@@ -294,45 +439,66 @@ class YKFileListViewController: YKBaseTableViewController,YKFileItemCellDelegate
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         let file = files[indexPath.row]
-        return file.rowHeight
+        if file is YKFileItemCellWrap {
+            return (file as! YKFileItemCellWrap).rowHeight
+        } else if file is String {
+            return 48
+        }
+        return 44
     }
     
     //MARK: UITableViewDataSource
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        let item = self.files[indexPath.row]
-        
-        var cell: UITableViewCell? = tableView.dequeueReusableCell(withIdentifier: item.cellid)
-        if cell == nil {
-            cell = YKFileItemCell(style: .default, reuseIdentifier: item.cellid,delegate:self)
-        }
-        
-        if item.selectType == .Disable {
-            cell?.selectionStyle = .none
-        } else {
-            cell?.selectedBackgroundView = UIImageView(image: YKImage("cellSelectBkg"))
-        }
-        
-        
-        let filecell = cell as! YKFileItemCell
-        filecell.bindData(file: item)
-        
-        if displayConfig.selectMode == .Multi {
-            if item.selectType == .Selected {
-                tableView.selectRow(at: indexPath, animated: false, scrollPosition: .none)
+        let cellitem = files[indexPath.row]
+        if cellitem is YKFileItemCellWrap {
+            let item = cellitem as! YKFileItemCellWrap
+            
+            var cell: UITableViewCell? = tableView.dequeueReusableCell(withIdentifier: item.cellid)
+            if cell == nil {
+                cell = YKFileItemCell(style: .default, reuseIdentifier: item.cellid,delegate:self)
             }
+            
+            if item.selectType == .Disable {
+                cell?.selectionStyle = .none
+            } else {
+                cell?.selectedBackgroundView = UIImageView(image: YKImage("cellSelectBkg"))
+            }
+            
+            
+            let filecell = cell as! YKFileItemCell
+            filecell.bindData(file: item)
+            
+            if displayConfig.selectMode == .Multi {
+                if item.selectType == .Selected {
+                    tableView.selectRow(at: indexPath, animated: false, scrollPosition: .none)
+                }
+            }
+            
+            return cell!
+        } else if cellitem is String {
+            
+            let cellid = cellitem as! String
+            var cell = tableView.dequeueReusableCell(withIdentifier: cellid)
+            if cell == nil {
+                cell = YKFileOperationSheetCell(style: .default, reuseIdentifier: cellid)
+                cell?.selectionStyle = .none
+            }
+            return cell!
         }
         
-        return cell!
+        return UITableViewCell()
     }
     
     func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
         
         if displayConfig.selectMode != .None {
-            let item = self.files[indexPath.row]
-            if item.selectType == .Disable || item.selectType == .DiableSelected {
-                return nil
+            if let item = self.files[indexPath.row] as? YKFileItemCellWrap {
+                if item.selectType == .Disable || item.selectType == .DiableSelected {
+                    return nil
+                }
             }
+            
         }
         
         return indexPath
@@ -344,49 +510,50 @@ class YKFileListViewController: YKBaseTableViewController,YKFileItemCellDelegate
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let item = self.files[indexPath.row]
         
-        if displayConfig.selectMode == .None {
-            tableView.deselectRow(at: indexPath, animated: true)
-            if item.file.dir {
-                self.showNextFileList(mountID: item.file.mount_id, fullpath: item.file.fullpath)
-            } else {
-                
-            }
-        } else {
-            if displayConfig.selectMode == .Single {
-                if displayConfig.selectType == .File {
-                    if item.file.dir {
-                        self.showNextFileList(mountID: item.file.mount_id, fullpath: item.file.fullpath)
-                    } else {
-                        displayConfig.selectFinishBlock?([item.file],self)
-                    }
-                } else if displayConfig.selectType == .Dir {
-                    if item.file.dir {
-                        displayConfig.selectFinishBlock?([item.file],self)
-                    }
-                } else if displayConfig.selectType == .FileDir {
-                    displayConfig.selectFinishBlock?([item.file],self)
+        if let item = self.files[indexPath.row] as? YKFileItemCellWrap {
+            if displayConfig.selectMode == .None {
+                tableView.deselectRow(at: indexPath, animated: true)
+                if item.file.dir {
+                    self.showNextFileList(mountID: item.file.mount_id, fullpath: item.file.fullpath)
+                } else {
+                    
                 }
-            } else { //多选
-                if displayConfig.selectType == .File {
-                    if item.file.dir {
-                        self.showNextFileList(mountID: item.file.mount_id, fullpath: item.file.fullpath)
-                    } else {
+            } else {
+                if displayConfig.selectMode == .Single {
+                    if displayConfig.selectType == .File {
+                        if item.file.dir {
+                            self.showNextFileList(mountID: item.file.mount_id, fullpath: item.file.fullpath)
+                        } else {
+                            displayConfig.selectFinishBlock?([item.file],self)
+                        }
+                    } else if displayConfig.selectType == .Dir {
+                        if item.file.dir {
+                            displayConfig.selectFinishBlock?([item.file],self)
+                        }
+                    } else if displayConfig.selectType == .FileDir {
+                        displayConfig.selectFinishBlock?([item.file],self)
+                    }
+                } else { //多选
+                    if displayConfig.selectType == .File {
+                        if item.file.dir {
+                            self.showNextFileList(mountID: item.file.mount_id, fullpath: item.file.fullpath)
+                        } else {
+                            tableView.selectRow(at: indexPath, animated: true, scrollPosition: .none)
+                            displayConfig.changeSelectData(item: item.file, add: true, vc: self)
+                            return
+                        }
+                    } else if displayConfig.selectType == .Dir {
+                        if item.file.dir {
+                            tableView.selectRow(at: indexPath, animated: true, scrollPosition: .none)
+                            displayConfig.changeSelectData(item: item.file, add: true, vc: self)
+                            return
+                        }
+                    } else if displayConfig.selectType == .FileDir {
                         tableView.selectRow(at: indexPath, animated: true, scrollPosition: .none)
                         displayConfig.changeSelectData(item: item.file, add: true, vc: self)
                         return
                     }
-                } else if displayConfig.selectType == .Dir {
-                    if item.file.dir {
-                        tableView.selectRow(at: indexPath, animated: true, scrollPosition: .none)
-                        displayConfig.changeSelectData(item: item.file, add: true, vc: self)
-                        return
-                    }
-                } else if displayConfig.selectType == .FileDir {
-                    tableView.selectRow(at: indexPath, animated: true, scrollPosition: .none)
-                    displayConfig.changeSelectData(item: item.file, add: true, vc: self)
-                    return
                 }
             }
         }
@@ -396,9 +563,10 @@ class YKFileListViewController: YKBaseTableViewController,YKFileItemCellDelegate
     
     func tableView(_ tableView: UITableView, willDeselectRowAt indexPath: IndexPath) -> IndexPath? {
         if displayConfig.selectMode != .None {
-            let item = self.files[indexPath.row]
-            if item.selectType == .Disable || item.selectType == .DiableSelected {
-                return nil
+            if let item = (self.files[indexPath.row] as? YKFileItemCellWrap) {
+                if item.selectType == .Disable || item.selectType == .DiableSelected {
+                    return nil
+                }
             }
         }
         return indexPath
@@ -409,21 +577,23 @@ class YKFileListViewController: YKBaseTableViewController,YKFileItemCellDelegate
             return
         }
         
-        let item = self.files[indexPath.row]
-        if displayConfig.selectType == .File {
-            if !item.file.dir {
+        if let item = (self.files[indexPath.row] as? YKFileItemCellWrap) {
+            if displayConfig.selectType == .File {
+                if !item.file.dir {
+                    tableView.deselectRow(at: indexPath, animated: true)
+                    displayConfig.changeSelectData(item: item.file, add: false, vc: self)
+                }
+            } else if displayConfig.selectType == .Dir {
+                if item.file.dir {
+                    tableView.deselectRow(at: indexPath, animated: true)
+                    displayConfig.changeSelectData(item: item.file, add: false, vc: self)
+                }
+            } else if displayConfig.selectType == .FileDir {
                 tableView.deselectRow(at: indexPath, animated: true)
                 displayConfig.changeSelectData(item: item.file, add: false, vc: self)
             }
-        } else if displayConfig.selectType == .Dir {
-            if item.file.dir {
-                tableView.deselectRow(at: indexPath, animated: true)
-                displayConfig.changeSelectData(item: item.file, add: false, vc: self)
-            }
-        } else if displayConfig.selectType == .FileDir {
-            tableView.deselectRow(at: indexPath, animated: true)
-            displayConfig.changeSelectData(item: item.file, add: false, vc: self)
         }
+        
     }
 }
 

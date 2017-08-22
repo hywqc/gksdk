@@ -17,6 +17,7 @@
 		CB062E6A1F39C968000A9792 /* YKResource.bundle in Resources */ = {isa = PBXBuildFile; fileRef = CB062E691F39C968000A9792 /* YKResource.bundle */; };
 		CB062E6D1F39C9C4000A9792 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = CB062E6F1F39C9C4000A9792 /* Localizable.strings */; };
 		CB062E781F39CCF9000A9792 /* YKMountListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB062E771F39CCF9000A9792 /* YKMountListViewController.swift */; };
+		CB087ACF1F4A902E00EEA799 /* YKFileOperationSheetCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB087ACE1F4A902E00EEA799 /* YKFileOperationSheetCell.swift */; };
 		CB1ED3991F46E385006D82D3 /* YKPopView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB1ED3981F46E385006D82D3 /* YKPopView.swift */; };
 		CB305F651F3AB9EC003A4D8C /* YKMessageMainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB305F641F3AB9EC003A4D8C /* YKMessageMainViewController.swift */; };
 		CB305F671F3ABA14003A4D8C /* YKContactMainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB305F661F3ABA14003A4D8C /* YKContactMainViewController.swift */; };
@@ -90,12 +91,19 @@
 		CB6084B01F344B0000CC0091 /* YKDef.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB6084AF1F344B0000CC0091 /* YKDef.swift */; };
 		CB6084B51F3451B800CC0091 /* YKAppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB6084B41F3451B800CC0091 /* YKAppDelegate.swift */; };
 		CB6084C21F380FD600CC0091 /* YKUINotify.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB6084C11F380FD600CC0091 /* YKUINotify.swift */; };
+		CB75C3581F4BFA8C0092DD7E /* YKFileOperationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB75C3571F4BFA8C0092DD7E /* YKFileOperationManager.swift */; };
+		CB75C35B1F4BFD2A0092DD7E /* YKDownloadTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB75C35A1F4BFD2A0092DD7E /* YKDownloadTask.swift */; };
+		CB75C35D1F4BFD380092DD7E /* YKUploadTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB75C35C1F4BFD380092DD7E /* YKUploadTask.swift */; };
+		CB75C35F1F4BFD480092DD7E /* YKDownloadManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB75C35E1F4BFD480092DD7E /* YKDownloadManager.swift */; };
+		CB75C3611F4BFD560092DD7E /* YKUploadManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB75C3601F4BFD560092DD7E /* YKUploadManager.swift */; };
+		CB75C3631F4BFDA90092DD7E /* YKTransCallback.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB75C3621F4BFDA90092DD7E /* YKTransCallback.swift */; };
 		CB91F5C41F3D8AF0004124F9 /* YKFileItemCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB91F5C31F3D8AF0004124F9 /* YKFileItemCell.swift */; };
+		CBD79F901F4AF46F000B19B5 /* YKTransDB.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBD79F8F1F4AF46F000B19B5 /* YKTransDB.swift */; };
+		CBD79F921F4B037F000B19B5 /* YKBottomSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBD79F911F4B037F000B19B5 /* YKBottomSheetView.swift */; };
 		CBF96DC31F4135C300C0A7F3 /* YKFavDB.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBF96DC21F4135C300C0A7F3 /* YKFavDB.swift */; };
 		CBF96DC51F41368A00C0A7F3 /* YKFavManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBF96DC41F41368A00C0A7F3 /* YKFavManager.swift */; };
 		CBF96DC71F413EA800C0A7F3 /* YKFileItemWrap.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBF96DC61F413EA800C0A7F3 /* YKFileItemWrap.swift */; };
 		CBF96DCB1F41424D00C0A7F3 /* YKTransDefine.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBF96DCA1F41424D00C0A7F3 /* YKTransDefine.swift */; };
-		CBF96DFE1F414E3400C0A7F3 /* YKTransDB.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBF96DFD1F414E3400C0A7F3 /* YKTransDB.swift */; };
 		CBF96E071F4188C900C0A7F3 /* YKSettingDB.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBF96E061F4188C900C0A7F3 /* YKSettingDB.swift */; };
 		CBF972B11F42DEC300C0A7F3 /* YKLoginManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBF972B01F42DEC300C0A7F3 /* YKLoginManager.swift */; };
 		CBF972B41F42DF6F00C0A7F3 /* YKPermissionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBF972B31F42DF6F00C0A7F3 /* YKPermissionManager.swift */; };
@@ -116,6 +124,7 @@
 		CB062E6E1F39C9C4000A9792 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		CB062E701F39C9DD000A9792 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		CB062E771F39CCF9000A9792 /* YKMountListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YKMountListViewController.swift; sourceTree = "<group>"; };
+		CB087ACE1F4A902E00EEA799 /* YKFileOperationSheetCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YKFileOperationSheetCell.swift; sourceTree = "<group>"; };
 		CB1ED3981F46E385006D82D3 /* YKPopView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YKPopView.swift; sourceTree = "<group>"; };
 		CB305F641F3AB9EC003A4D8C /* YKMessageMainViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YKMessageMainViewController.swift; sourceTree = "<group>"; };
 		CB305F661F3ABA14003A4D8C /* YKContactMainViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YKContactMainViewController.swift; sourceTree = "<group>"; };
@@ -191,12 +200,19 @@
 		CB6084AF1F344B0000CC0091 /* YKDef.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YKDef.swift; sourceTree = "<group>"; };
 		CB6084B41F3451B800CC0091 /* YKAppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YKAppDelegate.swift; sourceTree = "<group>"; };
 		CB6084C11F380FD600CC0091 /* YKUINotify.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YKUINotify.swift; sourceTree = "<group>"; };
+		CB75C3571F4BFA8C0092DD7E /* YKFileOperationManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YKFileOperationManager.swift; sourceTree = "<group>"; };
+		CB75C35A1F4BFD2A0092DD7E /* YKDownloadTask.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YKDownloadTask.swift; sourceTree = "<group>"; };
+		CB75C35C1F4BFD380092DD7E /* YKUploadTask.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YKUploadTask.swift; sourceTree = "<group>"; };
+		CB75C35E1F4BFD480092DD7E /* YKDownloadManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YKDownloadManager.swift; sourceTree = "<group>"; };
+		CB75C3601F4BFD560092DD7E /* YKUploadManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YKUploadManager.swift; sourceTree = "<group>"; };
+		CB75C3621F4BFDA90092DD7E /* YKTransCallback.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YKTransCallback.swift; sourceTree = "<group>"; };
 		CB91F5C31F3D8AF0004124F9 /* YKFileItemCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YKFileItemCell.swift; sourceTree = "<group>"; };
+		CBD79F8F1F4AF46F000B19B5 /* YKTransDB.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YKTransDB.swift; sourceTree = "<group>"; };
+		CBD79F911F4B037F000B19B5 /* YKBottomSheetView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YKBottomSheetView.swift; sourceTree = "<group>"; };
 		CBF96DC21F4135C300C0A7F3 /* YKFavDB.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YKFavDB.swift; sourceTree = "<group>"; };
 		CBF96DC41F41368A00C0A7F3 /* YKFavManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YKFavManager.swift; sourceTree = "<group>"; };
 		CBF96DC61F413EA800C0A7F3 /* YKFileItemWrap.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YKFileItemWrap.swift; sourceTree = "<group>"; };
 		CBF96DCA1F41424D00C0A7F3 /* YKTransDefine.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YKTransDefine.swift; sourceTree = "<group>"; };
-		CBF96DFD1F414E3400C0A7F3 /* YKTransDB.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YKTransDB.swift; sourceTree = "<group>"; };
 		CBF96E061F4188C900C0A7F3 /* YKSettingDB.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YKSettingDB.swift; sourceTree = "<group>"; };
 		CBF972B01F42DEC300C0A7F3 /* YKLoginManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YKLoginManager.swift; sourceTree = "<group>"; };
 		CBF972B31F42DF6F00C0A7F3 /* YKPermissionManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YKPermissionManager.swift; sourceTree = "<group>"; };
@@ -241,6 +257,7 @@
 				CB062E611F39B9A6000A9792 /* YKBaseViewController.swift */,
 				CB305F7C1F3ACBDB003A4D8C /* YKBaseTableViewController.swift */,
 				CB1ED3981F46E385006D82D3 /* YKPopView.swift */,
+				CBD79F911F4B037F000B19B5 /* YKBottomSheetView.swift */,
 			);
 			path = ui;
 			sourceTree = "<group>";
@@ -264,6 +281,7 @@
 				CB305FDA1F3B088E003A4D8C /* YKFileListViewController.swift */,
 				CB91F5C31F3D8AF0004124F9 /* YKFileItemCell.swift */,
 				CBF96DC61F413EA800C0A7F3 /* YKFileItemWrap.swift */,
+				CB087ACE1F4A902E00EEA799 /* YKFileOperationSheetCell.swift */,
 			);
 			path = File;
 			sourceTree = "<group>";
@@ -289,6 +307,7 @@
 			children = (
 				CB305F821F3ADB09003A4D8C /* YKAppearance.swift */,
 				CB305FE61F3B2F19003A4D8C /* YKCommon.swift */,
+				CB75C3571F4BFA8C0092DD7E /* YKFileOperationManager.swift */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -442,7 +461,6 @@
 				CB60846F1F342E7600CC0091 /* YKMountsDB.swift */,
 				CB062E591F399BE1000A9792 /* YKSyncDB.swift */,
 				CBF96DC21F4135C300C0A7F3 /* YKFavDB.swift */,
-				CBF96DFD1F414E3400C0A7F3 /* YKTransDB.swift */,
 				CBF96E061F4188C900C0A7F3 /* YKSettingDB.swift */,
 			);
 			path = database;
@@ -451,7 +469,13 @@
 		CBF96DC81F4141FC00C0A7F3 /* Trans */ = {
 			isa = PBXGroup;
 			children = (
+				CBD79F8F1F4AF46F000B19B5 /* YKTransDB.swift */,
 				CBF96DCA1F41424D00C0A7F3 /* YKTransDefine.swift */,
+				CB75C35A1F4BFD2A0092DD7E /* YKDownloadTask.swift */,
+				CB75C35C1F4BFD380092DD7E /* YKUploadTask.swift */,
+				CB75C35E1F4BFD480092DD7E /* YKDownloadManager.swift */,
+				CB75C3601F4BFD560092DD7E /* YKUploadManager.swift */,
+				CB75C3621F4BFDA90092DD7E /* YKTransCallback.swift */,
 			);
 			path = Trans;
 			sourceTree = "<group>";
@@ -597,6 +621,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CBD79F901F4AF46F000B19B5 /* YKTransDB.swift in Sources */,
 				CB305FD31F3AFA97003A4D8C /* UIImageView+HighlightedWebCache.m in Sources */,
 				CB6084721F3438B100CC0091 /* YKClient.swift in Sources */,
 				CB305FD71F3AFA97003A4D8C /* UIView+WebCache.m in Sources */,
@@ -604,10 +629,10 @@
 				CB062E581F399ADF000A9792 /* YKMountManager.swift in Sources */,
 				CB062E781F39CCF9000A9792 /* YKMountListViewController.swift in Sources */,
 				CB305F651F3AB9EC003A4D8C /* YKMessageMainViewController.swift in Sources */,
+				CB087ACF1F4A902E00EEA799 /* YKFileOperationSheetCell.swift in Sources */,
 				CB062E681F39B9F9000A9792 /* YKLoginViewController.swift in Sources */,
 				CB305FD51F3AFA97003A4D8C /* UIImageView+WebCache.m in Sources */,
 				CBF96E071F4188C900C0A7F3 /* YKSettingDB.swift in Sources */,
-				CBF96DFE1F414E3400C0A7F3 /* YKTransDB.swift in Sources */,
 				CB91F5C41F3D8AF0004124F9 /* YKFileItemCell.swift in Sources */,
 				CBF96DC51F41368A00C0A7F3 /* YKFavManager.swift in Sources */,
 				CB60845C1F34294F00CC0091 /* FMDatabase.m in Sources */,
@@ -637,6 +662,7 @@
 				CB062E5A1F399BE1000A9792 /* YKSyncDB.swift in Sources */,
 				CB062E5F1F39A94E000A9792 /* YKCustomConfig.swift in Sources */,
 				CBF96DC71F413EA800C0A7F3 /* YKFileItemWrap.swift in Sources */,
+				CB75C3631F4BFDA90092DD7E /* YKTransCallback.swift in Sources */,
 				CB305F7F1F3AD080003A4D8C /* YKMountsTableDataSource.swift in Sources */,
 				CB6084621F34294F00CC0091 /* FMDatabaseQueue.m in Sources */,
 				CB6084701F342E7600CC0091 /* YKMountsDB.swift in Sources */,
@@ -644,6 +670,8 @@
 				CB305FB41F3AFA97003A4D8C /* MKAnnotationView+WebCache.m in Sources */,
 				CBF972F01F44323400C0A7F3 /* YKSelectFileComponent.swift in Sources */,
 				CB305F7D1F3ACBDB003A4D8C /* YKBaseTableViewController.swift in Sources */,
+				CB75C35B1F4BFD2A0092DD7E /* YKDownloadTask.swift in Sources */,
+				CB75C35D1F4BFD380092DD7E /* YKUploadTask.swift in Sources */,
 				CB305FE71F3B2F19003A4D8C /* YKCommon.swift in Sources */,
 				CB305FCF1F3AFA97003A4D8C /* UIImage+MultiFormat.m in Sources */,
 				CB1ED3991F46E385006D82D3 /* YKPopView.swift in Sources */,
@@ -659,9 +687,13 @@
 				CB305F851F3AE089003A4D8C /* YKMountsListSectionView.swift in Sources */,
 				CB305FD91F3AFA97003A4D8C /* UIView+WebCacheOperation.m in Sources */,
 				CB60846E1F342BAA00CC0091 /* YKBaseDB.swift in Sources */,
+				CBD79F921F4B037F000B19B5 /* YKBottomSheetView.swift in Sources */,
 				CB305FE31F3B10B3003A4D8C /* YKSearchMaskView.swift in Sources */,
 				CB6084AE1F34499900CC0091 /* YKLog.swift in Sources */,
+				CB75C3611F4BFD560092DD7E /* YKUploadManager.swift in Sources */,
 				CB6084651F34294F00CC0091 /* FMResultSet.m in Sources */,
+				CB75C35F1F4BFD480092DD7E /* YKDownloadManager.swift in Sources */,
+				CB75C3581F4BFA8C0092DD7E /* YKFileOperationManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

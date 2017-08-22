@@ -10,6 +10,7 @@ import UIKit
 
 protocol YKFileItemCellDelegate : AnyObject {
     func didClickAccessortBtn(file: YKFileItemCellWrap) -> Void
+    func didClickArrow(cell:YKFileItemCell, fileItem:YKFileItemCellWrap, show:Bool) -> Void
 }
 
 class YKFileItemCell: UITableViewCell {
@@ -31,6 +32,7 @@ class YKFileItemCell: UITableViewCell {
     
     weak var celldelegate: YKFileItemCellDelegate?
     
+    var arrowFold = true
     
     var roundAvatar = false
     
@@ -59,6 +61,15 @@ class YKFileItemCell: UITableViewCell {
         self.selectIcon.isHidden = !file.showSelectIcon
         self.arrow.isHidden = !file.showArrow
         self.accessoryBtn.isHidden = !file.showAccessoryBtn
+        
+        if !arrow.isHidden {
+            if file.fold {
+                arrow.image = YKImage("fileListArrowDown")
+            } else {
+                arrow.image = YKImage("fileListArrowUp")
+            }
+        }
+        
         
         if file.disableSelect {
             titleLabel.textColor = YKColor.Disable
@@ -165,6 +176,9 @@ class YKFileItemCell: UITableViewCell {
         self.contentView.addSubview(imageview)
         self.arrow = imageview
         
+        let tapgesture = UITapGestureRecognizer(target: self, action: #selector(onArrowViewClick(gesture:)))
+        self.arrow.addGestureRecognizer(tapgesture)
+        
         let progress = UIProgressView(frame: CGRect.zero)
         self.contentView.addSubview(progress)
         self.progressView = progress
@@ -226,6 +240,28 @@ class YKFileItemCell: UITableViewCell {
         if celldelegate != nil {
             celldelegate?.didClickAccessortBtn(file: fileItem)
         }
+    }
+    
+    func onArrowViewClick(gesture: UITapGestureRecognizer) {
+        if gesture.state == .ended {
+            if arrowFold {
+                arrow.image = YKImage("fileListArrowUp")
+                celldelegate?.didClickArrow(cell:self, fileItem:fileItem, show:true)
+            } else {
+                arrow.image = YKImage("fileListArrowDown")
+                celldelegate?.didClickArrow(cell:self, fileItem:fileItem, show:false)
+            }
+            arrowFold = !arrowFold
+        }
+    }
+    
+    func setFold(_ fold: Bool) {
+        if fold {
+            arrow.image = YKImage("fileListArrowDown")
+        } else {
+            arrow.image = YKImage("fileListArrowUp")
+        }
+        self.arrowFold = fold
     }
     
     override func layoutSubviews() {

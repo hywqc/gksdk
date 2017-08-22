@@ -29,6 +29,8 @@ class YKFileItemCellWrap {
     
     var isCached = false
     
+    var fold = true
+    
     var disableSelect: Bool {
         return selectType == .Disable
     }

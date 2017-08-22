@@ -1,9 +1,13 @@
 //
-//  YKTransDB.swift
+//  YKUploadTask.swift
 //  YunkuSDK
 //
-//  Created by wqc on 2017/8/14.
+//  Created by wqc on 2017/8/22.
 //  Copyright © 2017年 wqc. All rights reserved.
 //
 
 import Foundation
+
+class YKUploadTask {
+    
+}

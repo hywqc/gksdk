@@ -11,6 +11,7 @@ import gknet
 
 let YKMEMBER_AVATER_URLFORMAT = ""
 
+
 enum YKSelectIconType {
     case None
     case Selected
