@@ -269,6 +269,11 @@
 					CB006B811F2615D0002D692F = {
 						CreatedOnToolsVersion = 8.3;
 						ProvisioningStyle = Automatic;
+						SystemCapabilities = {
+							com.apple.BackgroundModes = {
+								enabled = 0;
+							};
+						};
 					};
 				};
 			};

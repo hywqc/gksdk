@@ -46,7 +46,7 @@ public class GKHttpEngine : GKHttpBaseSession {
     }
     
     
-    public var refreshTokenNotifyCallback: ((String,String)->Void)?
+    public var refreshTokenNotifyCallback: ((String,String,Int?,String?)->Void)?
     
     public func configServerInfo(https: Bool, apiHost: String, apiPort: String?, webHost: String?, webPort: String?, client_id: String, client_secret: String, deviceID: String, errorLog: GKRequestLogger? = nil ) {
         
@@ -116,7 +116,10 @@ public class GKHttpEngine : GKHttpBaseSession {
             
             print("refresh token: \(retToken.accessToken)");
             
-            refreshTokenNotifyCallback?(retToken.accessToken,retToken.refreshToken)
+            refreshTokenNotifyCallback?(retToken.accessToken,retToken.refreshToken,nil,nil)
+            
+        } else {
+            refreshTokenNotifyCallback?("","",retToken.errcode,retToken.errmsg)
         }
         
         return retToken
@@ -403,4 +406,149 @@ public class GKHttpEngine : GKHttpBaseSession {
         }, reqType: GKRequestRetFiles.self)
         return taskID
     }
+    
+    //MARK: Upload
+    public func createFolder(mountid:Int,webpath:String,create_dateline: Int64?,last_dateline:Int64?) -> GKRequestRetCreateFile {
+        var result: GKRequestRetCreateFile!
+        for _ in 0..<kTryCount {
+            var param = ["token":access_token]
+            param["mount_id"] = "\(mountid)"
+            param["fullpath"] = webpath
+            if create_dateline != nil {
+                param["create_dateline"] = "\(create_dateline!)"
+            }
+            if last_dateline != nil {
+                param["last_dateline"] = "\(last_dateline!)"
+            }
+            param["sign"] = sign(param)
+            
+            result = self.POST(url: generateurl(GKAPI.CREATE_FOLDER), headers: nil, param: param, reqType: GKRequestRetCreateFile.self) as! GKRequestRetCreateFile
+            if result.statuscode == 200 {
+                break
+            } else if result.errcode == kTokenExpiredCode || result.errcode == kTokenInvalidCode {
+                if bStop { break }
+                let _ = self.refreshToken()
+            }
+        }
+        return result
+    }
+    
+    public func createFile(mountid:Int,webpath:String,filehash:String,filesize:Int64,overwrite: Bool, create_dateline: Int64? = nil,last_dateline:Int64? = nil,dateline:Int64? = nil, dialog_id:String? = nil,ent_id:Int? = nil,filefield:String? = nil, data: Data? = nil) -> GKRequestRetCreateFile {
+        var result: GKRequestRetCreateFile!
+        for _ in 0..<kTryCount {
+            var param = ["token":access_token]
+            param["mount_id"] = "\(mountid)"
+            param["fullpath"] = webpath
+            if create_dateline != nil {
+                param["create_dateline"] = "\(create_dateline!)"
+            }
+            if last_dateline != nil {
+                param["last_dateline"] = "\(last_dateline!)"
+            }
+            if dateline != nil {
+                param["dateline"] = "\(dateline!)"
+            }
+            
+            if dialog_id != nil {
+                param["dialog_id"] = dialog_id!
+            }
+            if ent_id != nil {
+                param["ent_id"] = "\(ent_id!)"
+            }
+            param["sign"] = sign(param)
+            //param["overwrite"] = (overwrite ? "1" : "0")
+            param["filehash"] = filehash
+            param["filesize"] = "\(filesize)"
+            
+            result = self.POST(url: generateurl(GKAPI.CREATE_FILE), headers: nil, param: param, reqType: GKRequestRetCreateFile.self) as! GKRequestRetCreateFile
+            if result.statuscode == 200 {
+                break
+            } else if result.errcode == kTokenExpiredCode || result.errcode == kTokenInvalidCode {
+                if bStop { break }
+                let _ = self.refreshToken()
+            }
+        }
+        return result
+    }
+    
+    private let HEADER_X_GK_UPLOAD_FILENAME =  "x-gk-upload-filename"
+    private let HEADER_X_GK_UPLOAD_PATHHASH =	"x-gk-upload-pathhash"
+    private let HEADER_X_GK_UPLOAD_FILEHASH =	"x-gk-upload-filehash"
+    private let HEADER_X_GK_UPLOAD_FILESIZE =	"x-gk-upload-filesize"
+    private let HEADER_X_GK_UPLOAD_MOUNTID  =   "x-gk-upload-mountid"
+    private let HEADER_X_GK_TOKEN			=	"x-gk-token"
+    
+    public func uploadFileInit(host:String,mountid:Int,filename:String,uuidhash:String,filehash:String,filesize:Int64) -> GKRequestBaseRet {
+        var result: GKRequestBaseRet!
+        
+        for _ in 0..<kTryCount {
+            var header = [HEADER_X_GK_TOKEN:access_token]
+            header[HEADER_X_GK_UPLOAD_MOUNTID] = "\(mountid)"
+            header[HEADER_X_GK_UPLOAD_FILENAME] = filename
+            header[HEADER_X_GK_UPLOAD_PATHHASH] = uuidhash
+            header[HEADER_X_GK_UPLOAD_FILEHASH] = filehash
+            header[HEADER_X_GK_UPLOAD_FILESIZE] = "\(filesize)"
+            
+            let url = "\(host)/upload_init"
+            
+            result = self.POST(url: url, headers: header, param: nil, reqType: GKRequestBaseRet.self) 
+            if result.statuscode == 200 {
+                break
+            } else if result.errcode == kTokenExpiredCode || result.errcode == kTokenInvalidCode {
+                if bStop { break }
+                let _ = self.refreshToken()
+            }
+        }
+        return result
+    }
+    
+    private let HEADER_X_GK_UPLOAD_SESSION = "x-gk-upload-session"
+    private let HEADER_X_GK_UPLOAD_RANGE = "x-gk-upload-range"
+    private let HEADER_CONTENT_LENGTH = "Content-Length"
+    private let HEADER_X_GK_UPLOAD_PART_CRC = "x-gk-upload-crc"
+    
+    public func uploadFilePart(host:String,session:String,start:Int64,end:Int64,data:Data,crc:String) -> GKRequestBaseRet {
+        var result: GKRequestBaseRet!
+        
+        for _ in 0..<kTryCount {
+            
+            var header = [HEADER_X_GK_UPLOAD_SESSION:session]
+            header[HEADER_X_GK_UPLOAD_RANGE] = "\(start)-\(end)"
+            header[HEADER_CONTENT_LENGTH] = "\(data.count)"
+            header[HEADER_X_GK_UPLOAD_PART_CRC] = crc
+            
+            let url = "\(host)/upload_part"
+            
+            result = self.PUT(url: url, headers: header, param: nil, data: data, reqType: GKRequestBaseRet.self)
+            if result.statuscode == 200 {
+                break
+            } else if result.errcode == kTokenExpiredCode || result.errcode == kTokenInvalidCode {
+                if bStop { break }
+                let _ = self.refreshToken()
+            }
+        }
+        return result
+    }
+    
+    public func uploadFileFinish(host:String,session:String,filesize:Int64) -> GKRequestBaseRet {
+        var result: GKRequestBaseRet!
+        
+        for _ in 0..<kTryCount {
+            
+            var header = [HEADER_X_GK_UPLOAD_SESSION:session]
+            header[HEADER_X_GK_UPLOAD_FILESIZE] = "\(filesize)"
+            
+            let url = "\(host)/upload_finish"
+            
+            result = self.POST(url: url, headers: header, param: nil, reqType: GKRequestBaseRet.self)
+            if result.statuscode == 200 {
+                break
+            } else if result.errcode == kTokenExpiredCode || result.errcode == kTokenInvalidCode {
+                if bStop { break }
+                let _ = self.refreshToken()
+            }
+        }
+        return result
+    }
+    
 }

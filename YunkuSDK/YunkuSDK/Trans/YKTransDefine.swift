@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import gkutility
 
 enum YKTransStatus : Int {
     case None = 0
@@ -68,6 +69,26 @@ class YKUploadItemData {
     var errcode = 0
     var errmsg = ""
     var errcount = 0
-    var editupload = false
+    var overwrite = false
+    
+    var notifyInfo: String {
+        
+        let dic: [String:Any] = [
+            "id":nID,
+            "mount_id":mountid,
+            "webpath":webpath,
+            "filename":filename,
+            "filehash":filehash,
+            "uuidhash":uuidhash,
+            "filesize":filesize,
+            "offset":offset,
+            "status":status.rawValue,
+            "errcode":errcode,
+            "errmsg":errmsg,
+            "overwrite":(overwrite ? 1 : 0)
+        ]
+        
+        return (gkutility.obj2str(obj: dic) ?? "")
+    }
 }
 

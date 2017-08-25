@@ -101,7 +101,15 @@ fileprivate let FileIcons: [String:String] = [
 }
 
 @inline(__always) public func gkSafeLongLong(dic: [AnyHashable:Any], key: String, def: Int64 = 0) -> Int64 {
-    return ((dic[key] as? Int64) ?? def)
+    let o = dic[key]
+    if let i = o as? Int64 {
+        return i
+    } else if let s = o as? String {
+        if let i =  Int64(s) {
+            return i
+        }
+    }
+    return def
 }
 
 @inline(__always) public func gkSafeDic(dic: [AnyHashable:Any], key: String) -> [AnyHashable:Any]? {
@@ -353,6 +361,25 @@ public class gkutility : NSObject {
         }
     }
     
+    public static func getfilehash(path: String) -> String {
+        let s = gkobjassist.fileHash(withPath: path)
+        return s
+    }
+    
+    public static func checkFileNameInDir(_ filename: String, dir: String) -> String {
+        let parent = dir.gkAddLastSlash
+        var path = parent.appending(filename)
+        let ext = (filename as NSString).pathExtension
+        let rawname = filename.gkRawFileName
+        let fm = FileManager.default
+        var index = 2
+        while fm.fileExists(atPath: path) {
+            let newname = "\(rawname)(\(index)).\(ext)"
+            path = parent.appending(newname)
+            index += 1
+        }
+        return path
+    }
     
     public class func getIconWithFileName(_ name: String, _ dir: Bool) -> String {
         
@@ -477,8 +504,13 @@ public class gkutility : NSObject {
     public class func formatDateline(_ dateline: TimeInterval, format: String) -> String {
         let date = Date(timeIntervalSince1970: dateline)
         let formatter = DateFormatter()
-        formatter.setLocalizedDateFormatFromTemplate(format)
+        //formatter.setLocalizedDateFormatFromTemplate(format)
+        formatter.dateFormat = format
         return formatter.string(from: date)
+    }
+    
+    public class func genFileNameSuffix() -> String {
+        return formatDateline(Date().timeIntervalSince1970, format: "_YYYY_MM_dd_HH_mm_ss")
     }
     
     public static func getSignFromDic(_ dic: [String: String], key: String) -> String {

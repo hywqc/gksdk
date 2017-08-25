@@ -107,7 +107,7 @@ public class GKHttpBaseSession : NSObject,URLSessionDelegate,URLSessionDataDeleg
         if req == nil { return }
     }
     
-    private func reqForMethod(url: String, method: String, headers: [String:String]?, params: [String:String]?, reqType: GKRequestBaseRet.Type?) -> AnyObject {
+    private func reqForMethod(url: String, method: String, headers: [String:String]?, params: [String:String]?,data: Data? = nil, reqType: GKRequestBaseRet.Type?) -> AnyObject {
         
         var formaturl = url
         
@@ -156,6 +156,10 @@ public class GKHttpBaseSession : NSObject,URLSessionDelegate,URLSessionDataDeleg
                 }
             }
             
+            if data != nil {
+                req.httpBody = data
+            }
+            
             return req as AnyObject;
         }
         
@@ -172,9 +176,9 @@ public class GKHttpBaseSession : NSObject,URLSessionDelegate,URLSessionDataDeleg
     }
     
     
-    public func Fetch(method: String, url: String, headers: [String:String]?, param: [String:String]?, reqType: GKRequestBaseRet.Type?) -> GKRequestBaseRet {
+    public func Fetch(method: String, url: String, headers: [String:String]?, param: [String:String]?, data: Data? = nil, reqType: GKRequestBaseRet.Type?) -> GKRequestBaseRet {
         
-        let ret = reqForMethod(url: url, method: method, headers: headers, params: param, reqType: reqType)
+        let ret = reqForMethod(url: url, method: method, headers: headers, params: param, data:data, reqType: reqType)
         if ret is GKRequestBaseRet {
             
             let reqret = ret as! GKRequestBaseRet
@@ -193,9 +197,9 @@ public class GKHttpBaseSession : NSObject,URLSessionDelegate,URLSessionDataDeleg
         }
     }
     
-    private func Fetch(method: String, url: String, headers: [String:String]?, param: [String:String]?, completion: GKRequestCallback?, reqType: GKRequestBaseRet.Type?) -> GKRequestID {
+    private func Fetch(method: String, url: String, headers: [String:String]?, param: [String:String]?, data: Data? = nil, completion: GKRequestCallback?, reqType: GKRequestBaseRet.Type?) -> GKRequestID {
         
-        let ret = reqForMethod(url: url, method: kGET, headers: headers, params: param, reqType: reqType)
+        let ret = reqForMethod(url: url, method: kGET, headers: headers, params: param, data: data, reqType: reqType)
         if ret is GKRequestBaseRet {
             let reqret = ret as! GKRequestBaseRet
             completion?(reqret)
@@ -232,14 +236,14 @@ public class GKHttpBaseSession : NSObject,URLSessionDelegate,URLSessionDataDeleg
     }
     
     
-    public func PUT(url: String, headers: [String:String]?, param: [String:String]?, reqType: GKRequestBaseRet.Type?) -> GKRequestBaseRet {
+    public func PUT(url: String, headers: [String:String]?, param: [String:String]?, data: Data? = nil ,reqType: GKRequestBaseRet.Type?) -> GKRequestBaseRet {
         
-        return Fetch(method: kPUT, url: url, headers: headers, param: param, reqType: reqType)
+        return Fetch(method: kPUT, url: url, headers: headers, param: param, data: data, reqType: reqType)
     }
     
-    public func PUT(url: String, headers: [String:String]?, param: [String:String]?, completion: GKRequestCallback?, reqType: GKRequestBaseRet.Type?) -> GKRequestID {
+    public func PUT(url: String, headers: [String:String]?, param: [String:String]?,data: Data? = nil, completion: GKRequestCallback?, reqType: GKRequestBaseRet.Type?) -> GKRequestID {
         
-        return Fetch(method: kPUT, url: url, headers: headers, param: param, completion: completion, reqType: reqType)
+        return Fetch(method: kPUT, url: url, headers: headers, param: param, data: data, completion: completion, reqType: reqType)
     }
     
     

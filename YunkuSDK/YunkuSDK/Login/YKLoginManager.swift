@@ -112,7 +112,8 @@ final class YKLoginManager {
     }
     
     func logout() {
-        self.userInfo = nil
+        YKMountCenter.shareInstance.stop()
+        YKAppDelegate.shareInstance.settingDB.logout()
     }
     
     func getUserFolder() -> String {
@@ -139,9 +140,9 @@ final class YKLoginManager {
         return path
     }
     
-    func getTransFolder() -> String {
+    func getTransCacheFolder() -> String {
         var path = self.getUserFolder().gkAddLastSlash
-        path.append("trans")
+        path.append("transcache")
         let _ = gkutility.createDir(path: path)
         return path
     }

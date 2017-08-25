@@ -149,6 +149,10 @@ public class GKMountDataItem : GKBaseDataItem {
     public var property: String?
     public var add_dateline: Int64 = 0
     
+    public var isPersonLib: Bool {
+        return self.org_type == 20
+    }
+    
     public override func setWithJsonDic(_ dic: [AnyHashable : Any]) {
         mount_id = gkSafeInt(dic: dic, key: "mount_id")
         org_id = gkSafeInt(dic: dic, key: "org_id")

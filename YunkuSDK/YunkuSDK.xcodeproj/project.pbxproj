@@ -18,6 +18,7 @@
 		CB062E6D1F39C9C4000A9792 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = CB062E6F1F39C9C4000A9792 /* Localizable.strings */; };
 		CB062E781F39CCF9000A9792 /* YKMountListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB062E771F39CCF9000A9792 /* YKMountListViewController.swift */; };
 		CB087ACF1F4A902E00EEA799 /* YKFileOperationSheetCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB087ACE1F4A902E00EEA799 /* YKFileOperationSheetCell.swift */; };
+		CB1C8DD21F4ECE7000BA2A69 /* YKFileUploadCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB1C8DD11F4ECE7000BA2A69 /* YKFileUploadCell.swift */; };
 		CB1ED3991F46E385006D82D3 /* YKPopView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB1ED3981F46E385006D82D3 /* YKPopView.swift */; };
 		CB305F651F3AB9EC003A4D8C /* YKMessageMainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB305F641F3AB9EC003A4D8C /* YKMessageMainViewController.swift */; };
 		CB305F671F3ABA14003A4D8C /* YKContactMainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB305F661F3ABA14003A4D8C /* YKContactMainViewController.swift */; };
@@ -90,14 +91,16 @@
 		CB6084AE1F34499900CC0091 /* YKLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB6084AD1F34499900CC0091 /* YKLog.swift */; };
 		CB6084B01F344B0000CC0091 /* YKDef.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB6084AF1F344B0000CC0091 /* YKDef.swift */; };
 		CB6084B51F3451B800CC0091 /* YKAppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB6084B41F3451B800CC0091 /* YKAppDelegate.swift */; };
-		CB6084C21F380FD600CC0091 /* YKUINotify.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB6084C11F380FD600CC0091 /* YKUINotify.swift */; };
+		CB6084C21F380FD600CC0091 /* YKEventNotify.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB6084C11F380FD600CC0091 /* YKEventNotify.swift */; };
 		CB75C3581F4BFA8C0092DD7E /* YKFileOperationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB75C3571F4BFA8C0092DD7E /* YKFileOperationManager.swift */; };
 		CB75C35B1F4BFD2A0092DD7E /* YKDownloadTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB75C35A1F4BFD2A0092DD7E /* YKDownloadTask.swift */; };
 		CB75C35D1F4BFD380092DD7E /* YKUploadTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB75C35C1F4BFD380092DD7E /* YKUploadTask.swift */; };
 		CB75C35F1F4BFD480092DD7E /* YKDownloadManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB75C35E1F4BFD480092DD7E /* YKDownloadManager.swift */; };
 		CB75C3611F4BFD560092DD7E /* YKUploadManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB75C3601F4BFD560092DD7E /* YKUploadManager.swift */; };
-		CB75C3631F4BFDA90092DD7E /* YKTransCallback.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB75C3621F4BFDA90092DD7E /* YKTransCallback.swift */; };
+		CB75C3631F4BFDA90092DD7E /* YKTransfer.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB75C3621F4BFDA90092DD7E /* YKTransfer.swift */; };
 		CB91F5C41F3D8AF0004124F9 /* YKFileItemCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB91F5C31F3D8AF0004124F9 /* YKFileItemCell.swift */; };
+		CBABB6EB1F4E6F8E0077CEC8 /* YKAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBABB6EA1F4E6F8E0077CEC8 /* YKAlert.swift */; };
+		CBABB6ED1F4E72690077CEC8 /* YKTextViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBABB6EC1F4E72690077CEC8 /* YKTextViewController.swift */; };
 		CBD79F901F4AF46F000B19B5 /* YKTransDB.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBD79F8F1F4AF46F000B19B5 /* YKTransDB.swift */; };
 		CBD79F921F4B037F000B19B5 /* YKBottomSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBD79F911F4B037F000B19B5 /* YKBottomSheetView.swift */; };
 		CBF96DC31F4135C300C0A7F3 /* YKFavDB.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBF96DC21F4135C300C0A7F3 /* YKFavDB.swift */; };
@@ -125,6 +128,7 @@
 		CB062E701F39C9DD000A9792 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		CB062E771F39CCF9000A9792 /* YKMountListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YKMountListViewController.swift; sourceTree = "<group>"; };
 		CB087ACE1F4A902E00EEA799 /* YKFileOperationSheetCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YKFileOperationSheetCell.swift; sourceTree = "<group>"; };
+		CB1C8DD11F4ECE7000BA2A69 /* YKFileUploadCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YKFileUploadCell.swift; sourceTree = "<group>"; };
 		CB1ED3981F46E385006D82D3 /* YKPopView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YKPopView.swift; sourceTree = "<group>"; };
 		CB305F641F3AB9EC003A4D8C /* YKMessageMainViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YKMessageMainViewController.swift; sourceTree = "<group>"; };
 		CB305F661F3ABA14003A4D8C /* YKContactMainViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YKContactMainViewController.swift; sourceTree = "<group>"; };
@@ -199,14 +203,16 @@
 		CB6084AD1F34499900CC0091 /* YKLog.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YKLog.swift; sourceTree = "<group>"; };
 		CB6084AF1F344B0000CC0091 /* YKDef.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YKDef.swift; sourceTree = "<group>"; };
 		CB6084B41F3451B800CC0091 /* YKAppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YKAppDelegate.swift; sourceTree = "<group>"; };
-		CB6084C11F380FD600CC0091 /* YKUINotify.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YKUINotify.swift; sourceTree = "<group>"; };
+		CB6084C11F380FD600CC0091 /* YKEventNotify.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YKEventNotify.swift; sourceTree = "<group>"; };
 		CB75C3571F4BFA8C0092DD7E /* YKFileOperationManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YKFileOperationManager.swift; sourceTree = "<group>"; };
 		CB75C35A1F4BFD2A0092DD7E /* YKDownloadTask.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YKDownloadTask.swift; sourceTree = "<group>"; };
 		CB75C35C1F4BFD380092DD7E /* YKUploadTask.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YKUploadTask.swift; sourceTree = "<group>"; };
 		CB75C35E1F4BFD480092DD7E /* YKDownloadManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YKDownloadManager.swift; sourceTree = "<group>"; };
 		CB75C3601F4BFD560092DD7E /* YKUploadManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YKUploadManager.swift; sourceTree = "<group>"; };
-		CB75C3621F4BFDA90092DD7E /* YKTransCallback.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YKTransCallback.swift; sourceTree = "<group>"; };
+		CB75C3621F4BFDA90092DD7E /* YKTransfer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YKTransfer.swift; sourceTree = "<group>"; };
 		CB91F5C31F3D8AF0004124F9 /* YKFileItemCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YKFileItemCell.swift; sourceTree = "<group>"; };
+		CBABB6EA1F4E6F8E0077CEC8 /* YKAlert.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YKAlert.swift; sourceTree = "<group>"; };
+		CBABB6EC1F4E72690077CEC8 /* YKTextViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YKTextViewController.swift; sourceTree = "<group>"; };
 		CBD79F8F1F4AF46F000B19B5 /* YKTransDB.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YKTransDB.swift; sourceTree = "<group>"; };
 		CBD79F911F4B037F000B19B5 /* YKBottomSheetView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YKBottomSheetView.swift; sourceTree = "<group>"; };
 		CBF96DC21F4135C300C0A7F3 /* YKFavDB.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YKFavDB.swift; sourceTree = "<group>"; };
@@ -280,8 +286,10 @@
 				CBF972E41F431B9F00C0A7F3 /* YKMountItemWrap.swift */,
 				CB305FDA1F3B088E003A4D8C /* YKFileListViewController.swift */,
 				CB91F5C31F3D8AF0004124F9 /* YKFileItemCell.swift */,
+				CB1C8DD11F4ECE7000BA2A69 /* YKFileUploadCell.swift */,
 				CBF96DC61F413EA800C0A7F3 /* YKFileItemWrap.swift */,
 				CB087ACE1F4A902E00EEA799 /* YKFileOperationSheetCell.swift */,
+				CBABB6EC1F4E72690077CEC8 /* YKTextViewController.swift */,
 			);
 			path = File;
 			sourceTree = "<group>";
@@ -308,6 +316,7 @@
 				CB305F821F3ADB09003A4D8C /* YKAppearance.swift */,
 				CB305FE61F3B2F19003A4D8C /* YKCommon.swift */,
 				CB75C3571F4BFA8C0092DD7E /* YKFileOperationManager.swift */,
+				CBABB6EA1F4E6F8E0077CEC8 /* YKAlert.swift */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -408,7 +417,7 @@
 				CB60844D1F34292100CC0091 /* 3rd */,
 				CB062E761F39CC81000A9792 /* Common */,
 				CB6084451F34290E00CC0091 /* YunkuSDK.h */,
-				CB6084C11F380FD600CC0091 /* YKUINotify.swift */,
+				CB6084C11F380FD600CC0091 /* YKEventNotify.swift */,
 				CB6084461F34290E00CC0091 /* Info.plist */,
 				CB6084711F3438B100CC0091 /* YKClient.swift */,
 				CB6084B41F3451B800CC0091 /* YKAppDelegate.swift */,
@@ -475,7 +484,7 @@
 				CB75C35C1F4BFD380092DD7E /* YKUploadTask.swift */,
 				CB75C35E1F4BFD480092DD7E /* YKDownloadManager.swift */,
 				CB75C3601F4BFD560092DD7E /* YKUploadManager.swift */,
-				CB75C3621F4BFDA90092DD7E /* YKTransCallback.swift */,
+				CB75C3621F4BFDA90092DD7E /* YKTransfer.swift */,
 			);
 			path = Trans;
 			sourceTree = "<group>";
@@ -656,13 +665,14 @@
 				CB062E561F399AD2000A9792 /* YKEntManager.swift in Sources */,
 				CBF972E51F431B9F00C0A7F3 /* YKMountItemWrap.swift in Sources */,
 				CBF96DC31F4135C300C0A7F3 /* YKFavDB.swift in Sources */,
-				CB6084C21F380FD600CC0091 /* YKUINotify.swift in Sources */,
+				CB6084C21F380FD600CC0091 /* YKEventNotify.swift in Sources */,
 				CB062E5C1F399DA4000A9792 /* YKMountCenter.swift in Sources */,
 				CB305FDB1F3B088E003A4D8C /* YKFileListViewController.swift in Sources */,
 				CB062E5A1F399BE1000A9792 /* YKSyncDB.swift in Sources */,
 				CB062E5F1F39A94E000A9792 /* YKCustomConfig.swift in Sources */,
+				CBABB6ED1F4E72690077CEC8 /* YKTextViewController.swift in Sources */,
 				CBF96DC71F413EA800C0A7F3 /* YKFileItemWrap.swift in Sources */,
-				CB75C3631F4BFDA90092DD7E /* YKTransCallback.swift in Sources */,
+				CB75C3631F4BFDA90092DD7E /* YKTransfer.swift in Sources */,
 				CB305F7F1F3AD080003A4D8C /* YKMountsTableDataSource.swift in Sources */,
 				CB6084621F34294F00CC0091 /* FMDatabaseQueue.m in Sources */,
 				CB6084701F342E7600CC0091 /* YKMountsDB.swift in Sources */,
@@ -682,7 +692,9 @@
 				CB305FD11F3AFA97003A4D8C /* UIImage+WebP.m in Sources */,
 				CB305FB61F3AFA97003A4D8C /* NSData+ImageContentType.m in Sources */,
 				CB6084B01F344B0000CC0091 /* YKDef.swift in Sources */,
+				CB1C8DD21F4ECE7000BA2A69 /* YKFileUploadCell.swift in Sources */,
 				CB305FBA1F3AFA97003A4D8C /* SDImageCache.m in Sources */,
+				CBABB6EB1F4E6F8E0077CEC8 /* YKAlert.swift in Sources */,
 				CBF96DCB1F41424D00C0A7F3 /* YKTransDefine.swift in Sources */,
 				CB305F851F3AE089003A4D8C /* YKMountsListSectionView.swift in Sources */,
 				CB305FD91F3AFA97003A4D8C /* UIView+WebCacheOperation.m in Sources */,

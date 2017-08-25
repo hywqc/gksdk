@@ -64,9 +64,16 @@ public final class YKClient : NSObject {
             print(ret.errorLogInfo)
         }
         
-        GKHttpEngine.default.refreshTokenNotifyCallback = { (accessToken:String, refreshToken:String) -> Void in
+        GKHttpEngine.default.refreshTokenNotifyCallback = { (accessToken:String, refreshToken:String,errcode: Int?, errmsg:String?) -> Void in
             DispatchQueue.global().async {
-                YKAppDelegate.shareInstance.settingDB.updateTokenInfo(accessToken, refreshToken)
+                if errcode != nil {
+                    print("should force logout: \(errmsg ?? "")")
+                    YKLoginManager.shareInstance.logout()
+                    YKEventNotify.notify((errmsg ?? ""), type: .forceLogout)
+                } else {
+                    YKAppDelegate.shareInstance.settingDB.updateTokenInfo(accessToken, refreshToken)
+                }
+                
             }
         }
         

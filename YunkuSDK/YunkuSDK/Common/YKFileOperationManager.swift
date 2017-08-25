@@ -7,8 +7,15 @@
 //
 
 import Foundation
+import gknet
 
-class YKFileOperationManager {
+final class YKFileOperationManager {
+    
+    static let shareManager = YKFileOperationManager()
+    
+    private init() {
+        
+    }
     
     class func addFileFolder() {
         
@@ -22,8 +29,11 @@ class YKFileOperationManager {
         
     }
     
-    class func addFileText() {
+    func showTextEdit(fromVC:UIViewController,originContent:String? = nil ,editFile: GKFileDataItem? = nil,checkSameNameBlock:((String)->Bool)? = nil, cancelBlock: ((UIViewController?)->Void)? = nil, completion: @escaping ((String,Data,UIViewController?)->Void)) {
         
+        let controller = YKTextViewController(completionBlock: completion, cancelBlock: cancelBlock, checkSameNameBlock: checkSameNameBlock, originContent: originContent, editFile: editFile)
+        let nav = UINavigationController(rootViewController: controller)
+        fromVC.present(nav, animated: true, completion: nil)
     }
     
     class func addFileAudio() {

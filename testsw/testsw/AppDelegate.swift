@@ -20,16 +20,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
     
-    func showLogin() {
+    func showLogin() -> UIViewController {
         
         let vc = GKLoginHomeController()
         let nav = GKNavigationController(rootViewController: vc)
         nav.setNavigationBarHidden(true, animated: false)
         self.window?.rootViewController = nav
         self.window?.makeKeyAndVisible()
+        
+        return vc
     }
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
+        
         
         self.window = UIWindow(frame: UIScreen.main.bounds)
         self.window?.backgroundColor = UIColor.white
@@ -40,7 +43,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             MainViewController.show()
             YKClient.shareInstance.fastLogin(completion: nil)
         } else {
-            self.showLogin()
+            let _  = self.showLogin()
         }
         
         
@@ -48,7 +51,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         YKClient.shareInstance.config(client_id: "qDFdSoMJtm6Yb2gAmaigmisc", client_secret: "5QdJ0zqAP1ICDCUGrcxtyloKKQ")
         
+        NotificationCenter.default.addObserver(self, selector: #selector(onForceLogout(notification:)), name: NSNotification.Name(YKNotification_ForceLogout), object: nil)
+        
         return true
+    }
+    
+    func onForceLogout(notification:Notification) {
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name(YKNotification_ForceLogout), object: nil)
+        let vc = self.showLogin()
+        var msg = "授权已失效"
+        if let s = notification.object as? String {
+            msg = s
+        }
+        AlertUtility.showAlert(message: msg, vc: vc)
     }
 
     func applicationWillResignActive(_ application: UIApplication) {

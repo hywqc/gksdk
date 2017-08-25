@@ -42,6 +42,14 @@ public extension String {
         return self
     }
     
+    var gkRawFileName: String {
+        if let r = self.range(of: ".", options: .backwards, range: nil, locale: nil) {
+            let s = String(self.characters.prefix(upTo: r.lowerBound))
+            return s
+        }
+        return self
+    }
+    
     var gkTrimSlash: String {
         let set = CharacterSet(charactersIn: "/")
         return self.trimmingCharacters(in: set)

@@ -72,7 +72,9 @@ class YKEntManager {
         
         var result = [YKMountManager]()
         
+        
         var exist: YKMountManager? = nil
+        var personal: YKMountManager? = nil
         for mount in theMounts {
             exist = nil
             for manager in self.subMounts {
@@ -88,7 +90,11 @@ class YKEntManager {
             } else {
                 exist!.mountItem = mount
             }
-            result.append(exist!)
+            if exist!.mountItem.isPersonLib {
+                personal = exist
+            } else {
+                result.append(exist!)
+            }
         }
         
         for manager in self.subMounts {
@@ -105,6 +111,10 @@ class YKEntManager {
                     return false
                 }
             }
+        }
+        
+        if personal != nil {
+            result.insert(personal!, at: 0)
         }
         
         self.subMounts = result

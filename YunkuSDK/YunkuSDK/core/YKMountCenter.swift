@@ -30,6 +30,8 @@ final class YKMountCenter {
     
     var status = (errcode:YKInnerCode_OK,errmsg:"")
     
+    
+    
     required init() {
         
     }
@@ -41,14 +43,21 @@ final class YKMountCenter {
     }
     
     func start() {
-        
+        bStop = false
         self.mountsDB = YKMountsDB(path: self.getMountsDBPath())
+        YKTransfer.shanreInstance.start()
         self.lock = gklock()
         self.semaphore = DispatchSemaphore(value: 0)
         let thread = Thread(target: self, selector: #selector(run), object: nil)
         self.thread = thread
         thread.start()
         
+    }
+    
+    func stop() {
+        self.semaphore?.signal()
+        bStop = true
+        first = true
     }
     
     @objc func run() {
@@ -59,7 +68,7 @@ final class YKMountCenter {
                 self.loadEnts()
                 self.loadMounts()
                 self.loadShortcuts()
-                YKUINotify.notify(json: "", type: .updateEnts)
+                YKEventNotify.notify(nil, type: .updateEnts)
             }
             
             
@@ -86,7 +95,11 @@ final class YKMountCenter {
             
             YKClient.shareInstance.status = .ready
             
-            YKUINotify.notify(json: "", type: .updateEnts)
+            YKEventNotify.notify(nil, type: .updateEnts)
+            
+            if bStop {
+                break
+            }
             
             print("status: \(ret.errcode):\(ret.errmsg)")
             let _ = self.semaphore?.wait(timeout: .distantFuture)
@@ -98,7 +111,7 @@ final class YKMountCenter {
             self.loadEnts()
             self.loadMounts()
             self.loadShortcuts()
-            YKUINotify.notify(json: "", type: .updateEnts)
+            YKEventNotify.notify(nil, type: .updateEnts)
         }
     }
     
@@ -163,7 +176,7 @@ final class YKMountCenter {
         }
         
         if bChanged {
-            YKUINotify.notify(json: "", type: .updateEnts)
+            YKEventNotify.notify(nil, type: .updateEnts)
         }
         
         return (YKInnerCode_OK,"")
@@ -221,7 +234,7 @@ final class YKMountCenter {
         }
         
         if bChanged {
-            YKUINotify.notify(json: "", type: .updateMounts)
+            YKEventNotify.notify(nil, type: .updateMounts)
         }
         
         return (YKInnerCode_OK,"")
@@ -279,7 +292,7 @@ final class YKMountCenter {
         }
         
         if bChanged {
-            YKUINotify.notify(json: "", type: .updateShortcuts)
+            YKEventNotify.notify(nil, type: .updateShortcuts)
         }
         
         return (YKInnerCode_OK,"")

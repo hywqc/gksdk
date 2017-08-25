@@ -10,7 +10,7 @@ import UIKit
 import gknet
 import gkutility
 
-class YKFileListViewController: YKBaseTableViewController,YKFileItemCellDelegate {
+class YKFileListViewController: YKBaseTableViewController,YKFileItemCellDelegate, YKFileUploadCellDelegate {
     
     var webpath = ""
     var mountID = 0
@@ -73,6 +73,8 @@ class YKFileListViewController: YKBaseTableViewController,YKFileItemCellDelegate
             NotificationCenter.default.addObserver(self, selector: #selector(onSelectChanged), name: NSNotification.Name(YKBaseDisplayConfig.SelectChangeNotification), object: nil)
         }
         self.setupNav()
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(onUploadNotify(notification:)), name: NSNotification.Name(YKNotification_UploadFile), object: nil)
     }
     
     override func viewWillLayoutSubviews() {
@@ -96,6 +98,64 @@ class YKFileListViewController: YKBaseTableViewController,YKFileItemCellDelegate
         return UIBarButtonItem(title: YKLocalizedString("取消"), style: .plain, target: self, action: #selector(onCancelSelect))
     }
     
+    var moreBarButton: UIBarButtonItem {
+        return UIBarButtonItem(image: YKImage("iconMore"), style: .plain, target: self, action: #selector(onBarMore(send:event:)))
+    }
+    
+    func onTestUpload() {
+        DispatchQueue.global().async {
+            
+            var items : [YKUploadManager.TaskAddItem] = []
+            for _ in 0..<1 {
+                var name = "test_"
+                var content = ""
+                
+                var s = ""
+                for _ in 0..<6 {
+                    let a = arc4random() % 10
+                    s.append("\(a)")
+                }
+                
+                name.append(s)
+                name.append(".txt")
+                
+                for _ in 0...10*1024 {
+                    content.append("\(arc4random()%10)")
+                }
+                
+                let path = gkutility.checkFileNameInDir(name, dir: YKLoginManager.shareInstance.getTransCacheFolder())
+                
+                do {
+                    try content.write(toFile: path, atomically: true, encoding: .utf8)
+                } catch  {
+                    YKAlert.showAlert(message: YKLocalizedString("创建文件失败"), vc: self)
+                    return
+                }
+                let web_path: String
+                if self.webpath == "/" {
+                    web_path = name
+                } else {
+                    web_path = self.webpath.gkAddLastSlash + name
+                }
+                
+                let task = YKUploadManager.TaskAddItem(mount_id: self.mountID, webpath: web_path, localpath: path, override: true, expand: .None)
+                items.append(task)
+            }
+            
+            let ret = YKTransfer.shanreInstance.uploadManager.addTasks(items)
+            DispatchQueue.main.async {
+                for item in ret {
+                    self.files.append(item)
+                }
+                self.tableView.reloadData()
+            }
+        }
+    }
+    
+    func onTestStopUpload() {
+        
+    }
+    
     private func setupNav() {
         
         if webpath == "/" {
@@ -107,7 +167,9 @@ class YKFileListViewController: YKBaseTableViewController,YKFileItemCellDelegate
     
         if displayConfig.selectMode == .None {
             self.navigationItem.leftBarButtonItems = [backBarButton]
-            self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: YKImage("iconMore"), style: .plain, target: self, action: #selector(onBarMore(send:event:)))
+            self.navigationItem.rightBarButtonItems = [UIBarButtonItem(title: YKLocalizedString("upload"), style: .plain, target: self, action: #selector(onTestUpload)),UIBarButtonItem(title: YKLocalizedString("stop"), style: .plain, target: self, action: #selector(onTestStopUpload))]
+            
+            
         } else {
             
             var rootpath = "/"
@@ -253,7 +315,7 @@ class YKFileListViewController: YKBaseTableViewController,YKFileItemCellDelegate
                     if errmsg != nil {
                         
                     } else {
-                        var result = [YKFileItemCellWrap]()
+                        var result = [Any]()
                         for f in files {
                             let item = self?.genFileWrap(f)
                             if item != nil {
@@ -263,6 +325,12 @@ class YKFileListViewController: YKBaseTableViewController,YKFileItemCellDelegate
                         if self == nil {
                             return
                         }
+                        if let uploads =  YKTransfer.shanreInstance.transDB?.getUploadItems() {
+                            for item in uploads {
+                                result.append(item)
+                            }
+                        }
+                        
                         DispatchQueue.main.async {
                             self?.files = result
                             self?.tableView.reloadData()
@@ -284,7 +352,108 @@ class YKFileListViewController: YKBaseTableViewController,YKFileItemCellDelegate
             YKBottomSheetView.Item(title: YKLocalizedString("扫描"), id: 6, image: "AddScan")
         ]
         YKBottomSheetView.show(items: items) { (id:Int, param: Any?) in
-            print("select \(id)")
+            switch id {
+            case 4:
+                YKFileOperationManager.shareManager.showTextEdit(fromVC: self, originContent: nil, editFile: nil, checkSameNameBlock: { (filename:String) -> Bool in
+                    return false
+                }, cancelBlock: nil, completion: { (filename:String, data:Data, vc:UIViewController?) in
+                    
+                    let path = gkutility.checkFileNameInDir(filename, dir: YKLoginManager.shareInstance.getTransCacheFolder())
+                    
+                    do {
+                        try data.write(to: URL(fileURLWithPath: path))
+                    } catch  {
+                        YKAlert.showAlert(message: YKLocalizedString("创建文件失败"), vc: self)
+                        return
+                    }
+                    let web_path: String
+                    if self.webpath == "/" {
+                        web_path = filename
+                    } else {
+                        web_path = self.webpath.gkAddLastSlash + filename
+                    }
+                    
+                    let uploaditem = YKTransfer.shanreInstance.uploadManager.addTask(mountid: self.mountID, webpath: web_path, localpath: path)
+                    self.files.append(uploaditem)
+                    self.tableView.reloadData()
+                    self.dismiss(animated: true, completion: nil)
+                })
+            default:
+                break
+            }
+        }
+    }
+    
+    func onUploadNotify(notification:Notification) {
+        if let json = notification.object as? String {
+            if let jsonDic = gkutility.json2dic(obj: json) {
+                let taskid = gkSafeInt(dic: jsonDic, key: "id")
+                let mountid = gkSafeInt(dic: jsonDic, key: "mount_id")
+                let fullpath = gkSafeString(dic: jsonDic, key: "webpath")
+                let status = gkSafeInt(dic: jsonDic, key: "status")
+                let errcode = gkSafeInt(dic: jsonDic, key: "errcode")
+                let errmsg = gkSafeString(dic: jsonDic, key: "errmsg")
+                
+                
+                if displayConfig.op == .Fav {
+                    
+                } else {
+                    var p = self.webpath
+                    if p == "/" {
+                        p = ""
+                    }
+                    if mountid != self.mountID || fullpath.gkParentPath != p {
+                        return
+                    }
+                    
+                    for i in 0..<files.count {
+                        let item = files[i]
+                        if item is YKUploadItemData {
+                            let upitem = item as! YKUploadItemData
+                            if upitem.nID == taskid {
+                                upitem.status = (YKTransStatus(rawValue: status) ?? .Normal)
+                                upitem.errcode = errcode
+                                upitem.errmsg = errmsg
+                                
+                                if upitem.status == .Removed {
+                                    
+                                    files.remove(at: i)
+                                    self.tableView.reloadData()
+                                    
+                                } else {
+                                    if let cell = self.tableView.cellForRow(at: IndexPath(row: i, section: 0)) as? YKFileUploadCell {
+                                        if cell.progressView != nil {
+                                            let p: Float = Float((Double(upitem.offset)/Double(upitem.filesize)))
+                                            cell.progressView.setProgress(p, animated: true)
+                                            
+                                            if upitem.status == .Finish || upitem.status == .Error {
+                                                self.tableView.reloadData()
+                                            }
+                                        }
+                                    }
+                                }
+                                
+                                break
+                            }
+                        }
+                    }
+                    
+                    if status == YKTransStatus.Finish.rawValue || status == YKTransStatus.Error.rawValue || status == YKTransStatus.Removed.rawValue {
+                        var remain = 0
+                        for item in self.files  {
+                            if item is YKUploadItemData {
+                                let upitem =  item as! YKUploadItemData
+                                if upitem.status == .Start || upitem.status == .Normal {
+                                    remain += 1
+                                }
+                            }
+                        }
+                        if remain == 0 {
+                            self.load()
+                        }
+                    }
+                }
+            }
         }
     }
     
@@ -428,6 +597,29 @@ class YKFileListViewController: YKBaseTableViewController,YKFileItemCellDelegate
         }
     }
     
+    //MARK: YKFileUploadCellDelegate
+    
+    func didClickCancelBtn(cell:YKFileUploadCell, uploadItem: YKUploadItemData?) {
+        if uploadItem == nil { return }
+        
+        YKTransfer.shanreInstance.uploadManager.stopTask(id: uploadItem!.nID)
+    }
+    
+    func didClickRetryBtn(cell:YKFileUploadCell, uploadItem: YKUploadItemData?) {
+        if uploadItem == nil { return }
+        let newitem = YKTransfer.shanreInstance.uploadManager.addTask(mountid: uploadItem!.mountid, webpath: uploadItem!.webpath, localpath: uploadItem!.localpath, overwrite: uploadItem!.overwrite, expand: uploadItem!.expand)
+        uploadItem!.nID = newitem.nID
+        uploadItem!.status = .Normal
+        uploadItem!.offset = 0
+        uploadItem!.errcode = 0
+        self.tableView.reloadData()
+    }
+    
+    func didClickErrorBtn(cell:YKFileUploadCell, uploadItem: YKUploadItemData?) {
+        if uploadItem == nil { return }
+        YKAlert.showAlert(message: uploadItem!.errmsg, vc: self)
+    }
+    
     //MARK: UITableViewDataSource
     override func numberOfSections(in tableView: UITableView) -> Int {
         return 1
@@ -443,6 +635,8 @@ class YKFileListViewController: YKBaseTableViewController,YKFileItemCellDelegate
             return (file as! YKFileItemCellWrap).rowHeight
         } else if file is String {
             return 48
+        } else if file is YKUploadItemData {
+            return 54
         }
         return 44
     }
@@ -485,6 +679,21 @@ class YKFileListViewController: YKBaseTableViewController,YKFileItemCellDelegate
                 cell?.selectionStyle = .none
             }
             return cell!
+            
+        } else if cellitem is YKUploadItemData {
+            
+            let uploaditem = cellitem as! YKUploadItemData
+            
+            var cell: UITableViewCell? = tableView.dequeueReusableCell(withIdentifier: "uploadcell")
+            if cell == nil {
+                cell = YKFileUploadCell(style: .default, reuseIdentifier: "uploadcell",delegate:self)
+                cell?.selectionStyle = .none
+            }
+            
+            let uploadcell = cell as! YKFileUploadCell
+            uploadcell.bindData(item: uploaditem)
+            
+            return uploadcell
         }
         
         return UITableViewCell()

@@ -8,6 +8,7 @@
 
 #import "gkobjassist.h"
 #import <CommonCrypto/CommonHMAC.h>
+#import "FileMD5Hash.h"
 
 static void generateCRC32Table(uint32_t *pTable, uint32_t poly)
 {
@@ -81,5 +82,12 @@ static void generateCRC32Table(uint32_t *pTable, uint32_t poly)
     return crc ^ 0xFFFFFFFFL;
 }
 
++ (NSString *)fileHashWithPath:(NSString *)localPath {
+    CFStringRef strref = [FileSHA1 FileMD5HashCreateWithPath:(__bridge CFStringRef) localPath size:0];
+    if (!strref) {
+        return  @"";
+    }
+    return (__bridge_transfer NSString *)strref;
+}
 
 @end

@@ -19,5 +19,9 @@ class YKBaseViewController : UIViewController {
         bar.title = nil
         self.navigationItem.backBarButtonItem = bar
     }
+    
+    func setNavTitle(_ title: String) {
+        self.navigationItem.title = title
+    }
 
 }

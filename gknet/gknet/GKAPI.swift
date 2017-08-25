@@ -20,4 +20,6 @@ struct GKAPI {
     static let MOUNT_INFO           = "/library/info"
     static let FILE_SEARCH          = "/2/file/search"
     static let FAVORITE_FILES       = "/1/file/favorites"
+    static let CREATE_FOLDER        = "/2/file/create_folder"
+    static let CREATE_FILE          = "/2/file/create_file"
 }

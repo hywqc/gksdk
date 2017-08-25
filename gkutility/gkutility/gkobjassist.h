@@ -22,6 +22,7 @@ NS_ASSUME_NONNULL_BEGIN
 +(NSString*)sha1:(NSString*)str;
 +(NSString*)generateSign:(NSString*)str key:(NSString*)key;
 +(uint32_t)crc32OfData:(NSData*)data seed:(uint32_t)seed usingPolynomial:(uint32_t)poly;
++ (NSString *)fileHashWithPath:(NSString *)localPath;
 
 @end
 NS_ASSUME_NONNULL_END

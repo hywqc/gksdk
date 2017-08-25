@@ -16,6 +16,8 @@
 		CB5F0D3F1F2AD7CF0017D4A3 /* gkdata.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB5F0D3E1F2AD7CF0017D4A3 /* gkdata.swift */; };
 		CB5F0D411F2ADB140017D4A3 /* gkdic.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB5F0D401F2ADB140017D4A3 /* gkdic.swift */; };
 		CB6084241F3427FA00CC0091 /* YunkuSDK.xcworkspace in Resources */ = {isa = PBXBuildFile; fileRef = CB6084231F3427FA00CC0091 /* YunkuSDK.xcworkspace */; };
+		CB6941481F4D481900AB3A3C /* FileMD5Hash.h in Headers */ = {isa = PBXBuildFile; fileRef = CB6941461F4D481900AB3A3C /* FileMD5Hash.h */; };
+		CB6941491F4D481900AB3A3C /* FileMD5Hash.m in Sources */ = {isa = PBXBuildFile; fileRef = CB6941471F4D481900AB3A3C /* FileMD5Hash.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -41,6 +43,8 @@
 		CB5F0D401F2ADB140017D4A3 /* gkdic.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = gkdic.swift; sourceTree = "<group>"; };
 		CB6084231F3427FA00CC0091 /* YunkuSDK.xcworkspace */ = {isa = PBXFileReference; lastKnownFileType = wrapper.workspace; path = YunkuSDK.xcworkspace; sourceTree = "<group>"; };
 		CB6084251F34280800CC0091 /* YunkuSDK.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = YunkuSDK.xcodeproj; path = ../YunkuSDK/YunkuSDK.xcodeproj; sourceTree = "<group>"; };
+		CB6941461F4D481900AB3A3C /* FileMD5Hash.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FileMD5Hash.h; sourceTree = "<group>"; };
+		CB6941471F4D481900AB3A3C /* FileMD5Hash.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FileMD5Hash.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -84,6 +88,8 @@
 				CB5F0D401F2ADB140017D4A3 /* gkdic.swift */,
 				CB5F0D351F29FDC60017D4A3 /* gkobjassist.h */,
 				CB5F0D361F29FDC60017D4A3 /* gkobjassist.m */,
+				CB6941461F4D481900AB3A3C /* FileMD5Hash.h */,
+				CB6941471F4D481900AB3A3C /* FileMD5Hash.m */,
 				CB006B421F26155A002D692F /* Info.plist */,
 			);
 			path = gkutility;
@@ -114,6 +120,7 @@
 			files = (
 				CB006B431F26155A002D692F /* gkutility.h in Headers */,
 				CB5F0D371F29FDC60017D4A3 /* gkobjassist.h in Headers */,
+				CB6941481F4D481900AB3A3C /* FileMD5Hash.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -205,6 +212,7 @@
 			files = (
 				CB5F0D381F29FDC60017D4A3 /* gkobjassist.m in Sources */,
 				CB5F0D411F2ADB140017D4A3 /* gkdic.swift in Sources */,
+				CB6941491F4D481900AB3A3C /* FileMD5Hash.m in Sources */,
 				CB5F0D3B1F2A11B60017D4A3 /* gkstring.swift in Sources */,
 				CB006BBB1F2615FD002D692F /* gkutility.swift in Sources */,
 				CB5F0D3F1F2AD7CF0017D4A3 /* gkdata.swift in Sources */,

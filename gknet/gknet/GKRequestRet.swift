@@ -11,7 +11,7 @@ import gkutility
 
 public class GKRequestBaseRet : NSObject {
     var response: HTTPURLResponse?
-    var data: Data?
+    public var data: Data?
     public var statuscode = 0
     public var errcode = 0
     public var errmsg = ""
@@ -259,3 +259,90 @@ public class GKRequestRetSource : GKRequestBaseRet {
     }
     
 }
+
+
+public class GKHostItem : NSObject {
+    var hostname = ""
+    var hostnamein = ""
+    var port = ""
+    var path = ""
+    var sign = ""
+    var https = 0
+    
+    init(jsonDic: [AnyHashable:Any]) {
+        self.hostname = gkSafeString(dic: jsonDic, key: "hostname")
+        self.hostnamein = gkSafeString(dic: jsonDic, key: "hostname-in")
+        self.port = gkSafeString(dic: jsonDic, key: "port")
+        self.https = gkSafeInt(dic: jsonDic, key: "https")
+        self.sign = gkSafeString(dic: jsonDic, key: "sign")
+        self.path = gkSafeString(dic: jsonDic, key: "path")
+    }
+    
+    public func fullurl(usehttps:Bool,hostin:Bool) -> String {
+        var host = hostname
+        let proto = (usehttps ? "https://" : "http://")
+        if hostin {
+            host = hostnamein
+        }
+        host = "\(proto)" + host
+        
+        if usehttps {
+            if self.https != 443 {
+                host.append(":\(self.https)")
+            }
+        } else {
+            if self.port != "80" {
+                host.append(":\(self.port)")
+            }
+        }
+        
+        if !self.path.isEmpty {
+            host.append("/\(self.path)")
+        }
+        
+        return host
+    }
+}
+
+public class GKRequestRetCreateFile : GKRequestBaseRet {
+    
+    public var uuidhash = ""
+    public var fullpath = ""
+    public var state = 0
+    public var filehash = ""
+    public var filesize: Int64 = 0
+    public var uploads = [GKHostItem]()
+    public var cache_uploads = [GKHostItem]()
+    
+    override func parse() {
+        if let dic = self.data?.gkDic {
+            self.uuidhash = gkSafeString(dic: dic, key: "hash")
+            self.fullpath = gkSafeString(dic: dic, key: "fullpath")
+            self.filehash = gkSafeString(dic: dic, key: "filehash")
+            self.state = gkSafeInt(dic: dic, key: "state")
+            
+            if let a = dic["uploads"] {
+                if let arr = a as? [Any] {
+                    for item in arr {
+                        if let dic = item as? [AnyHashable:Any] {
+                            let hostitem = GKHostItem(jsonDic: dic)
+                            self.uploads.append(hostitem)
+                        }
+                    }
+                }
+            }
+            
+            if let a = dic["cache_uploads"] {
+                if let arr = a as? [Any] {
+                    for item in arr {
+                        if let dic = item as? [AnyHashable:Any] {
+                            let hostitem = GKHostItem(jsonDic: dic)
+                            self.cache_uploads.append(hostitem)
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+

@@ -243,4 +243,20 @@ class YKCommon {
         let str = (YKClient.shareInstance.https ? "https://" : "http://") + YKClient.shareInstance.webHost + "index/avatar?id=\(memberID)&ent_id=\(entID)&size=\(size)"
         return URL(string: str)
     }
+    
+    class func verifyFilename(_ filename: String) -> String? {
+        let name = filename.gkTrimSpace
+        if name.isEmpty {
+            return YKLocalizedString("名称不能为空")
+        } else if name.characters.count > 255 {
+            return YKLocalizedString("文件名过长")
+        }
+        
+        let range = (name as NSString).range(of: "/|\\:|\\*|\\?|\"|\\\\|<|>|\\|", options: .regularExpression)
+        if range.location != NSNotFound {
+            return YKLocalizedString("请不要在名称中使用 / \\ : * ? \" < > |")
+        }
+        
+        return nil
+    }
 }

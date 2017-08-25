@@ -52,4 +52,8 @@ class YKBaseDB : NSObject {
         }
         return bret
     }
+    
+    func close() {
+        
+    }
 }

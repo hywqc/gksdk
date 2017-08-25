@@ -8,8 +8,9 @@
 
 import Foundation
 
-private let  DEFAULT_SEED: UInt32 = 0xFFFFFFFF
 private let  DEFAULT_POLYNOMIAL: UInt32 = 0xEDB88320
+private let  DEFAULT_SEED: UInt32 = 0xFFFFFFFF
+
 
 public extension Data {
     
