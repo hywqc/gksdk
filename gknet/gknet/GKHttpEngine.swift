@@ -407,6 +407,79 @@ public class GKHttpEngine : GKHttpBaseSession {
         return taskID
     }
     
+    
+    public func getFileDownloadUrl(mountID: Int, filehash: String, fullpath:String? = nil, uuidhash:String? = nil, net: String? = nil, open: Int? = 0, stat: Int? = 0) -> GKRequestRetDownloadURL {
+        
+        var result: GKRequestRetDownloadURL!
+        for _ in 0..<kTryCount {
+            var param = ["token":access_token]
+            param["mount_id"] = "\(mountID)"
+            param["filehash"] = filehash
+            if fullpath != nil {
+                param["fullpath"] = fullpath!
+            }
+            if uuidhash != nil {
+                param["hash"] = uuidhash!
+            }
+            if net != nil {
+                param["net"] = net!
+            }
+            if open != nil {
+                param["open"] = "\(open!)"
+            }
+            
+            if stat != nil {
+                param["stat"] = "\(stat!)"
+            }
+
+            param["sign"] = sign(param)
+            
+            result = self.POST(url: generateurl(GKAPI.GET_DOWNLOAD_URL), headers: nil, param: param, reqType: GKRequestRetDownloadURL.self) as! GKRequestRetDownloadURL
+            if result.statuscode == 200 {
+                break
+            } else if result.errcode == kTokenExpiredCode || result.errcode == kTokenInvalidCode {
+                if bStop { break }
+                let _ = self.refreshToken()
+            }
+        }
+        
+        if bStop {
+            result.errcode = GKOperationExitCode
+        }
+        
+        return result
+        
+    }
+    
+    
+    public func getServerSite(type: String, storage_point:String? = nil) -> GKRequestRetGetServerSite {
+        
+        var result: GKRequestRetGetServerSite!
+        for _ in 0..<kTryCount {
+            var param = ["token":access_token]
+            param["type"] = type
+            if storage_point != nil {
+                param["storage_point"] = storage_point!
+            }
+            param["sign"] = sign(param)
+            
+            result = self.POST(url: generateurl(GKAPI.GET_SERVER_SITE), headers: nil, param: param, reqType: GKRequestRetGetServerSite.self) as! GKRequestRetGetServerSite
+            if result.statuscode == 200 {
+                break
+            } else if result.errcode == kTokenExpiredCode || result.errcode == kTokenInvalidCode {
+                if bStop { break }
+                let _ = self.refreshToken()
+            }
+        }
+        
+        if bStop {
+            result.errcode = GKOperationExitCode
+        }
+        
+        return result
+        
+    }
+    
     //MARK: Upload
     public func createFolder(mountid:Int,webpath:String,create_dateline: Int64?,last_dateline:Int64?) -> GKRequestRetCreateFile {
         var result: GKRequestRetCreateFile!
@@ -510,7 +583,7 @@ public class GKHttpEngine : GKHttpBaseSession {
     public func uploadFilePart(host:String,session:String,start:Int64,end:Int64,data:Data,crc:String) -> GKRequestBaseRet {
         var result: GKRequestBaseRet!
         
-        for _ in 0..<kTryCount {
+        for _ in 0..<1 {
             
             var header = [HEADER_X_GK_UPLOAD_SESSION:session]
             header[HEADER_X_GK_UPLOAD_RANGE] = "\(start)-\(end)"

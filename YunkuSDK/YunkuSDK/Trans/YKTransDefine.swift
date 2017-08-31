@@ -49,6 +49,54 @@ class YKDownloadItemData {
     var hid: String?
     var net: String?
     var convert = false
+    
+    var notifyInfo: String {
+        
+        let dic: [String:Any] = [
+            "id":nID,
+            "mount_id":mountid,
+            "webpath":webpath,
+            "dir":(dir ? 1 : 0),
+            "filename":filename,
+            "filehash":filehash,
+            "uuidhash":uuidhash,
+            "filesize":filesize,
+            "offset":offset,
+            "status":status.rawValue,
+            "errcode":errcode,
+            "errmsg":errmsg,
+            "hid":(hid ?? ""),
+            "net":(net ?? ""),
+            "convert":(convert ? 1 : 0)
+        ]
+        
+        return (gkutility.obj2str(obj: dic) ?? "")
+    }
+    
+    init() {
+        
+    }
+    
+    init(byNotify jsonDic: [AnyHashable:Any]) {
+        self.nID = gkSafeInt(dic: jsonDic, key: "id")
+        self.mountid = gkSafeInt(dic: jsonDic, key: "mount_id")
+        self.webpath = gkSafeString(dic: jsonDic, key: "webpath")
+        self.dir = (gkSafeInt(dic: jsonDic, key: "dir") > 0)
+        self.filename = gkSafeString(dic: jsonDic, key: "filename")
+        self.uuidhash = gkSafeString(dic: jsonDic, key: "uuidhash")
+        self.filehash = gkSafeString(dic: jsonDic, key: "filehash")
+        self.filesize = gkSafeLongLong(dic: jsonDic, key: "filesize")
+        self.status = (YKTransStatus(rawValue: gkSafeInt(dic: jsonDic, key: "status")) ?? status)
+        self.offset = gkSafeLongLong(dic: jsonDic, key: "offset")
+        self.errcode = gkSafeInt(dic: jsonDic, key: "errcode")
+        self.errmsg = gkSafeString(dic: jsonDic, key: "errmsg")
+        self.convert = (gkSafeInt(dic: jsonDic, key: "convert") > 0)
+        let tmp = gkSafeString(dic: jsonDic, key: "hid")
+        if !tmp.isEmpty {
+            self.hid = tmp
+        }
+        
+    }
 }
 
 class YKUploadItemData {
@@ -77,6 +125,7 @@ class YKUploadItemData {
             "id":nID,
             "mount_id":mountid,
             "webpath":webpath,
+            "dir":(dir ? 1 : 0),
             "filename":filename,
             "filehash":filehash,
             "uuidhash":uuidhash,
@@ -89,6 +138,26 @@ class YKUploadItemData {
         ]
         
         return (gkutility.obj2str(obj: dic) ?? "")
+    }
+    
+    init() {
+        
+    }
+    
+    init(byNotify jsonDic: [AnyHashable:Any]) {
+        self.nID = gkSafeInt(dic: jsonDic, key: "id")
+        self.mountid = gkSafeInt(dic: jsonDic, key: "mount_id")
+        self.webpath = gkSafeString(dic: jsonDic, key: "webpath")
+        self.dir = (gkSafeInt(dic: jsonDic, key: "dir") > 0)
+        self.filename = gkSafeString(dic: jsonDic, key: "filename")
+        self.uuidhash = gkSafeString(dic: jsonDic, key: "uuidhash")
+        self.filehash = gkSafeString(dic: jsonDic, key: "filehash")
+        self.filesize = gkSafeLongLong(dic: jsonDic, key: "filesize")
+        self.status = (YKTransStatus(rawValue: gkSafeInt(dic: jsonDic, key: "status")) ?? status)
+        self.offset = gkSafeLongLong(dic: jsonDic, key: "offset")
+        self.errcode = gkSafeInt(dic: jsonDic, key: "errcode")
+        self.errmsg = gkSafeString(dic: jsonDic, key: "errmsg")
+        self.overwrite = (gkSafeInt(dic: jsonDic, key: "overwrite") > 0)
     }
 }
 

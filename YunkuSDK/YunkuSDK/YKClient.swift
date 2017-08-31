@@ -62,6 +62,7 @@ public final class YKClient : NSObject {
         let deviceID = getDeviceID()
         GKHttpEngine.default.configServerInfo(https: https, apiHost: webhost, apiPort: apiPort, webHost: webhost, webPort: webPort, client_id: client_id, client_secret: client_secret, deviceID: deviceID) { (ret: GKRequestBaseRet) in 
             print(ret.errorLogInfo)
+            YKLog.shanreLog.log(msg: ret.errorLogInfo)
         }
         
         GKHttpEngine.default.refreshTokenNotifyCallback = { (accessToken:String, refreshToken:String,errcode: Int?, errmsg:String?) -> Void in

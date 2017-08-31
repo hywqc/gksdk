@@ -14,9 +14,13 @@ import gkutility
 class YKFileItemCellWrap {
     
     var file: GKFileDataItem!
-    var downloadstatus: YKTransStatus = .None
-    var downerrormsg: String?
-    var progress: Float = 0.0
+    
+    var downloadItem: YKDownloadItemData? {
+
+        didSet {
+            self.calc()
+        }
+    }
     
     var formatTitle = ""
     var formatSubTitle = ""
@@ -25,7 +29,7 @@ class YKFileItemCellWrap {
     var titleSize: CGSize = CGSize.zero
     var subcontentSize: CGSize = CGSize.zero
     
-    var showArrow = true
+    
     
     var isCached = false
     
@@ -35,29 +39,79 @@ class YKFileItemCellWrap {
         return selectType == .Disable
     }
     
+    var showArrow = true
+    
     var showSelectIcon: Bool{
         return (selectType != .None && selectType != .Disable)
     }
     
     var showProgress: Bool {
-        return (downloadstatus == .Normal || downloadstatus == .Start)
+        if downloadItem != nil {
+            switch downloadItem!.status {
+            case .Normal,.Stop,.Start:
+                return true
+            default:
+                break
+            }
+        }
+        return false
     }
     
     var showErrorInfo: Bool {
-        return (downloadstatus == .Error)
+        if downloadItem != nil {
+            if downloadItem!.status == .Error {
+                return true
+            }
+        }
+        return false
     }
     
     var showSubTitle: Bool {
-        switch downloadstatus {
-        case .None,.Finish,.Stop,.Removed:
+        if downloadItem == nil {
+            return true
+        }
+        switch downloadItem!.status {
+        case .None,.Finish,.Removed:
             return YKAppearance.flShowSubtitle
-        case .Error,.Normal,.Start:
+        case .Error,.Normal,.Start,.Stop:
             return false
         }
     }
     
     var showCancelBtn: Bool {
-        return (downloadstatus == .Normal || downloadstatus == .Start || downloadstatus == .Error)
+        if downloadItem != nil {
+            switch downloadItem!.status {
+            case .Normal,.Start,.Error,.Stop:
+                return true
+            default:
+                break
+            }
+        }
+        return false
+    }
+    
+    var showRetryBtn: Bool {
+        if downloadItem != nil {
+            switch downloadItem!.status {
+            case .Error,.Stop:
+                return true
+            default:
+                break
+            }
+        }
+        return false
+    }
+    
+    var showStopBtn: Bool {
+        if downloadItem != nil {
+            switch downloadItem!.status {
+            case .Start:
+                return true
+            default:
+                break
+            }
+        }
+        return false
     }
     
     var showAccessoryBtn = false
@@ -67,27 +121,40 @@ class YKFileItemCellWrap {
     var cellid: String {
         let isimage = (YKCommon.isSupportImage(file.filename) ? 1 : 0)
         var download = 0
-        switch downloadstatus {
-        case .Normal,.Start,.Error:
-            download = 1
-        default:
-            break
+        if downloadItem != nil {
+            switch downloadItem!.status {
+            case .Normal,.Start,.Error,.Stop:
+                download = 1
+            default:
+                break
+            }
         }
+        
         return "filenormalcell\(isimage)-\(download)"
     }
     
-    init(file: GKFileDataItem, showArrow: Bool = true, selectType: YKSelectIconType = .None, downloadStatus: YKTransStatus = .None, progress: Float = 0, errorInfo: String = "", showAccessoryBtn: Bool = false) {
+    init(file: GKFileDataItem, showArrow: Bool = true, selectType: YKSelectIconType = .None, showAccessoryBtn: Bool = false, downloadItem: YKDownloadItemData? = nil) {
         self.file = file
         self.showArrow = showArrow
-        self.downloadstatus = downloadStatus
         self.selectType = selectType
-        self.progress = progress
-        self.downerrormsg = errorInfo
         self.showAccessoryBtn = showAccessoryBtn
+        self.downloadItem = downloadItem
         self.calc()
     }
     
-    private func calc() {
+    func calc() {
+        
+        if downloadItem != nil {
+            switch downloadItem!.status {
+            case .Start,.Normal,.Error,.Stop:
+                self.showArrow = false
+            default:
+                break
+            }
+        }
+        
+        self.isCached = (YKCacheManager.shareManager.checkCache(key: file.filehash, type: nil) != nil)
+        
         self.formatTitle = file.filename
         
         var maxTitleWidth = UIScreen.main.bounds.size.width - 15
@@ -108,6 +175,10 @@ class YKFileItemCellWrap {
             maxTitleWidth -= (44 + 10)
         } else {
             maxTitleWidth -= 15
+        }
+        
+        if self.showRetryBtn || self.showStopBtn {
+            maxTitleWidth -= (44 + 10)
         }
 
         if self.showSubTitle {

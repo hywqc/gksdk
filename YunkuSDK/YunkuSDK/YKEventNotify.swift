@@ -13,6 +13,7 @@ public let YKNotification_UpdateEnts = "YKNotification_UpdateEnts"
 public let YKNotification_UpdateMounts = "YKNotification_UpdateMounts"
 public let YKNotification_UpdateShortcuts = "YKNotification_UpdateShortcuts"
 public let YKNotification_UploadFile = "YKNotification_UploadFile"
+public let YKNotification_DownloadFile = "YKNotification_DownloadFile"
 
 class YKEventNotify {
     
@@ -22,11 +23,12 @@ class YKEventNotify {
         case updateMounts
         case updateShortcuts
         case uploadFile
+        case downloadFile
     }
     
     class func notify(_ param: Any?, type: EventType) {
         
-        DispatchQueue.main.sync {
+        DispatchQueue.main.async {
             let center = NotificationCenter.default
             var postname = ""
             var json = ""
@@ -47,7 +49,13 @@ class YKEventNotify {
                 if param is YKUploadItemData {
                     json = (param as! YKUploadItemData).notifyInfo
                 }
+            case .downloadFile:
+                postname = YKNotification_DownloadFile
+                if param is YKDownloadItemData {
+                    json = (param as! YKDownloadItemData).notifyInfo
+                }
             }
+            
             center.post(name: NSNotification.Name(postname), object: json, userInfo: nil)
 
         }

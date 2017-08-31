@@ -265,8 +265,8 @@ public class GKHostItem : NSObject {
     var hostname = ""
     var hostnamein = ""
     var port = ""
-    var path = ""
-    var sign = ""
+    public var path = ""
+    public var sign = ""
     var https = 0
     
     init(jsonDic: [AnyHashable:Any]) {
@@ -278,7 +278,7 @@ public class GKHostItem : NSObject {
         self.path = gkSafeString(dic: jsonDic, key: "path")
     }
     
-    public func fullurl(usehttps:Bool,hostin:Bool) -> String {
+    public func fullurl(usehttps:Bool,hostin:Bool, withpath: Bool = true) -> String {
         var host = hostname
         let proto = (usehttps ? "https://" : "http://")
         if hostin {
@@ -296,7 +296,7 @@ public class GKHostItem : NSObject {
             }
         }
         
-        if !self.path.isEmpty {
+        if withpath && !self.path.isEmpty {
             host.append("/\(self.path)")
         }
         
@@ -340,6 +340,44 @@ public class GKRequestRetCreateFile : GKRequestBaseRet {
                             self.cache_uploads.append(hostitem)
                         }
                     }
+                }
+            }
+        }
+    }
+}
+
+public class GKRequestRetDownloadURL : GKRequestBaseRet {
+    
+    public var filesize: Int64 = 0
+    public var urls = [String]()
+    
+    override func parse() {
+        if let dic = self.data?.gkDic {
+            self.filesize = gkSafeLongLong(dic: dic, key: "filesize")
+            if let arr = dic["urls"] as? Array<Any> {
+                for item in arr {
+                    if item is String {
+                        self.urls.append(item as! String)
+                    }
+                }
+            }
+            
+        }
+    }
+    
+}
+
+public class GKRequestRetGetServerSite : GKRequestBaseRet {
+    
+    public var servers = [GKHostItem]()
+    
+    override func parse() {
+        if let arr = self.data?.gkArr {
+            
+            for item in arr {
+                if let dic = item as? [AnyHashable:Any] {
+                    let hostitem = GKHostItem(jsonDic: dic)
+                    self.servers.append(hostitem)
                 }
             }
         }

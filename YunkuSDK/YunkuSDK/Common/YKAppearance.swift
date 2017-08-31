@@ -44,6 +44,21 @@ class YKFont {
 }
 
 
+class YKString {
+    
+    static let kYKCancel = YKLocalizedString("取消")
+    static let kYKCopy = YKLocalizedString("复制")
+    static let kYKMove = YKLocalizedString("移动")
+    static let kYKRename = YKLocalizedString("重命名")
+    static let kYKDelete = YKLocalizedString("删除")
+    static let kYKProperty = YKLocalizedString("属性")
+    static let kYKFav = YKLocalizedString("收藏")
+    static let kYKCache = YKLocalizedString("缓存")
+    static let kYKLock = YKLocalizedString("锁定")
+    static let kYKUnLock = YKLocalizedString("解锁")
+    static let kYKHistory = YKLocalizedString("历史版本")
+    static let kYKPermission = YKLocalizedString("权限")
+}
 
 
 class YKAppearance {

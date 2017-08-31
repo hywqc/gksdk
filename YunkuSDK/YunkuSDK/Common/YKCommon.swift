@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import gkutility
 import gknet
 
 let YKMEMBER_AVATER_URLFORMAT = ""
@@ -184,11 +185,22 @@ func YKLocalizedString(_ key: String, _ value:String? = nil) -> String {
 func YKImage(_ name: String, _ ext: String? = nil, _ parent: String? = nil) -> UIImage? {
     if let bundle = YKAppDelegate.shareInstance.resourceBundle {
         var path = bundle.bundlePath.gkAddLastSlash
+        var theparent = ""
+        var fname = name
         if parent != nil {
-            path.append(parent!)
+            theparent = parent!
+        } else {
+            let temp = name.gkParentPath
+            if !temp.isEmpty {
+                theparent = temp
+                fname = name.gkFileName
+            }
+        }
+        if !theparent.isEmpty {
+            path.append(theparent)
             path = path.gkAddLastSlash
         }
-        var filename = name
+        var filename = fname
         let strext = (ext ?? "png")
         if !filename.contains(".") {
             if !filename.contains("@") {
@@ -198,6 +210,12 @@ func YKImage(_ name: String, _ ext: String? = nil, _ parent: String? = nil) -> U
                 } else {
                     filename.append(".\(strext)")
                 }
+                
+                let p = path.appending("\(filename)")
+                if !FileManager.default.fileExists(atPath: p) {
+                    filename = fname.appending(".\(strext)")
+                }
+                
                 
             } else {
                 filename.append(".\(strext)")
@@ -230,12 +248,21 @@ class YKCommon {
     
     private static let imageExts = ";jpg;jpeg;png;gif;bmp;"
     
+    private static let convertPreviewExts = ";doc;docx;xls;ppt;pptx;"
+    
     class func isSupportImage(_ filename: String) -> Bool {
         let ext = (filename as NSString).pathExtension
         if imageExts.contains(";\(ext);") {
             return true
         }
         return false
+    }
+    
+    class func needConvertPreview(filename: String) -> Bool {
+        var ext = filename.gkExt
+        if ext.isEmpty { return false }
+        ext = ";\(ext);"
+        return convertPreviewExts.contains(ext)
     }
     
     @inline(__always) class func avatarURL(memberID: Int, entID: Int, size: Int = 96) -> URL? {

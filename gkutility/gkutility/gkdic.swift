@@ -11,8 +11,8 @@ import Foundation
 
 public extension Dictionary where Key == String, Value == String {
     
-    func gkSign(key: String) -> String {
-        return gkutility.getSignFromDic(self, key: key)
+    func gkSign(key: String, urlencode: Bool = true) -> String {
+        return gkutility.getSignFromDic(self, key: key, urlencode: urlencode)
     }
     
     var gkStr: String {
@@ -27,6 +27,14 @@ public extension Dictionary where Key == String, Value == String {
             return item.key + "=" + (encode ? item.value.gkUrlEncode : item.value)
         }
         return querys.joined(separator: "&")
+    }
+}
+
+public extension Array {
+    mutating func gkRemove(at indexes: [Int]) {
+        for i in indexes.sorted(by: >) {
+            self.remove(at: i)
+        }
     }
 }
 

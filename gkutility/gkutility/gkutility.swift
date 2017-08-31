@@ -161,7 +161,7 @@ public class gkutility : NSObject {
             pathUrl = URL(fileURLWithPath: NSTemporaryDirectory())
         }
         
-        guard pathUrl != nil else {
+        if pathUrl == nil {
             return ""
         }
         
@@ -354,6 +354,7 @@ public class gkutility : NSObject {
     
     public static func deleteFile(path: String) {
         if path.isEmpty { return }
+        if !self.fileExist(path: path) { return }
         do {
             try FileManager.default.removeItem(atPath: path)
         } catch  {
@@ -364,6 +365,26 @@ public class gkutility : NSObject {
     public static func getfilehash(path: String) -> String {
         let s = gkobjassist.fileHash(withPath: path)
         return s
+    }
+    
+    public static func fileModifyTime(path: String) -> TimeInterval {
+        if let attr = try? FileManager.default.attributesOfItem(atPath: path) {
+            
+            if let date = attr[FileAttributeKey.modificationDate] as? Date {
+                return date.timeIntervalSince1970
+            }
+        }
+        return 0
+    }
+    
+    public static func fileCreateTime(path: String) -> TimeInterval {
+        if let attr = try? FileManager.default.attributesOfItem(atPath: path) {
+            
+            if let date = attr[FileAttributeKey.creationDate] as? Date {
+                return date.timeIntervalSince1970
+            }
+        }
+        return 0
     }
     
     public static func checkFileNameInDir(_ filename: String, dir: String) -> String {
@@ -513,7 +534,7 @@ public class gkutility : NSObject {
         return formatDateline(Date().timeIntervalSince1970, format: "_YYYY_MM_dd_HH_mm_ss")
     }
     
-    public static func getSignFromDic(_ dic: [String: String], key: String) -> String {
+    public static func getSignFromDic(_ dic: [String: String], key: String, urlencode: Bool = true) -> String {
         let sorted = dic.sorted { g1,g2 -> Bool in
             return g1.key < g2.key
         }
@@ -525,7 +546,7 @@ public class gkutility : NSObject {
         if valstr.isEmpty {
             return ""
         }
-        return valstr.gkSign(key: key)
+        return valstr.gkSign(key: key, urlencode: urlencode)
     }
     
     

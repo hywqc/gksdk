@@ -9,6 +9,7 @@
 import UIKit
 import gkutility
 import YunkuSDK
+import AVFoundation
 
 
 var XAPPDELEGATE : AppDelegate {
@@ -20,6 +21,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
     
+    var backStop = false
+    var backFile = ""
+    var backTime = 0
+    var avplayer: AVAudioPlayer?
+    
+    var backTaskID: UIBackgroundTaskIdentifier = UIBackgroundTaskInvalid
+    
     func showLogin() -> UIViewController {
         
         let vc = GKLoginHomeController()
@@ -30,13 +38,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         return vc
     }
+    
+    
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
-        
+
         
         self.window = UIWindow(frame: UIScreen.main.bounds)
         self.window?.backgroundColor = UIColor.white
-        
         
         if YKClient.shareInstance.checkFastLogin() {
             print("fast login")
@@ -72,9 +81,68 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     func applicationDidEnterBackground(_ application: UIApplication) {
-        // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
-        // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
+        
+        //self.backFile = gkutility.docPath().gkAddLastSlash
+        //self.backFile += "test.txt"
+        
+        self.backtask()
+
     }
+    
+    func backtask() {
+        self.backTaskID = UIApplication.shared.beginBackgroundTask {
+            UIApplication.shared.endBackgroundTask(self.backTaskID)
+            self.backTaskID = UIBackgroundTaskInvalid
+        }
+        
+        DispatchQueue.global().async {
+            self.playsound()
+            
+            Thread.sleep(forTimeInterval: 2)
+            if self.backTaskID != UIBackgroundTaskInvalid {
+                UIApplication.shared.endBackgroundTask(self.backTaskID)
+                self.backTaskID = UIBackgroundTaskInvalid
+            }
+        }
+    }
+    
+    func playsound() {
+        
+        let audiosession = AVAudioSession.sharedInstance()
+        do {
+            try audiosession.setCategory(AVAudioSessionCategoryPlayback)
+        } catch  {
+            
+        }
+        do {
+            try audiosession.setActive(true)
+        } catch  {
+            
+        }
+        //UIApplication.shared.beginReceivingRemoteControlEvents()
+        if let url = Bundle.main.url(forResource: "bbb", withExtension: "mp3") {
+            if let player = try? AVAudioPlayer(contentsOf: url) {
+                self.avplayer = player
+                player.numberOfLoops = -1
+                //player.volume = 0.0
+                player.prepareToPlay()
+                if player.play() {
+                    print("is playing!!")
+                }
+            }
+        }
+        
+    }
+    
+    func stopPlay() {
+        
+        if self.avplayer != nil {
+            self.avplayer!.stop()
+            try? AVAudioSession.sharedInstance().setActive(false)
+        }
+        self.avplayer = nil
+    }
+    
 
     func applicationWillEnterForeground(_ application: UIApplication) {
         // Called as part of the transition from the background to the active state; here you can undo many of the changes made on entering the background.
@@ -82,6 +150,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func applicationDidBecomeActive(_ application: UIApplication) {
         // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
+        self.stopPlay()
     }
 
     func applicationWillTerminate(_ application: UIApplication) {

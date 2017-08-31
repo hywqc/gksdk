@@ -15,6 +15,7 @@ class YKTransfer {
     var transDB: YKTransDB?
     
     var uploadManager: YKUploadManager!
+    var downloadManager: YKDownloadManager!
     
     private func getTransDBPath() -> String {
         var path = YKLoginManager.shareInstance.getUserFolder().gkAddLastSlash
@@ -30,11 +31,12 @@ class YKTransfer {
         transDB = YKTransDB(path: self.getTransDBPath())
         transDB?.resetForSimulate(transCahePath: YKLoginManager.shareInstance.getTransCacheFolder())
         transDB?.resetUploads()
+        transDB?.resetDownloads()
         uploadManager = YKUploadManager()
+        downloadManager = YKDownloadManager()
     }
     
     func exit() {
-        uploadManager.exit()
         if transDB != nil {
             transDB!.close()
         }

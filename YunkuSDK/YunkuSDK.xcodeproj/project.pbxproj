@@ -20,6 +20,7 @@
 		CB087ACF1F4A902E00EEA799 /* YKFileOperationSheetCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB087ACE1F4A902E00EEA799 /* YKFileOperationSheetCell.swift */; };
 		CB1C8DD21F4ECE7000BA2A69 /* YKFileUploadCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB1C8DD11F4ECE7000BA2A69 /* YKFileUploadCell.swift */; };
 		CB1ED3991F46E385006D82D3 /* YKPopView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB1ED3981F46E385006D82D3 /* YKPopView.swift */; };
+		CB2DA4961F556D76002591DA /* YKCacheManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB2DA4951F556D76002591DA /* YKCacheManager.swift */; };
 		CB305F651F3AB9EC003A4D8C /* YKMessageMainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB305F641F3AB9EC003A4D8C /* YKMessageMainViewController.swift */; };
 		CB305F671F3ABA14003A4D8C /* YKContactMainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB305F661F3ABA14003A4D8C /* YKContactMainViewController.swift */; };
 		CB305F6A1F3ABA57003A4D8C /* YKSettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB305F691F3ABA57003A4D8C /* YKSettingViewController.swift */; };
@@ -98,6 +99,7 @@
 		CB75C35F1F4BFD480092DD7E /* YKDownloadManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB75C35E1F4BFD480092DD7E /* YKDownloadManager.swift */; };
 		CB75C3611F4BFD560092DD7E /* YKUploadManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB75C3601F4BFD560092DD7E /* YKUploadManager.swift */; };
 		CB75C3631F4BFDA90092DD7E /* YKTransfer.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB75C3621F4BFDA90092DD7E /* YKTransfer.swift */; };
+		CB8F2A0D1F56CCA7004B9771 /* SocketIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CB8F2A0B1F56CCA7004B9771 /* SocketIO.framework */; };
 		CB91F5C41F3D8AF0004124F9 /* YKFileItemCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB91F5C31F3D8AF0004124F9 /* YKFileItemCell.swift */; };
 		CBABB6EB1F4E6F8E0077CEC8 /* YKAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBABB6EA1F4E6F8E0077CEC8 /* YKAlert.swift */; };
 		CBABB6ED1F4E72690077CEC8 /* YKTextViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBABB6EC1F4E72690077CEC8 /* YKTextViewController.swift */; };
@@ -130,6 +132,7 @@
 		CB087ACE1F4A902E00EEA799 /* YKFileOperationSheetCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YKFileOperationSheetCell.swift; sourceTree = "<group>"; };
 		CB1C8DD11F4ECE7000BA2A69 /* YKFileUploadCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YKFileUploadCell.swift; sourceTree = "<group>"; };
 		CB1ED3981F46E385006D82D3 /* YKPopView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YKPopView.swift; sourceTree = "<group>"; };
+		CB2DA4951F556D76002591DA /* YKCacheManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YKCacheManager.swift; sourceTree = "<group>"; };
 		CB305F641F3AB9EC003A4D8C /* YKMessageMainViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YKMessageMainViewController.swift; sourceTree = "<group>"; };
 		CB305F661F3ABA14003A4D8C /* YKContactMainViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YKContactMainViewController.swift; sourceTree = "<group>"; };
 		CB305F691F3ABA57003A4D8C /* YKSettingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YKSettingViewController.swift; sourceTree = "<group>"; };
@@ -210,6 +213,7 @@
 		CB75C35E1F4BFD480092DD7E /* YKDownloadManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YKDownloadManager.swift; sourceTree = "<group>"; };
 		CB75C3601F4BFD560092DD7E /* YKUploadManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YKUploadManager.swift; sourceTree = "<group>"; };
 		CB75C3621F4BFDA90092DD7E /* YKTransfer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YKTransfer.swift; sourceTree = "<group>"; };
+		CB8F2A0B1F56CCA7004B9771 /* SocketIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SocketIO.framework; path = YunkuSDK/3rd/SocketIO/SocketIO.framework; sourceTree = "<group>"; };
 		CB91F5C31F3D8AF0004124F9 /* YKFileItemCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YKFileItemCell.swift; sourceTree = "<group>"; };
 		CBABB6EA1F4E6F8E0077CEC8 /* YKAlert.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YKAlert.swift; sourceTree = "<group>"; };
 		CBABB6EC1F4E72690077CEC8 /* YKTextViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YKTextViewController.swift; sourceTree = "<group>"; };
@@ -233,6 +237,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				CB6084691F34297600CC0091 /* libsqlite3.tbd in Frameworks */,
+				CB8F2A0D1F56CCA7004B9771 /* SocketIO.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -246,6 +251,7 @@
 				CB062E571F399ADF000A9792 /* YKMountManager.swift */,
 				CB062E5B1F399DA4000A9792 /* YKMountCenter.swift */,
 				CBF96DC41F41368A00C0A7F3 /* YKFavManager.swift */,
+				CB2DA4951F556D76002591DA /* YKCacheManager.swift */,
 			);
 			path = core;
 			sourceTree = "<group>";
@@ -458,6 +464,7 @@
 		CB6084671F34297600CC0091 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				CB8F2A0B1F56CCA7004B9771 /* SocketIO.framework */,
 				CB6084681F34297600CC0091 /* libsqlite3.tbd */,
 			);
 			name = Frameworks;
@@ -591,7 +598,7 @@
 					CB6084411F34290E00CC0091 = {
 						CreatedOnToolsVersion = 8.3;
 						LastSwiftMigration = 0830;
-						ProvisioningStyle = Automatic;
+						ProvisioningStyle = Manual;
 					};
 				};
 			};
@@ -696,6 +703,7 @@
 				CB305FBA1F3AFA97003A4D8C /* SDImageCache.m in Sources */,
 				CBABB6EB1F4E6F8E0077CEC8 /* YKAlert.swift in Sources */,
 				CBF96DCB1F41424D00C0A7F3 /* YKTransDefine.swift in Sources */,
+				CB2DA4961F556D76002591DA /* YKCacheManager.swift in Sources */,
 				CB305F851F3AE089003A4D8C /* YKMountsListSectionView.swift in Sources */,
 				CB305FD91F3AFA97003A4D8C /* UIView+WebCacheOperation.m in Sources */,
 				CB60846E1F342BAA00CC0091 /* YKBaseDB.swift in Sources */,
@@ -832,16 +840,24 @@
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = "";
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/YunkuSDK/3rd/SocketIO",
+				);
 				INFOPLIST_FILE = YunkuSDK/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.gokuai.wqc.YunkuSDK;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SKIP_INSTALL = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 3.0;
@@ -854,15 +870,21 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
 				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = "";
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/YunkuSDK/3rd/SocketIO",
+				);
 				INFOPLIST_FILE = YunkuSDK/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.gokuai.wqc.YunkuSDK;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SKIP_INSTALL = YES;
 				SWIFT_VERSION = 3.0;
 			};

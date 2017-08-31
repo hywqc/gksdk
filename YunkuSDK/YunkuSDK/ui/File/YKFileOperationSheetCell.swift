@@ -8,20 +8,49 @@
 
 import UIKit
 
+enum YKMoreOperationType : Int {
+    case Copy = 1
+    case Move
+    case Rename
+    case Delete
+    case Property
+    case Permission
+    case History
+    case Lock
+    case Cache
+}
+
+protocol YKFileOperationSheetCellDelegate : AnyObject {
+    
+    func fileOperationShare(item: YKFileItemCellWrap?)
+    func fileOperationRemark(item: YKFileItemCellWrap?)
+    func fileOperationDelete(item: YKFileItemCellWrap?)
+    func fileOperationProperty(item: YKFileItemCellWrap?)
+    func fileOperationMore(item: YKFileItemCellWrap?)
+}
+
 class YKFileOperationSheetCell: UITableViewCell {
     
     private let btnWidth: CGFloat = 80
     private let btnHeight: CGFloat = 44
     
+    var fileItem: YKFileItemCellWrap?
+    weak var delegate: YKFileOperationSheetCellDelegate?
+    
     var btn1,btn2,btn3,btn4: UIButton!
     
-    override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
+    init(style: UITableViewCellStyle, reuseIdentifier: String?, delegate: YKFileOperationSheetCellDelegate?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
+        self.delegate = delegate
         self.setup()
     }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    func bindFileItem(_ file: YKFileItemCellWrap) {
+        self.fileItem = file
     }
     
     private func createbtn(_ title: String, _ image: String) -> UIButton {
@@ -80,6 +109,8 @@ class YKFileOperationSheetCell: UITableViewCell {
     }
     
     func onMoreBtn() {
-        
+        if delegate != nil {
+            delegate!.fileOperationMore(item: self.fileItem)
+        }
     }
 }

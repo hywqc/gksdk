@@ -42,6 +42,11 @@ public extension String {
         return self
     }
     
+    var gkExt: String {
+        let s = (self as NSString).pathExtension
+        return s
+    }
+    
     var gkRawFileName: String {
         if let r = self.range(of: ".", options: .backwards, range: nil, locale: nil) {
             let s = String(self.characters.prefix(upTo: r.lowerBound))

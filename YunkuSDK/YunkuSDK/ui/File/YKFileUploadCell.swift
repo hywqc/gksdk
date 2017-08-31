@@ -9,6 +9,7 @@
 import Foundation
 
 protocol YKFileUploadCellDelegate : AnyObject {
+    func didClickStopBtn(cell:YKFileUploadCell, uploadItem: YKUploadItemData?) -> Void
     func didClickCancelBtn(cell:YKFileUploadCell, uploadItem: YKUploadItemData?) -> Void
     func didClickRetryBtn(cell:YKFileUploadCell, uploadItem: YKUploadItemData?) -> Void
     func didClickErrorBtn(cell:YKFileUploadCell, uploadItem: YKUploadItemData?) -> Void
@@ -24,6 +25,7 @@ class YKFileUploadCell: UITableViewCell {
     
     var progressView: UIProgressView!
     var cancelBtn: UIButton!
+    var stopBtn: UIButton!
     var retryBtn: UIButton!
     var infoLabel: UILabel!
     var errorBtn: UIButton!
@@ -43,6 +45,17 @@ class YKFileUploadCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
+    
+    func setprogress(_ p: Float) {
+        self.progressView.isHidden = false
+        self.cancelBtn.isHidden = false
+        self.stopBtn.isHidden = false
+        self.retryBtn.isHidden = true
+        self.errorBtn.isHidden = true
+        self.infoLabel.isHidden = true
+        self.progressView.setProgress(p, animated: false)
+    }
+    
     func bindData(item: YKUploadItemData) {
         
         self.uploadItem = item
@@ -55,13 +68,24 @@ class YKFileUploadCell: UITableViewCell {
             self.progressView.isHidden = true
             self.cancelBtn.isHidden = false
             self.retryBtn.isHidden = true
+            self.stopBtn.isHidden = true
             self.errorBtn.isHidden = true
             self.infoLabel.isHidden = false
             self.infoLabel.text = YKLocalizedString("等待上传")
-        case .Start,.Stop:
+        case .Start:
             self.progressView.isHidden = false
             self.cancelBtn.isHidden = false
+            self.stopBtn.isHidden = false
             self.retryBtn.isHidden = true
+            self.errorBtn.isHidden = true
+            self.infoLabel.isHidden = true
+            let p: Float = Float((Double(item.offset)/Double(item.filesize)))
+            self.progressView.setProgress(p, animated: false)
+        case .Stop:
+            self.progressView.isHidden = false
+            self.cancelBtn.isHidden = false
+            self.retryBtn.isHidden = false
+            self.stopBtn.isHidden = true
             self.errorBtn.isHidden = true
             self.infoLabel.isHidden = true
             let p: Float = Float((Double(item.offset)/Double(item.filesize)))
@@ -70,6 +94,7 @@ class YKFileUploadCell: UITableViewCell {
             self.progressView.isHidden = true
             self.cancelBtn.isHidden = false
             self.retryBtn.isHidden = false
+            self.stopBtn.isHidden = true
             self.errorBtn.isHidden = false
             self.infoLabel.isHidden = false
             self.infoLabel.text = YKLocalizedString("上传失败")
@@ -77,6 +102,7 @@ class YKFileUploadCell: UITableViewCell {
             self.progressView.isHidden = true
             self.cancelBtn.isHidden = true
             self.retryBtn.isHidden = true
+            self.stopBtn.isHidden = true
             self.errorBtn.isHidden = true
             self.infoLabel.isHidden = false
             self.infoLabel.text = YKLocalizedString("上传完成")
@@ -129,6 +155,13 @@ class YKFileUploadCell: UITableViewCell {
         self.cancelBtn.addTarget(self, action: #selector(onCancelBtn), for: .touchUpInside)
         
         button = UIButton(type: .custom)
+        button.setImage(YKImage("iconCellStop"), for: .normal)
+        button.contentMode = .center
+        self.contentView.addSubview(button)
+        self.stopBtn = button
+        self.stopBtn.addTarget(self, action: #selector(onStopBtn), for: .touchUpInside)
+        
+        button = UIButton(type: .custom)
         button.setImage(YKImage("iconCellRetry"), for: .normal)
         button.contentMode = .center
         self.contentView.addSubview(button)
@@ -166,6 +199,10 @@ class YKFileUploadCell: UITableViewCell {
         celldelegate?.didClickCancelBtn(cell:self, uploadItem: self.uploadItem)
     }
     
+    func onStopBtn() {
+        celldelegate?.didClickStopBtn(cell:self, uploadItem: self.uploadItem)
+    }
+    
     func onErrorInfoBtn() {
         celldelegate?.didClickErrorBtn(cell:self, uploadItem: self.uploadItem)
     }
@@ -196,10 +233,17 @@ class YKFileUploadCell: UITableViewCell {
             tail = 44 + 10
         }
         
+        
         if !self.retryBtn.isHidden {
             retryBtn.frame = CGRect(x: sz.width - tail - 44, y: 0, width: 44, height: sz.height-1)
             tail = (sz.width - retryBtn.frame.minX + 10)
         }
+        
+        if !self.stopBtn.isHidden {
+            stopBtn.frame = CGRect(x: sz.width - tail - 44, y: 0, width: 44, height: sz.height-1)
+            tail = (sz.width - stopBtn.frame.minX + 10)
+        }
+        
 
         let y = (sz.height - (titleH + subLabelH))/2
         rect.origin.y = y

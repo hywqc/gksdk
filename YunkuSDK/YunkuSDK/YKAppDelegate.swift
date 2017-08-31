@@ -42,6 +42,9 @@ class YKAppDelegate {
     
     func setup() {
         
+        let logpath = gkutility.docPath().gkAddLastSlash + "gklog.log"
+        YKLog.shanreLog.setpath(logpath)
+        
         if let frameworkpath = Bundle.main.privateFrameworksPath {
             let path = frameworkpath.gkRemoveLastSlash.appending("/YunkuSDK.framework")
             self.sdkBundle = Bundle(path: path)

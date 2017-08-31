@@ -22,4 +22,6 @@ struct GKAPI {
     static let FAVORITE_FILES       = "/1/file/favorites"
     static let CREATE_FOLDER        = "/2/file/create_folder"
     static let CREATE_FILE          = "/2/file/create_file"
+    static let GET_DOWNLOAD_URL     = "/1/file/get_url_by_filehash"
+    static let GET_SERVER_SITE      = "/1/account/servers"
 }

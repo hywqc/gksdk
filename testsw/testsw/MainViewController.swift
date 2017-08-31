@@ -20,6 +20,7 @@ class MainViewController: UITabBarController {
         let nav1 = GKMessageListNav(rootViewController: messagevc)
         
         let filevc = YKClient.shareInstance.getMountListViewController()
+        filevc.hidesBottomBarWhenPushed = true
         let nav2 = GKMountListNav(rootViewController: filevc)
         
         let contactvc = YKClient.shareInstance.getContactViewController()

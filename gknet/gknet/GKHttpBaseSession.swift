@@ -90,7 +90,7 @@ public class GKHttpBaseSession : NSObject,URLSessionDelegate,URLSessionDataDeleg
     private var queue: OperationQueue
     private let name: String?
     private var map: [String:Any]
-    private let lock = gklock()
+    private let mapLock = gklock()
     private let timeout: Double
     
     var errorLog: GKRequestLogger? = nil
@@ -170,7 +170,9 @@ public class GKHttpBaseSession : NSObject,URLSessionDelegate,URLSessionDataDeleg
         let task = self.session.dataTask(with: req)
         let proxy = TaskCallback(session: self, reqType: reqType, sync: sync, completion: completion)
         proxy.taskid = GKRequestID(task.taskIdentifier)
+        self.mapLock.lock()
         self.map["\(proxy.taskid)"] = proxy
+        self.mapLock.unlock()
         task.resume()
         return proxy
     }
@@ -288,25 +290,29 @@ public class GKHttpBaseSession : NSObject,URLSessionDelegate,URLSessionDataDeleg
     
     //MARK: 
     public func urlSession(_ session: URLSession, task: URLSessionTask, didCompleteWithError error: Error?) {
-        
+        self.mapLock.lock()
         if let proxy = self.map["\(task.taskIdentifier)"] as? TaskCallback {
             proxy.urlSession(session, task: task, didCompleteWithError: error)
         }
         self.map.removeValue(forKey: "\(task.taskIdentifier)")
+        self.mapLock.unlock()
     }
     public func urlSession(_ session: URLSession, dataTask: URLSessionDataTask, didReceive response: URLResponse, completionHandler: @escaping (URLSession.ResponseDisposition) -> Void) {
-        
+        self.mapLock.lock()
         if let proxy = self.map["\(dataTask.taskIdentifier)"] as? TaskCallback {
             proxy.responseData.response = response as? HTTPURLResponse
         }
+        self.mapLock.unlock()
         completionHandler(.allow)
     }
     
     public func urlSession(_ session: URLSession, dataTask: URLSessionDataTask, didReceive data: Data) {
         
+        self.mapLock.lock()
         if let proxy = self.map["\(dataTask.taskIdentifier)"] as? TaskCallback {
             proxy.responseData.data?.append(data)
         }
+        self.mapLock.unlock()
     }
     
 }

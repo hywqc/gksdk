@@ -87,7 +87,11 @@ static void generateCRC32Table(uint32_t *pTable, uint32_t poly)
     if (!strref) {
         return  @"";
     }
-    return (__bridge_transfer NSString *)strref;
+    NSString * filehash = [(__bridge NSString *)strref copy];
+    if (strref) {
+        CFRelease(strref);
+    }
+    return  filehash.copy;
 }
 
 @end

@@ -24,7 +24,24 @@ class YKUploadTask : Operation {
     var uploadsession = ""
     
     init(uploadItem: YKUploadItemData) {
-        self.pItem = uploadItem
+        self.pItem = YKUploadItemData()
+        pItem.nID = uploadItem.nID
+        pItem.mountid = uploadItem.mountid
+        pItem.dir = uploadItem.dir
+        pItem.webpath = uploadItem.webpath
+        pItem.parent = uploadItem.parent
+        pItem.filename = uploadItem.filename
+        pItem.filehash = uploadItem.filehash
+        pItem.uuidhash = uploadItem.uuidhash
+        pItem.filesize = uploadItem.filesize
+        pItem.overwrite = uploadItem.overwrite
+        pItem.localpath = uploadItem.localpath
+        pItem.offset = uploadItem.offset
+        pItem.status = uploadItem.status
+        pItem.errcode = uploadItem.errcode
+        pItem.errcount = uploadItem.errcount
+        pItem.errmsg = uploadItem.errmsg
+        pItem.expand = uploadItem.expand
     }
     
     var refreshTime: TimeInterval = 0
@@ -45,6 +62,9 @@ class YKUploadTask : Operation {
             bRemoved = true
         }
         
+        pItem.status = .Start
+        YKEventNotify.notify(self.pItem, type: .uploadFile)
+        
         let fm = FileManager.default
         if pItem.localpath.isEmpty || !fm.fileExists(atPath: pItem.localpath) {
             self.failed(errcode: 1, errmsg: YKLocalizedString("file not exist or has been deleted"))
@@ -56,9 +76,12 @@ class YKUploadTask : Operation {
             return
         }
         
-        pItem.status = .Start
-        
         YKTransfer.shanreInstance.transDB?.updateUploadStartActlast(taskID: pItem.nID)
+        
+        if bStop {
+            stophandle(bDelete)
+            return
+        }
         
         if pItem.dir {
             let ret = GKHttpEngine.default.createFolder(mountid: pItem.mountid, webpath: pItem.webpath, create_dateline: nil, last_dateline: nil)
@@ -82,32 +105,33 @@ class YKUploadTask : Operation {
         }
         
         if bStop {
-            stophandle()
+            stophandle(bDelete)
             return
         }
         
         var filename = pItem.filename
         filename = filename.gkUrlEncode
-        let filehash = gkutility.getfilehash(path: pItem.localpath)
+        let file_hash = gkutility.getfilehash(path: pItem.localpath)
         
-        if filehash.isEmpty {
+        if file_hash.isEmpty {
             self.failed(errcode: 1, errmsg: "filehash error")
             return
         }
         
         if bStop {
-            stophandle()
+            stophandle(bDelete)
             return
         }
         
-        YKTransfer.shanreInstance.transDB?.updateUploadFilehash(taskID: pItem.nID, filehash: filehash, filesize: filesize)
+        YKTransfer.shanreInstance.transDB?.updateUploadFilehash(taskID: pItem.nID, filehash: file_hash, filesize: filesize)
         
-        pItem.filesize = filesize
-        pItem.filehash = filehash
+        self.pItem.filesize = filesize
+        self.pItem.filehash = file_hash
         
         if !self.upload_create() || createFileRet == nil {
             return
         }
+        
         
         self.pItem.uuidhash = createFileRet!.uuidhash
         YKTransfer.shanreInstance.transDB?.updateUploadUuidhash(taskID: pItem.nID, uuidhash: pItem.uuidhash, filesize: nil)
@@ -118,7 +142,7 @@ class YKUploadTask : Operation {
         }
         
         if bStop {
-            stophandle()
+            stophandle(bDelete)
             return
         }
         
@@ -140,20 +164,28 @@ class YKUploadTask : Operation {
         var lasterrmsg = ""
         let partsize: Int = 1024 //1024*50
         
+        var uploadurl = self.getServerTarget()
         while true {
             
-            if hostindex >= hostarr.count {
-                self.failed(errcode: lasterrcode, errmsg: lasterrmsg)
-                break;
+            if uploadurl.isEmpty {
+                if hostindex >= hostarr.count {
+                    self.failed(errcode: lasterrcode, errmsg: lasterrmsg)
+                    break;
+                } else {
+                    uploadurl = hostarr[hostindex].fullurl(usehttps: true, hostin: false)
+                }
             }
             
-            let host = hostarr[hostindex].fullurl(usehttps: true, hostin: false)
+            
+            let host = uploadurl
+            self.saveServerTargte(strUrl: host)
             
             if bStop {
-                stophandle()
+                stophandle(bDelete)
                 return
             }
             
+
             let uploadinitRet = self.upload_init(host: host)
             
             if uploadinitRet.errcode == 202 {
@@ -165,11 +197,13 @@ class YKUploadTask : Operation {
                 lasterrcode = uploadinitRet.errcode
                 lasterrmsg = uploadinitRet.errmsg
                 hostindex += 1
+                self.deleteServerTarget()
+                uploadurl = ""
                 continue
             }
             
             if bStop {
-                stophandle()
+                stophandle(bDelete)
                 return
             }
             
@@ -247,13 +281,15 @@ class YKUploadTask : Operation {
             }
             
             if bStop {
-                stophandle()
+                stophandle(bDelete)
                 return
             }
             
             if errorhappen {
                 filehandle!.closeFile()
                 hostindex +=  1
+                self.deleteServerTarget()
+                uploadurl = ""
                 continue
             }
             
@@ -264,7 +300,7 @@ class YKUploadTask : Operation {
             }
             
             if bStop {
-                stophandle()
+                stophandle(bDelete)
                 return
             }
             
@@ -273,6 +309,33 @@ class YKUploadTask : Operation {
             break
         }
         
+    }
+    
+    private func getServerTargetPath() -> String {
+        let svrname = "upload_\(self.pItem.filehash)_\(self.pItem.uuidhash).gksvr"
+        return YKLoginManager.shareInstance.getTransCacheFolder().gkAddLastSlash + svrname
+    }
+    
+    private func getServerTarget() -> String {
+        let path = self.getServerTargetPath()
+        if !gkutility.fileExist(path: path) { return "" }
+        if let s = try? String(contentsOfFile: path) {
+            return s
+        }
+        return ""
+    }
+    
+    private func deleteServerTarget() {
+        let path = self.getServerTargetPath()
+        if gkutility.fileExist(path: path) {
+            gkutility.deleteFile(path: path)
+        }
+    }
+    
+    private func saveServerTargte(strUrl: String) {
+        let path = self.getServerTargetPath()
+        let data = strUrl.data(using: .utf8)
+        let _ = gkutility.createFile(path: path, data: data)
     }
     
     private func upload_create() -> Bool {
@@ -289,7 +352,10 @@ class YKUploadTask : Operation {
     
     private func upload_init(host:String) -> (errcode:Int, errmsg:String){
         
-        let ret = GKHttpEngine.default.uploadFileInit(host: host, mountid: pItem.mountid, filename: pItem.filename, uuidhash: pItem.uuidhash, filehash: pItem.filehash, filesize: pItem.filesize)
+        if self.pItem.filehash.isEmpty {
+            print("_000_")
+        }
+        let ret = GKHttpEngine.default.uploadFileInit(host: host, mountid: pItem.mountid, filename: self.pItem.filename, uuidhash: self.pItem.uuidhash, filehash: self.pItem.filehash, filesize: self.pItem.filesize)
         
         if ret.statuscode == 202 {
             return (ret.statuscode,"")
@@ -333,6 +399,7 @@ class YKUploadTask : Operation {
     }
     
     private func finish() {
+        self.deleteServerTarget()
         pItem.errcode = 0
         pItem.errmsg = ""
         pItem.status = YKTransStatus.Finish
@@ -351,17 +418,18 @@ class YKUploadTask : Operation {
         }
     }
     
-    private func stophandle() {
-        if bDelete {
+    func stophandle(_ delete: Bool) {
+        if delete {
             YKTransfer.shanreInstance.transDB?.deleteUpload(taskID: pItem.nID)
             pItem.status = .Removed
             gkutility.deleteFile(path: pItem.localpath)
+            self.deleteServerTarget()
+            YKEventNotify.notify(pItem, type: .uploadFile)
         } else {
             YKTransfer.shanreInstance.transDB?.updateUploadStatus(taskID: pItem.nID, status: .Stop, offset: pItem.offset)
             pItem.status = .Stop
+            YKEventNotify.notify(pItem, type: .uploadFile)
         }
-        YKEventNotify.notify(pItem, type: .uploadFile)
     }
-    
     
 }

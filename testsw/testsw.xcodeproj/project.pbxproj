@@ -12,19 +12,18 @@
 		CB006B8B1F2615D1002D692F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CB006B891F2615D1002D692F /* Main.storyboard */; };
 		CB006B8D1F2615D1002D692F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CB006B8C1F2615D1002D692F /* Assets.xcassets */; };
 		CB006B901F2615D1002D692F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CB006B8E1F2615D1002D692F /* LaunchScreen.storyboard */; };
-		CB006BC71F264D05002D692F /* gknet.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CB006BC61F264D05002D692F /* gknet.framework */; };
-		CB062E721F39CA89000A9792 /* YunkuSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CB6084731F34397F00CC0091 /* YunkuSDK.framework */; };
-		CB062E731F39CA89000A9792 /* YunkuSDK.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = CB6084731F34397F00CC0091 /* YunkuSDK.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		CB062E7B1F39CDB4000A9792 /* GKLoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB062E7A1F39CDB4000A9792 /* GKLoginViewController.swift */; };
 		CB062E7E1F39CE98000A9792 /* GKCommon.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB062E7D1F39CE98000A9792 /* GKCommon.swift */; };
 		CB062E801F39D473000A9792 /* GKNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB062E7F1F39D473000A9792 /* GKNavigationController.swift */; };
 		CB062E821F39D7B2000A9792 /* GKLoginHomeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB062E811F39D7B2000A9792 /* GKLoginHomeController.swift */; };
 		CB062E851F39DFF7000A9792 /* loginLogo.png in Resources */ = {isa = PBXBuildFile; fileRef = CB062E841F39DFF7000A9792 /* loginLogo.png */; };
 		CB062E871F39E18A000A9792 /* GKColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB062E861F39E18A000A9792 /* GKColor.swift */; };
-		CB062E881F39E516000A9792 /* gknet.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = CB006BC61F264D05002D692F /* gknet.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		CB062E891F39E516000A9792 /* gkutility.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = CB006BC11F2646B1002D692F /* gkutility.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		CB062E8B1F39E60A000A9792 /* loginAvatar.png in Resources */ = {isa = PBXBuildFile; fileRef = CB062E8A1F39E60A000A9792 /* loginAvatar.png */; };
 		CB062E8D1F39E94B000A9792 /* back@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CB062E8C1F39E94B000A9792 /* back@2x.png */; };
+		CB2DA4871F550AEE002591DA /* YunkuSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CB2DA4861F550AEE002591DA /* YunkuSDK.framework */; };
+		CB2DA4891F550AF2002591DA /* gkutility.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CB2DA4881F550AF2002591DA /* gkutility.framework */; };
+		CB2DA48B1F550AF5002591DA /* gknet.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CB2DA48A1F550AF5002591DA /* gknet.framework */; };
+		CB2DA4921F55308D002591DA /* bbb.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = CB2DA4911F55308D002591DA /* bbb.mp3 */; };
 		CB305F5C1F3AABB8003A4D8C /* AlertUtility.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB305F5B1F3AABB8003A4D8C /* AlertUtility.swift */; };
 		CB305F5E1F3AB8E2003A4D8C /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB305F5D1F3AB8E2003A4D8C /* MainViewController.swift */; };
 		CB305F741F3AC8F4003A4D8C /* contactTab@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CB305F6C1F3AC8F4003A4D8C /* contactTab@2x.png */; };
@@ -35,7 +34,11 @@
 		CB305F791F3AC8F4003A4D8C /* messageTabSelect@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CB305F711F3AC8F4003A4D8C /* messageTabSelect@2x.png */; };
 		CB305F7A1F3AC8F4003A4D8C /* settingTab@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CB305F721F3AC8F4003A4D8C /* settingTab@2x.png */; };
 		CB305F7B1F3AC8F4003A4D8C /* settingTabSelect@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CB305F731F3AC8F4003A4D8C /* settingTabSelect@2x.png */; };
-		CB6084741F34397F00CC0091 /* YunkuSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CB6084731F34397F00CC0091 /* YunkuSDK.framework */; };
+		CB33FCB81F57B1600052DFC2 /* SocketIO.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = CB33FCB71F57B1600052DFC2 /* SocketIO.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		CB33FCBC1F57B25A0052DFC2 /* StarscreamSocketIO.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = CB33FCBB1F57B25A0052DFC2 /* StarscreamSocketIO.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		CB33FCBE1F57B7BC0052DFC2 /* YunkuSDK.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = CB6084731F34397F00CC0091 /* YunkuSDK.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		CB33FCBF1F57B7CA0052DFC2 /* gknet.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = CB006BC61F264D05002D692F /* gknet.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		CB33FCC01F57B7CA0052DFC2 /* gkutility.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = CB006BC11F2646B1002D692F /* gkutility.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		CBAB6F231F307B0E00E5130F /* GKBaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBAB6F221F307B0E00E5130F /* GKBaseViewController.swift */; };
 		CBAB6F251F307B3F00E5130F /* GKDef.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBAB6F241F307B3F00E5130F /* GKDef.swift */; };
 /* End PBXBuildFile section */
@@ -47,9 +50,11 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				CB062E881F39E516000A9792 /* gknet.framework in Embed Frameworks */,
-				CB062E891F39E516000A9792 /* gkutility.framework in Embed Frameworks */,
-				CB062E731F39CA89000A9792 /* YunkuSDK.framework in Embed Frameworks */,
+				CB33FCBF1F57B7CA0052DFC2 /* gknet.framework in Embed Frameworks */,
+				CB33FCC01F57B7CA0052DFC2 /* gkutility.framework in Embed Frameworks */,
+				CB33FCBE1F57B7BC0052DFC2 /* YunkuSDK.framework in Embed Frameworks */,
+				CB33FCBC1F57B25A0052DFC2 /* StarscreamSocketIO.framework in Embed Frameworks */,
+				CB33FCB81F57B1600052DFC2 /* SocketIO.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -74,6 +79,10 @@
 		CB062E861F39E18A000A9792 /* GKColor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GKColor.swift; sourceTree = "<group>"; };
 		CB062E8A1F39E60A000A9792 /* loginAvatar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = loginAvatar.png; sourceTree = "<group>"; };
 		CB062E8C1F39E94B000A9792 /* back@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "back@2x.png"; sourceTree = "<group>"; };
+		CB2DA4861F550AEE002591DA /* YunkuSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = YunkuSDK.framework; path = "../../../../../../Library/Developer/Xcode/DerivedData/Build/Products/Debug-iphoneos/YunkuSDK.framework"; sourceTree = "<group>"; };
+		CB2DA4881F550AF2002591DA /* gkutility.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = gkutility.framework; path = "../../../../../../Library/Developer/Xcode/DerivedData/Build/Products/Debug-iphoneos/gkutility.framework"; sourceTree = "<group>"; };
+		CB2DA48A1F550AF5002591DA /* gknet.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = gknet.framework; path = "../../../../../../Library/Developer/Xcode/DerivedData/Build/Products/Debug-iphoneos/gknet.framework"; sourceTree = "<group>"; };
+		CB2DA4911F55308D002591DA /* bbb.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = bbb.mp3; sourceTree = "<group>"; };
 		CB305F5B1F3AABB8003A4D8C /* AlertUtility.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlertUtility.swift; sourceTree = "<group>"; };
 		CB305F5D1F3AB8E2003A4D8C /* MainViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
 		CB305F6C1F3AC8F4003A4D8C /* contactTab@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "contactTab@2x.png"; sourceTree = "<group>"; };
@@ -84,6 +93,9 @@
 		CB305F711F3AC8F4003A4D8C /* messageTabSelect@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "messageTabSelect@2x.png"; sourceTree = "<group>"; };
 		CB305F721F3AC8F4003A4D8C /* settingTab@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "settingTab@2x.png"; sourceTree = "<group>"; };
 		CB305F731F3AC8F4003A4D8C /* settingTabSelect@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "settingTabSelect@2x.png"; sourceTree = "<group>"; };
+		CB33FCB71F57B1600052DFC2 /* SocketIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = SocketIO.framework; sourceTree = "<group>"; };
+		CB33FCB91F57B1B60052DFC2 /* SocketIOClientSwift.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = SocketIOClientSwift.framework; sourceTree = "<group>"; };
+		CB33FCBB1F57B25A0052DFC2 /* StarscreamSocketIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = StarscreamSocketIO.framework; sourceTree = "<group>"; };
 		CB6084731F34397F00CC0091 /* YunkuSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = YunkuSDK.framework; path = "../../../../../../Library/Developer/Xcode/DerivedData/Build/Products/Debug-iphonesimulator/YunkuSDK.framework"; sourceTree = "<group>"; };
 		CBAB6F221F307B0E00E5130F /* GKBaseViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GKBaseViewController.swift; sourceTree = "<group>"; };
 		CBAB6F241F307B3F00E5130F /* GKDef.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GKDef.swift; sourceTree = "<group>"; };
@@ -94,9 +106,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CB6084741F34397F00CC0091 /* YunkuSDK.framework in Frameworks */,
-				CB006BC71F264D05002D692F /* gknet.framework in Frameworks */,
-				CB062E721F39CA89000A9792 /* YunkuSDK.framework in Frameworks */,
+				CB2DA4891F550AF2002591DA /* gkutility.framework in Frameworks */,
+				CB2DA48B1F550AF5002591DA /* gknet.framework in Frameworks */,
+				CB2DA4871F550AEE002591DA /* YunkuSDK.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -106,6 +118,9 @@
 		CB006B791F2615D0002D692F = {
 			isa = PBXGroup;
 			children = (
+				CB33FCBB1F57B25A0052DFC2 /* StarscreamSocketIO.framework */,
+				CB33FCB91F57B1B60052DFC2 /* SocketIOClientSwift.framework */,
+				CB33FCB71F57B1600052DFC2 /* SocketIO.framework */,
 				CB006B841F2615D1002D692F /* testsw */,
 				CB006B831F2615D0002D692F /* Products */,
 				CB006BC01F2646B1002D692F /* Frameworks */,
@@ -123,6 +138,7 @@
 		CB006B841F2615D1002D692F /* testsw */ = {
 			isa = PBXGroup;
 			children = (
+				CB2DA4911F55308D002591DA /* bbb.mp3 */,
 				CB305F5F1F3AB96A003A4D8C /* UI */,
 				CB062E831F39DFDD000A9792 /* Image */,
 				CB062E7C1F39CE89000A9792 /* Common */,
@@ -144,6 +160,9 @@
 		CB006BC01F2646B1002D692F /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				CB2DA48A1F550AF5002591DA /* gknet.framework */,
+				CB2DA4881F550AF2002591DA /* gkutility.framework */,
+				CB2DA4861F550AEE002591DA /* YunkuSDK.framework */,
 				CB6084731F34397F00CC0091 /* YunkuSDK.framework */,
 				CB006BC61F264D05002D692F /* gknet.framework */,
 				CB006BC11F2646B1002D692F /* gkutility.framework */,
@@ -268,10 +287,11 @@
 				TargetAttributes = {
 					CB006B811F2615D0002D692F = {
 						CreatedOnToolsVersion = 8.3;
+						DevelopmentTeam = EQL936BY9A;
 						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
 							com.apple.BackgroundModes = {
-								enabled = 0;
+								enabled = 1;
 							};
 						};
 					};
@@ -300,6 +320,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CB2DA4921F55308D002591DA /* bbb.mp3 in Resources */,
 				CB305F771F3AC8F4003A4D8C /* fileTabSelect@2x.png in Resources */,
 				CB006B901F2615D1002D692F /* LaunchScreen.storyboard in Resources */,
 				CB006B8D1F2615D1002D692F /* Assets.xcassets in Resources */,
@@ -457,6 +478,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = EQL936BY9A;
 				INFOPLIST_FILE = testsw/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -470,6 +492,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = EQL936BY9A;
 				INFOPLIST_FILE = testsw/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";

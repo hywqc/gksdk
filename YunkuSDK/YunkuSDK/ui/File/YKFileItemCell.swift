@@ -11,6 +11,9 @@ import UIKit
 protocol YKFileItemCellDelegate : AnyObject {
     func didClickAccessortBtn(file: YKFileItemCellWrap) -> Void
     func didClickArrow(cell:YKFileItemCell, fileItem:YKFileItemCellWrap, show:Bool) -> Void
+    func didClickCancelDownload(cell:YKFileItemCell, fileItem:YKFileItemCellWrap) -> Void
+    func didClickRetryDownload(cell:YKFileItemCell, fileItem:YKFileItemCellWrap) -> Void
+    func didClickSuspendDownload(cell:YKFileItemCell, fileItem:YKFileItemCellWrap) -> Void
 }
 
 class YKFileItemCell: UITableViewCell {
@@ -25,6 +28,8 @@ class YKFileItemCell: UITableViewCell {
     
     var progressView: UIProgressView!
     var cancelBtn: UIButton!
+    var retryBtn: UIButton!
+    var stopBtn: UIButton!
     var errorInfoLabel: UILabel!
     var errorBtn: UIButton!
     
@@ -56,12 +61,15 @@ class YKFileItemCell: UITableViewCell {
         self.subtitleLabel.isHidden = !file.showSubTitle
         self.progressView.isHidden = !file.showProgress
         self.cancelBtn.isHidden = !file.showCancelBtn
+        self.retryBtn.isHidden = !file.showRetryBtn
+        self.stopBtn.isHidden = !file.showStopBtn
         self.errorInfoLabel.isHidden = !file.showErrorInfo
         self.errorBtn.isHidden = !file.showErrorInfo
         self.selectIcon.isHidden = !file.showSelectIcon
         self.arrow.isHidden = !file.showArrow
         self.accessoryBtn.isHidden = !file.showAccessoryBtn
         
+        self.arrowFold = file.fold
         if !arrow.isHidden {
             if file.fold {
                 arrow.image = YKImage("fileListArrowDown")
@@ -91,7 +99,16 @@ class YKFileItemCell: UITableViewCell {
         titleLabel.text = file.formatTitle
         if !subtitleLabel.isHidden { subtitleLabel.text = file.formatSubTitle }
         if !progressView.isHidden {
-            progressView.setProgress(file.progress, animated: false)
+            if file.downloadItem != nil {
+                let f: Float
+                if file.downloadItem!.filesize == 0 {
+                    f = 0
+                } else {
+                    f = Float(file.downloadItem!.offset)/Float(file.downloadItem!.filesize)
+                }
+                
+                progressView.setProgress(f, animated: false)
+            }
         }
         
         lockIcon.isHidden = (file.file.lock == 0)
@@ -181,6 +198,7 @@ class YKFileItemCell: UITableViewCell {
         
         let progress = UIProgressView(frame: CGRect.zero)
         self.contentView.addSubview(progress)
+        progress.setProgress(0, animated: false)
         self.progressView = progress
         
         var button = UIButton(type: .custom)
@@ -188,6 +206,21 @@ class YKFileItemCell: UITableViewCell {
         button.contentMode = .center
         self.contentView.addSubview(button)
         self.cancelBtn = button
+        button.addTarget(self, action: #selector(onBtnCancel), for: .touchUpInside)
+        
+        button = UIButton(type: .custom)
+        button.setImage(YKImage("iconCellStop"), for: .normal)
+        button.contentMode = .center
+        self.contentView.addSubview(button)
+        self.stopBtn = button
+        self.stopBtn.addTarget(self, action: #selector(onStopBtn), for: .touchUpInside)
+        
+        button = UIButton(type: .custom)
+        button.setImage(YKImage("iconCellRetry"), for: .normal)
+        button.contentMode = .center
+        self.contentView.addSubview(button)
+        self.retryBtn = button
+        self.retryBtn.addTarget(self, action: #selector(onRetryBtn), for: .touchUpInside)
         
         
         button = UIButton(type: .custom)
@@ -234,6 +267,24 @@ class YKFileItemCell: UITableViewCell {
 //            self.arrow.isHidden = false
 //            self.progressView.isHidden = true
 //        }
+    }
+    
+    func onBtnCancel() {
+        if celldelegate != nil {
+            celldelegate?.didClickCancelDownload(cell:self, fileItem:self.fileItem)
+        }
+    }
+    
+    func onRetryBtn() {
+        if celldelegate != nil {
+            celldelegate?.didClickRetryDownload(cell:self, fileItem:self.fileItem)
+        }
+    }
+    
+    func onStopBtn() {
+        if celldelegate != nil {
+            celldelegate?.didClickSuspendDownload(cell:self, fileItem:self.fileItem)
+        }
     }
     
     func onAccessoryBtnClick() {
@@ -304,8 +355,18 @@ class YKFileItemCell: UITableViewCell {
             progressView.frame = CGRect(x: titleLabel.frame.minX, y: titleLabel.frame.maxY + fileItem.subcontentSize.height-progressH, width: titleLabel.frame.size.width, height: progressH)
         }
         
+        var atail: CGFloat = 0
         if !cancelBtn.isHidden {
             cancelBtn.frame = CGRect(x: sz.width-44, y: 0, width: 44, height: sz.height-1)
+            atail = (44 + 10)
+        }
+        
+        if !retryBtn.isHidden {
+            retryBtn.frame = CGRect(x: sz.width - atail - 44, y: 0, width: 44, height: sz.height-1)
+        }
+        
+        if !stopBtn.isHidden {
+            stopBtn.frame = CGRect(x: sz.width - atail - 44, y: 0, width: 44, height: sz.height-1)
         }
         
         if !accessoryBtn.isHidden {
