@@ -279,7 +279,7 @@ class YKTransDB : YKBaseDB {
     }
     
     
-    func addDownload(mountid:Int,webpath:String,filehash:String,dir:Bool,localpath:String, convert:Bool, hid:String? = nil, net:String? = nil, expand: YKTransExpand = .None) -> YKDownloadItemData {
+    func addDownload(mountid:Int,webpath:String,filehash:String,dir:Bool,filesize:Int64,localpath:String, convert:Bool, hid:String? = nil, net:String? = nil, expand: YKTransExpand = .None) -> YKDownloadItemData {
         
         let item = YKDownloadItemData()
         item.mountid = mountid
@@ -292,7 +292,7 @@ class YKTransDB : YKBaseDB {
         item.convert = convert
         item.expand = expand
         item.status = .Normal
-        item.filesize = 0
+        item.filesize = filesize
         item.hid = hid
         item.net = net
         item.offset = 0
@@ -317,7 +317,7 @@ class YKTransDB : YKBaseDB {
             }
             
             if bhave {
-                sql = "update Download set status=\(item.status.rawValue),filehash='\(filehash)',localpath='\(rlocal)',errcode=\(item.errcode),errmsg='\(item.errmsg)' where mountid=\(mountid) and fullpath='\(rwebpath)' and hid='\(thehid)' and convert=\(convert ? 1 : 0) and expand=\(expand.rawValue) ;"
+                sql = "update Download set status=\(item.status.rawValue),filehash='\(filehash)',filesize=\(filesize),localpath='\(rlocal)',errcode=\(item.errcode),errmsg='\(item.errmsg)' where mountid=\(mountid) and fullpath='\(rwebpath)' and hid='\(thehid)' and convert=\(convert ? 1 : 0) and expand=\(expand.rawValue) ;"
             } else {
                 sql = "insert into Download(mountid,fullpath,parent,filename,dir,filehash,uuidhash,status,filesize,offset,localpath,hid,net,convert,expand,errcode,errmsg,errcount,actlast) values(\(mountid),'\(rwebpath)','\(rparent)','\(rfilename)',\(item.dir ? 1 : 0),'\(item.filehash)','\(item.uuidhash)',\(item.status.rawValue),\(item.filesize),\(item.offset),'\(rlocal)','\(thehid)','\(thenet)',\(item.convert ? 1 : 0),\(item.expand.rawValue),\(item.errcode),'\(item.errmsg)',0,0) ;"
             }
@@ -344,10 +344,10 @@ class YKTransDB : YKBaseDB {
     }
     
     
-    func getDownloadItems(mountID:Int,parent:String) -> [YKDownloadItemData] {
+    func getDownloadItems(mountID:Int,parent:String,expand:YKTransExpand) -> [YKDownloadItemData] {
         var result = [YKDownloadItemData]()
         self.dbQueue.inDatabase { (db:FMDatabase) in
-            let sql = "select * from Download where mountid=\(mountID) and parent='\(parent.gkReplaceToSQL)' and (status=\(YKTransStatus.Normal.rawValue) or status=\(YKTransStatus.Start.rawValue) or status=\(YKTransStatus.Stop.rawValue) or status=\(YKTransStatus.Error.rawValue))  order by id asc ;"
+            let sql = "select * from Download where mountid=\(mountID) and parent='\(parent.gkReplaceToSQL)' and expand=\(expand.rawValue) and (status=\(YKTransStatus.Normal.rawValue) or status=\(YKTransStatus.Start.rawValue) or status=\(YKTransStatus.Stop.rawValue) or status=\(YKTransStatus.Error.rawValue))  order by id asc ;"
             if let rs = db.executeQuery(sql, withParameterDictionary: nil) {
                 while rs.next() {
                     let item = downloadItemFromRs(rs)
@@ -367,6 +367,21 @@ class YKTransDB : YKBaseDB {
                 while rs.next() {
                     let item = downloadItemFromRs(rs)
                     result = item
+                }
+                rs.close()
+            }
+        }
+        return result
+    }
+    
+    func getStopDownloads() -> [YKDownloadItemData] {
+        var result = [YKDownloadItemData]()
+        self.dbQueue.inDatabase { (db:FMDatabase) in
+            let sql = "select * from Download where status=\(YKTransStatus.Stop.rawValue)  order by id asc ;"
+            if let rs = db.executeQuery(sql, withParameterDictionary: nil) {
+                while rs.next() {
+                    let item = downloadItemFromRs(rs)
+                    result.append(item)
                 }
                 rs.close()
             }
@@ -430,6 +445,13 @@ class YKTransDB : YKBaseDB {
         }
     }
     
+    func updateDownloadsToStop() {
+        self.dbQueue.inDatabase { (db:FMDatabase) in
+            let sql = "update Download set status=\(YKTransStatus.Stop.rawValue) where status=\(YKTransStatus.Normal.rawValue) or status=\(YKTransStatus.Start.rawValue) ;"
+            try? db.executeUpdate(sql, values: nil)
+        }
+    }
+    
     
     func deleteDownload(taskID: Int) {
         self.dbQueue.inDatabase { (db:FMDatabase) in
@@ -439,6 +461,7 @@ class YKTransDB : YKBaseDB {
     
     func resetDownloads() {
         self.dbQueue.inDatabase { (db:FMDatabase) in
+            
             var sql = "update Download set status=\(YKTransStatus.Error.rawValue),errcode=1, errmsg='\(YKLocalizedString("下载被取消"))' where status=\(YKTransStatus.Stop.rawValue) or status=\(YKTransStatus.Start.rawValue)  or status=\(YKTransStatus.Normal.rawValue) ;"
             try? db.executeUpdate(sql, values: nil)
             

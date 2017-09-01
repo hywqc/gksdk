@@ -32,12 +32,47 @@ final class YKNetMonitor {
     
     static let shareInstance = YKNetMonitor()
     
+    var reachability: Reachability?
+    
     private init(){
-        
+        self.reachability = Reachability()
     }
     
     func start() {
         
+        if self.reachability == nil {
+            self.reachability = Reachability()
+        }
+        
+        if self.reachability == nil {
+            return
+        }
+        
+        self.reachability!.whenReachable = { reach in
+            DispatchQueue.main.async {
+                if reach.isReachableViaWiFi {
+                    self.status = .Wifi
+                } else if reach.isReachableViaWWAN {
+                    self.status = .WWAN
+                }
+            }
+        }
+        
+        self.reachability!.whenUnreachable = { reach in
+            DispatchQueue.main.async {
+                self.status = .Off
+            }
+        }
+        
+        do {
+            try self.reachability!.startNotifier()
+        } catch  {
+            print("Unable to start notifier")
+        }
+    }
+    
+    func stop() {
+        self.reachability?.stopNotifier()
     }
     
     
@@ -46,10 +81,6 @@ final class YKNetMonitor {
         didSet {
             if oldValue == status {
                 return
-            }
-            
-            if Thread.isMainThread {
-                
             }
             
             YKSafePostNotification(YKNetChangeNotificationName,(oldValue,status),nil)

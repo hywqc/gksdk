@@ -45,6 +45,7 @@ final class YKMountCenter {
     func start() {
         bStop = false
         self.mountsDB = YKMountsDB(path: self.getMountsDBPath())
+        YKNetMonitor.shareInstance.start()
         YKTransfer.shanreInstance.start()
         self.lock = gklock()
         self.semaphore = DispatchSemaphore(value: 0)

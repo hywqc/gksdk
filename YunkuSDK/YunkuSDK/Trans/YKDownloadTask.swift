@@ -86,6 +86,7 @@ class YKDownloadTask : Operation {
         
     }
     
+    
     func delete() {
         bStop = true
         bDelete = true
@@ -372,8 +373,8 @@ class YKDownloadTask : Operation {
         if delete {
             YKTransfer.shanreInstance.transDB?.deleteDownload(taskID: pItem.nID)
             pItem.status = .Removed
-            gkutility.deleteFile(path: pItem.localpath)
             YKEventNotify.notify(pItem, type: .downloadFile)
+            gkutility.deleteFile(path: self.resumePath)
         } else {
             YKTransfer.shanreInstance.transDB?.updateDownloadStatus(taskID: pItem.nID, status: .Stop, offset: pItem.offset)
             pItem.status = .Stop

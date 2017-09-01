@@ -8,6 +8,7 @@
 
 import Foundation
 import gkutility
+import gknet
 
 class YKDownloadManager : NSObject, URLSessionDelegate, URLSessionDownloadDelegate {
     
@@ -19,17 +20,58 @@ class YKDownloadManager : NSObject, URLSessionDelegate, URLSessionDownloadDelega
     let taskQueue = OperationQueue()
     var maxConcurrence = 5
     
+    var bHandNetChange = false
+    
     lazy var session: URLSession = {
         let config = URLSessionConfiguration.background(withIdentifier: "com.gokuai.download.session")
         return URLSession(configuration: config, delegate: self, delegateQueue: OperationQueue())
     }()
     
     
-    func addTask(mountid:Int,webpath:String,filehash:String,dir:Bool,localpath:String, convert:Bool, hid:String? = nil, expand: YKTransExpand = .None) -> YKDownloadItemData {
+    override init() {
+        super.init()
+        NotificationCenter.default.addObserver(self, selector: #selector(onNetChange(notification:)), name: NSNotification.Name(YKNetChangeNotificationName), object: nil)
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
+    
+    
+    func addTask(file:GKFileDataItem, expand: YKTransExpand = .None) -> YKDownloadItemData {
+        
+        let convert = YKCommon.needConvertPreview(filename: file.filename)
+        let localpath = YKCacheManager.shareManager.cachePath(key: file.filehash, type: (convert ? .Convert : .Original))
+        return self.addTask(mountid: file.mount_id, webpath: file.fullpath, filehash: file.filehash, dir: file.dir, filesize: file.filesize, localpath: localpath, convert: convert, hid: nil, expand: expand)
+    }
+    
+    func addTasks(files:[YKFileItemCellWrap],expand: YKTransExpand = .None) {
         
         self.checkFinished()
         
-        let downloadItem = YKTransfer.shanreInstance.transDB!.addDownload(mountid: mountid, webpath: webpath, filehash: filehash, dir: dir, localpath: localpath, convert: convert, hid: hid, net: nil, expand: expand)
+        taskLock.lock()
+        for filewarp in files {
+            if let file = filewarp.file {
+                let convert = YKCommon.needConvertPreview(filename: file.filename)
+                let localpath = YKCacheManager.shareManager.cachePath(key: file.filehash, type: (convert ? .Convert : .Original))
+                let downloadItem = YKTransfer.shanreInstance.transDB!.addDownload(mountid: file.mount_id, webpath: file.fullpath, filehash: file.filehash, dir: file.dir, filesize:file.filesize, localpath: localpath, convert: convert, hid: nil, net: nil, expand: expand)
+                
+                if downloadItem.nID >= 0 {
+                    let task = YKDownloadTask(downloadItem: downloadItem)
+                    tasks.append(task)
+                    taskQueue.addOperation(task)
+                    filewarp.downloadItem = downloadItem
+                }
+            }
+        }
+        taskLock.unlock()
+    }
+    
+    func addTask(mountid:Int,webpath:String,filehash:String,dir:Bool,filesize:Int64,localpath:String, convert:Bool, hid:String? = nil, expand: YKTransExpand = .None) -> YKDownloadItemData {
+        
+        self.checkFinished()
+        
+        let downloadItem = YKTransfer.shanreInstance.transDB!.addDownload(mountid: mountid, webpath: webpath, filehash: filehash, dir: dir, filesize:filesize, localpath: localpath, convert: convert, hid: hid, net: nil, expand: expand)
         if downloadItem.nID >= 0 {
             let task = YKDownloadTask(downloadItem: downloadItem)
             taskLock.lock()
@@ -38,6 +80,43 @@ class YKDownloadManager : NSObject, URLSessionDelegate, URLSessionDownloadDelega
             taskLock.unlock()
         }
         return downloadItem
+    }
+    
+    func onNetChange(notification: Notification) {
+        
+        if self.tasks.isEmpty {
+            return
+        }
+        
+        if bHandNetChange {
+            return
+        }
+        
+        if let o = notification.object as? (old:YKNetMonitor.Status,new:YKNetMonitor.Status) {
+            if o.new == .WWAN {
+                bHandNetChange = true
+                
+                var totalSize: Int64 = 0
+                for t in self.tasks {
+                    totalSize += t.pItem.filesize
+                }
+                if totalSize > YKAlertSizeWWAN {
+                    self.stopAll()
+                    
+                    let rootvc = UIApplication.shared.keyWindow?.rootViewController
+                    let msg = YKLocalizedString("当前处于移动网络, 继续下载将产生\(gkutility.formatSize(size: totalSize))的流量, 是否继续")
+                    YKAlert.showAlert(message: msg, title: nil, okTitle: YKLocalizedString("继续"), cancelTitle: YKString.kYKCancel, okBlock: { () in
+                        self.resumeAll()
+                        self.bHandNetChange = false
+                    }, cancelBlock: { () in
+                        self.bHandNetChange = false
+                    }, vc: rootvc)
+                } else {
+                    bHandNetChange = false
+                }
+            }
+        }
+        
     }
     
     func stopTask(id:Int) {
@@ -57,6 +136,7 @@ class YKDownloadManager : NSObject, URLSessionDelegate, URLSessionDownloadDelega
         }
         taskLock.unlock()
     }
+    
     
     func resumeTask(id:Int) {
         taskLock.lock()
@@ -97,6 +177,53 @@ class YKDownloadManager : NSObject, URLSessionDelegate, URLSessionDownloadDelega
         }
     }
     
+    func stopAll() {
+        
+        taskLock.lock()
+        taskQueue.cancelAllOperations()
+        YKTransfer.shanreInstance.transDB?.updateDownloadsToStop()
+        for t in tasks {
+            if t.pItem.status == .Start {
+                t.stop()
+            }
+        }
+        self.tasks.removeAll()
+        taskLock.unlock()
+    }
+    
+    func resumeAll() {
+        
+        if let stoptasks = YKTransfer.shanreInstance.transDB?.getStopDownloads() {
+            taskLock.lock()
+            for item in stoptasks {
+                let task = YKDownloadTask(downloadItem: item)
+                self.tasks.append(task)
+                taskQueue.addOperation(task)
+            }
+            taskLock.unlock()
+        }
+    }
+    
+    
+    func deleteAll() {
+        
+        taskLock.lock()
+        taskQueue.cancelAllOperations()
+        for t in tasks {
+            if t.pItem.status == .Finish {
+                continue
+            }
+            if t.pItem.status == .Start {
+                t.delete()
+            } else {
+                t.stophandle(true)
+            }
+        }
+        self.tasks.removeAll()
+        taskLock.unlock()
+        
+    }
+    
     
     func finishByFilehash(_ filehash: String) {
         if !tasks.isEmpty {
@@ -115,6 +242,19 @@ class YKDownloadManager : NSObject, URLSessionDelegate, URLSessionDownloadDelega
             }
             self.taskLock.unlock()
         }
+    }
+    
+    func checkIsDownloading(filehash: String, convert: Bool) -> Bool {
+        var ret = false
+        self.taskLock.lock()
+        for t in self.tasks {
+            if t.pItem.filehash == filehash && t.pItem.convert == convert {
+                ret = true
+                break
+            }
+        }
+        self.taskLock.unlock()
+        return ret
     }
     
     func checkFinished() {

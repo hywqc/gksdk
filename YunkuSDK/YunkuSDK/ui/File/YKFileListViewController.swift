@@ -82,7 +82,7 @@ class YKFileListViewController: YKBaseTableViewController,YKFileItemCellDelegate
     
     override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
-        self.addButton?.frame = CGRect(x: self.view.frame.size.width - 30 - 64, y: self.view.frame.height - 100 - 64, width: 64, height: 64)
+        self.addButton?.frame = CGRect(x: self.view.frame.size.width - 30 - 64, y: self.view.frame.height - 20 - 64, width: 64, height: 64)
     }
     
     
@@ -90,6 +90,7 @@ class YKFileListViewController: YKBaseTableViewController,YKFileItemCellDelegate
     override func setupTableView() {
         //self.tableView.rowHeight = 64
         self.tableView.allowsMultipleSelection = (displayConfig.selectMode == .Multi)
+        self.setTableFootHeight(85)
     }
     
     
@@ -156,24 +157,16 @@ class YKFileListViewController: YKBaseTableViewController,YKFileItemCellDelegate
     }
     
     func onTestStopUpload() {
-        //YKTransfer.shanreInstance.uploadManager.stopAll()
+        YKNetMonitor.shareInstance.status = .WWAN
+        //YKTransfer.shanreInstance.downloadManager.stopAll()
         //self.navigationItem.rightBarButtonItems = [UIBarButtonItem(title: YKLocalizedString("upload"), style: .plain, target: self, action: #selector(onTestUpload)),UIBarButtonItem(title: YKLocalizedString("resume"), style: .plain, target: self, action: #selector(onTestResumeUpload))]
-        DispatchQueue.global().async {
-            var n = 0
-            var backFile = gkutility.docPath().gkAddLastSlash
-            backFile += "test.txt"
-            while true {
-                n += 1
-                let s = "\(n)"
-                try? s.write(toFile: backFile, atomically: true, encoding: .utf8)
-                Thread.sleep(forTimeInterval: 1)
-            }
-        }
+
+        
     }
     
     func onTestResumeUpload()  {
         self.navigationItem.rightBarButtonItems = [UIBarButtonItem(title: YKLocalizedString("upload"), style: .plain, target: self, action: #selector(onTestUpload)),UIBarButtonItem(title: YKLocalizedString("stop"), style: .plain, target: self, action: #selector(onTestStopUpload))]
-        YKTransfer.shanreInstance.uploadManager.resumeAll()
+        YKTransfer.shanreInstance.downloadManager.resumeAll()
     }
     
     private func setupNav() {
@@ -346,7 +339,7 @@ class YKFileListViewController: YKBaseTableViewController,YKFileItemCellDelegate
                         
                     } else {
                         
-                        let downloads = YKTransfer.shanreInstance.transDB?.getDownloadItems(mountID: mountid, parent: (parentpath == "/" ? "" : parentpath))
+                        let downloads = YKTransfer.shanreInstance.transDB?.getDownloadItems(mountID: mountid, parent: (parentpath == "/" ? "" : parentpath), expand: .Cache)
                         
                         var result = [Any]()
                         for f in files {
@@ -565,7 +558,7 @@ class YKFileListViewController: YKBaseTableViewController,YKFileItemCellDelegate
             if p == "/" {
                 p = ""
             }
-            if notifyItem.mountid != self.mountID || notifyItem.webpath.gkParentPath != p {
+            if notifyItem.mountid != self.mountID || notifyItem.webpath.gkParentPath != p || !notifyItem.convert{
                 return
             }
             
@@ -722,8 +715,8 @@ class YKFileListViewController: YKBaseTableViewController,YKFileItemCellDelegate
             ]
             
             if !fileItem.file.dir {
-                arr.append(YKBottomSheetView.Item(title: (fileItem.file.lock > 0 ? YKString.kYKUnLock : YKString.kYKLock), id: YKMoreOperationType.Lock.rawValue, image: "fileoperation/lock"))
                 arr.append(YKBottomSheetView.Item(title: YKString.kYKCache, id: YKMoreOperationType.Cache.rawValue, image: "fileoperation/cache"))
+                arr.append(YKBottomSheetView.Item(title: (fileItem.file.lock > 0 ? YKString.kYKUnLock : YKString.kYKLock), id: YKMoreOperationType.Lock.rawValue, image: "fileoperation/lock"))
             }
         }
         
@@ -740,7 +733,7 @@ class YKFileListViewController: YKBaseTableViewController,YKFileItemCellDelegate
                 switch type! {
                     
                 case .Cache:
-                    self.file_cahce(file: f!)
+                    self.file_cahce(files: [f!])
                 default:
                     break
                     
@@ -751,10 +744,37 @@ class YKFileListViewController: YKBaseTableViewController,YKFileItemCellDelegate
     }
     
     
-    func file_cahce(file: YKFileItemCellWrap) {
-        let convert = YKCommon.needConvertPreview(filename: file.file.filename)
-        let d = YKTransfer.shanreInstance.downloadManager.addTask(mountid: file.file.mount_id, webpath: file.file.fullpath, filehash: file.file.filehash, dir: file.file.dir, localpath: YKCacheManager.shareManager.cachePath(key: file.file.filehash, type: (convert ? .Convert : .Original)), convert: convert)
-        file.downloadItem = d
+    func file_cahce(files: [YKFileItemCellWrap]) {
+        var totalSize: Int64 = 0
+        for f in files {
+            totalSize += f.file.filesize
+        }
+        
+        if gkutility.diskFreeSpace() <= totalSize {
+            YKAlert.showAlert(message: YKLocalizedString("系统空间不足,缓存需要\(gkutility.formatSize(size: totalSize))"), vc: self)
+            return
+        }
+        
+        if YKNetMonitor.shareInstance.status == .WWAN {
+            if totalSize >= YKAlertSizeWWAN {
+                let msg = YKLocalizedString("当前处于移动网络, 继续下载将产生\(gkutility.formatSize(size: totalSize))的流量, 是否继续?")
+                YKAlert.showAlert(message: msg, title: nil, okTitle: YKLocalizedString("继续"), cancelTitle: YKString.kYKCancel, okBlock: { () in
+
+                    self.doCaches(files: files)
+                    
+                }, cancelBlock: { () in
+                    
+                }, vc: self)
+            } else {
+                self.doCaches(files: files)
+            }
+        } else {
+            self.doCaches(files: files)
+        }
+    }
+    
+    func doCaches(files:[YKFileItemCellWrap]) {
+        YKTransfer.shanreInstance.downloadManager.addTasks(files: files, expand: .Cache)
         self.tableView.reloadData()
     }
     
@@ -996,7 +1016,38 @@ class YKFileListViewController: YKBaseTableViewController,YKFileItemCellDelegate
                 if item.file.dir {
                     self.showNextFileList(mountID: item.file.mount_id, fullpath: item.file.fullpath)
                 } else {
-                    
+                    switch displayConfig.op {
+                    case .Normal,.Fav:
+                        
+                        var images = [GKFileDataItem]()
+                        for item in self.files {
+                            if let f = item as? YKFileItemCellWrap {
+                                if YKCommon.isSupportImage(f.file.filename) {
+                                    images.append(f.file)
+                                }
+                            }
+                        }
+                        
+                        if !images.isEmpty {
+                            let controller = YKImagesPreviewController(files: images)
+                            let nav = UINavigationController(rootViewController: controller)
+                            self.present(nav, animated: true, completion: nil)
+                        }
+                        
+//                        let previewInfo = YKFilePreviewBaseController.PreviewInfo()
+//                        previewInfo.mount_id = item.file.mount_id
+//                        previewInfo.webpath = item.file.fullpath
+//                        previewInfo.filehash = item.file.filehash
+//                        previewInfo.dir = item.file.dir
+//                        previewInfo.filename = item.file.filename
+//                        previewInfo.filesize = item.file.filesize
+//                        previewInfo.uuidhash = item.file.uuidhash
+//                        let controller = YKQuickLookPreviewController(info: previewInfo)
+//                        let nav = UINavigationController(rootViewController: controller)
+//                        self.present(nav, animated: true, completion: nil)
+                    default:
+                        break
+                    }
                 }
             } else {
                 if displayConfig.selectMode == .Single {

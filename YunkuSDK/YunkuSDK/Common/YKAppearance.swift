@@ -47,6 +47,8 @@ class YKFont {
 class YKString {
     
     static let kYKCancel = YKLocalizedString("取消")
+    static let kYKOK = YKLocalizedString("确定")
+    static let kYKRetry = YKLocalizedString("重试")
     static let kYKCopy = YKLocalizedString("复制")
     static let kYKMove = YKLocalizedString("移动")
     static let kYKRename = YKLocalizedString("重命名")

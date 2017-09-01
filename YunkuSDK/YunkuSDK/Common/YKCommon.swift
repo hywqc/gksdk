@@ -10,6 +10,10 @@ import UIKit
 import gkutility
 import gknet
 
+
+let YKAlertSizeWWAN: Int64 = 5*1024*1024
+let YKAlertSizeWifi: Int64 = 100*1024*1024
+
 let YKMEMBER_AVATER_URLFORMAT = ""
 
 

@@ -23,8 +23,8 @@ enum YKTransStatus : Int {
 enum YKTransExpand : Int {
     case None = 0
     case Cache
-    case Out
     case Open
+    case Out
     case EditUpload
 }
 
@@ -46,9 +46,9 @@ class YKDownloadItemData {
     var errcode = 0
     var errmsg = ""
     var errcount = 0
-    var hid: String?
+    var hid: String? //是否历史版本
     var net: String?
-    var convert = false
+    var convert = false //是否转成pdf预览
     
     var notifyInfo: String {
         
