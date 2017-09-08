@@ -480,6 +480,116 @@ public class GKHttpEngine : GKHttpBaseSession {
         
     }
     
+    
+    public func copyFiles(sourceMountID: Int, sourcePathList:[String],targetMountID:Int,targetPath:String) -> GKRequestBaseRet{
+        
+        var result: GKRequestBaseRet!
+        for _ in 0..<kTryCount {
+            var param = ["token":access_token]
+            param["mount_id"] = "\(sourceMountID)"
+            param["fullpaths"] = sourcePathList.joined(separator: "|")
+            param["target_mount_id"] = "\(targetMountID)"
+            param["target_fullpath"] = targetPath
+            param["sign"] = sign(param)
+            
+            result = self.POST(url: generateurl(GKAPI.FILE_COPY), headers: nil, param: param, reqType: GKRequestBaseRet.self)
+            if result.statuscode == 200 {
+                break
+            } else if result.errcode == kTokenExpiredCode || result.errcode == kTokenInvalidCode {
+                if bStop { break }
+                let _ = self.refreshToken()
+            }
+        }
+        
+        if bStop {
+            result.errcode = GKOperationExitCode
+        }
+        
+        return result
+        
+    }
+    
+    public func moveFiles(sourceMountID: Int, sourcePathList:[String],targetMountID:Int,targetPath:String) -> GKRequestBaseRet{
+        
+        var result: GKRequestBaseRet!
+        for _ in 0..<kTryCount {
+            var param = ["token":access_token]
+            param["mount_id"] = "\(sourceMountID)"
+            param["fullpaths"] = sourcePathList.joined(separator: "|")
+            param["target_mount_id"] = "\(targetMountID)"
+            param["target_fullpath"] = targetPath
+            param["sign"] = sign(param)
+            
+            result = self.POST(url: generateurl(GKAPI.FILE_MOVE), headers: nil, param: param, reqType: GKRequestBaseRet.self)
+            if result.statuscode == 200 {
+                break
+            } else if result.errcode == kTokenExpiredCode || result.errcode == kTokenInvalidCode {
+                if bStop { break }
+                let _ = self.refreshToken()
+            }
+        }
+        
+        if bStop {
+            result.errcode = GKOperationExitCode
+        }
+        
+        return result
+        
+    }
+    
+    public func renameFile(mountID: Int, fullpath:String,newName:String) -> GKRequestBaseRet{
+        
+        var result: GKRequestBaseRet!
+        for _ in 0..<kTryCount {
+            var param = ["token":access_token]
+            param["mount_id"] = "\(mountID)"
+            param["fullpath"] = fullpath
+            param["newname"] = newName
+            param["sign"] = sign(param)
+            
+            result = self.POST(url: generateurl(GKAPI.FILE_RENAME), headers: nil, param: param, reqType: GKRequestBaseRet.self)
+            if result.statuscode == 200 {
+                break
+            } else if result.errcode == kTokenExpiredCode || result.errcode == kTokenInvalidCode {
+                if bStop { break }
+                let _ = self.refreshToken()
+            }
+        }
+        
+        if bStop {
+            result.errcode = GKOperationExitCode
+        }
+        
+        return result
+        
+    }
+    
+    public func deleteFiles(sourceMountID: Int, sourcePathList:[String]) -> GKRequestBaseRet{
+        
+        var result: GKRequestBaseRet!
+        for _ in 0..<kTryCount {
+            var param = ["token":access_token]
+            param["mount_id"] = "\(sourceMountID)"
+            param["fullpaths"] = sourcePathList.joined(separator: "|")
+            param["sign"] = sign(param)
+            
+            result = self.POST(url: generateurl(GKAPI.FILE_DELETE), headers: nil, param: param, reqType: GKRequestBaseRet.self)
+            if result.statuscode == 200 {
+                break
+            } else if result.errcode == kTokenExpiredCode || result.errcode == kTokenInvalidCode {
+                if bStop { break }
+                let _ = self.refreshToken()
+            }
+        }
+        
+        if bStop {
+            result.errcode = GKOperationExitCode
+        }
+        
+        return result
+        
+    }
+    
     //MARK: Upload
     public func createFolder(mountid:Int,webpath:String,create_dateline: Int64?,last_dateline:Int64?) -> GKRequestRetCreateFile {
         var result: GKRequestRetCreateFile!

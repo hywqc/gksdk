@@ -90,7 +90,7 @@ class YKTextViewController : YKBaseViewController, UITextViewDelegate {
             notsave = !self.textView.text.isEmpty
         }
         if notsave {
-            YKAlert.showAlert(message: YKLocalizedString("文件未保存,是否退出编辑?"), title: nil, okTitle: nil, cancelTitle: nil, okBlock: { () in
+            YKAlert.showAlert(message: YKLocalizedString("文件未保存,是否退出编辑?"), okTitle: YKLocalizedString("退出"), okBlock: { () in
                 self.dismiss(animated: true, completion: nil)
             }, cancelBlock: nil, vc: self)
         } else {
@@ -153,7 +153,7 @@ class YKTextViewController : YKBaseViewController, UITextViewDelegate {
                 samename = checkSameNameBlock!(filename)
             }
             if samename {
-                YKAlert.showAlert(message: YKLocalizedString("已存在同名文件,是否覆盖?"), title: nil, okTitle: YKLocalizedString("覆盖"), cancelTitle: nil, okBlock: { () in
+                YKAlert.showAlert(message: YKLocalizedString("已存在同名文件,是否覆盖?"), okTitle: YKLocalizedString("覆盖"), okBlock: { () in
                     DispatchQueue.main.async {
                         self.save(filename)
                     }

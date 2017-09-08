@@ -24,6 +24,8 @@ class YKFileListViewController: YKBaseTableViewController,YKFileItemCellDelegate
     
     var displayConfig: YKFileDisplayConfig!
     
+    var inMultiSelect = false
+    
     var showArrow: Bool {
         if displayConfig.selectMode == .None {
             if  displayConfig.op == .Normal || displayConfig.op == .Fav {
@@ -80,6 +82,10 @@ class YKFileListViewController: YKBaseTableViewController,YKFileItemCellDelegate
         NotificationCenter.default.addObserver(self, selector: #selector(onUploadNotify(notification:)), name: NSNotification.Name(YKNotification_UploadFile), object: nil)
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+    }
+    
     override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
         self.addButton?.frame = CGRect(x: self.view.frame.size.width - 30 - 64, y: self.view.frame.height - 20 - 64, width: 64, height: 64)
@@ -102,8 +108,48 @@ class YKFileListViewController: YKBaseTableViewController,YKFileItemCellDelegate
         return UIBarButtonItem(title: YKLocalizedString("取消"), style: .plain, target: self, action: #selector(onCancelSelect))
     }
     
+    var cancelOperationBarButton: UIBarButtonItem {
+        return UIBarButtonItem(title: YKLocalizedString("取消"), style: .plain, target: self, action: #selector(onCancelOperation))
+    }
+    
     var moreBarButton: UIBarButtonItem {
         return UIBarButtonItem(image: YKImage("iconMore"), style: .plain, target: self, action: #selector(onBarMore(send:event:)))
+    }
+    
+    var multiToolBarItemSelectAll: UIBarButtonItem {
+        return UIBarButtonItem(title: YKLocalizedString("全选"), style: .plain, target: self, action: #selector(onMultiSelectAll))
+    }
+    
+    var multiToolBarItemSelectNone: UIBarButtonItem {
+        return UIBarButtonItem(title: YKLocalizedString("全不选"), style: .plain, target: self, action: #selector(onMultiSelectNone))
+    }
+    
+    var multiToolBarItemDelete: UIBarButtonItem {
+        return UIBarButtonItem(title: YKLocalizedString("删除"), style: .plain, target: self, action: #selector(onMultiSelectDelete))
+    }
+    
+    var multiToolBarItemCopy: UIBarButtonItem {
+        return UIBarButtonItem(title: YKLocalizedString("复制"), style: .plain, target: self, action: #selector(onMultiSelectCopy))
+    }
+    
+    var multiToolBarItemMove: UIBarButtonItem {
+        return UIBarButtonItem(title: YKLocalizedString("移动"), style: .plain, target: self, action: #selector(onMultiSelectMove))
+    }
+    
+    var multiToolBarItemCache: UIBarButtonItem {
+        return UIBarButtonItem(title: YKLocalizedString("缓存"), style: .plain, target: self, action: #selector(onMultiSelectCache))
+    }
+    
+    var quitMultiSelectBarButton: UIBarButtonItem {
+        return UIBarButtonItem(title: YKLocalizedString("退出"), style: .plain, target: self, action: #selector(onQuitMultiSelect))
+    }
+    
+    var pastToolBarItem: UIBarButtonItem {
+        return UIBarButtonItem(title: YKLocalizedString("粘贴"), style: .plain, target: self, action: #selector(onPastFile))
+    }
+    
+    var movehereToolBarItem: UIBarButtonItem {
+        return UIBarButtonItem(title: YKLocalizedString("移动"), style: .plain, target: self, action: #selector(onPastFile))
     }
     
     func onTestUpload() {
@@ -175,13 +221,31 @@ class YKFileListViewController: YKBaseTableViewController,YKFileItemCellDelegate
             let mountitem = YKMountCenter.shareInstance.mountItemBy(mountID: mountID)
             self.navigationItem.title = mountitem?.org_name
         } else {
-        self.navigationItem.title = webpath.gkFileName
+            self.navigationItem.title = webpath.gkFileName
         }
     
         if displayConfig.selectMode == .None {
             self.navigationItem.leftBarButtonItems = [backBarButton]
-            self.navigationItem.rightBarButtonItems = [UIBarButtonItem(title: YKLocalizedString("upload"), style: .plain, target: self, action: #selector(onTestUpload)),UIBarButtonItem(title: YKLocalizedString("stop"), style: .plain, target: self, action: #selector(onTestStopUpload))]
+            //self.navigationItem.rightBarButtonItems = [UIBarButtonItem(title: YKLocalizedString("upload"), style: .plain, target: self, action: #selector(onTestUpload)),UIBarButtonItem(title: YKLocalizedString("stop"), style: .plain, target: self, action: #selector(onTestStopUpload))]
             
+            switch displayConfig.op {
+            case .Normal:
+                self.navigationItem.rightBarButtonItem = self.moreBarButton
+            case .Copy,.Move,.Save:
+                self.navigationItem.rightBarButtonItem = self.cancelOperationBarButton
+                self.navigationController?.isToolbarHidden = false
+                self.navigationController?.toolbar.barTintColor = YKColor.Blue
+                self.navigationController?.toolbar.tintColor = UIColor.white
+                let flexibleSpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
+                if displayConfig.op == .Copy {
+                    self.toolbarItems = [flexibleSpace,self.pastToolBarItem,flexibleSpace]
+                } else if displayConfig.op == .Move {
+                    self.toolbarItems = [flexibleSpace,self.movehereToolBarItem,flexibleSpace]
+                }
+                
+            default:
+                break
+            }
             
         } else {
             
@@ -357,6 +421,7 @@ class YKFileListViewController: YKBaseTableViewController,YKFileItemCellDelegate
                             }
                         }
                         
+                        
                         DispatchQueue.main.async {
                             self?.files = result
                             self?.tableView.reloadData()
@@ -381,6 +446,8 @@ class YKFileListViewController: YKBaseTableViewController,YKFileItemCellDelegate
             switch id {
             case 1:
                 self.add_folder()
+            case 2:
+                self.add_photos()
             case 4:
                 self.add_text()
             default:
@@ -463,6 +530,12 @@ class YKFileListViewController: YKBaseTableViewController,YKFileItemCellDelegate
         alert.addAction(actCancel)
         
         self.present(alert, animated: true, completion: nil)
+    }
+    
+    func add_photos() {
+        let controller = YKAlbumsController()
+        let nav = UINavigationController(rootViewController: controller)
+        self.present(nav, animated: true, completion: nil)
     }
     
     func onUploadNotify(notification:Notification) {
@@ -608,6 +681,144 @@ class YKFileListViewController: YKBaseTableViewController,YKFileItemCellDelegate
         self.navigationController?.popViewController(animated: true)
     }
     
+    func onPastFile() {
+        
+        let sources = displayConfig.sourceFiles
+        if sources.isEmpty {
+            return
+        }
+        var patharr = [String]()
+        var sourceParent = ""
+        for item in sources {
+            if sourceParent.isEmpty {
+                sourceParent = item.fullpath.gkParentPath
+                if sourceParent.isEmpty {
+                    sourceParent = "/"
+                }
+            }
+            if item.dir {
+                patharr.append(item.fullpath.gkAddLastSlash)
+            } else {
+                patharr.append(item.fullpath)
+            }
+        }
+        
+        if sourceParent == self.webpath {
+            YKAlert.showAlert(message: YKLocalizedString("源路径与目标路径一致"), vc: self)
+            return
+        }
+        
+        let sourcemountid = self.displayConfig.fromMountID
+        let targetmountid = self.mountID
+        let targetwebpath = self.webpath
+        
+        if displayConfig.op == .Copy {
+            
+            YKAlert.showHUD(view: self.view, message: YKLocalizedString("正在复制"))
+            DispatchQueue.global().async { [weak self] () -> Void in
+                
+                let ret = GKHttpEngine.default.copyFiles(sourceMountID: sourcemountid, sourcePathList: patharr, targetMountID: targetmountid, targetPath: targetwebpath)
+                if self == nil { return }
+                DispatchQueue.main.async {
+                    if ret.statuscode == 200 {
+                        YKAlert.hideHUDSuccess(view: self?.view, str: YKLocalizedString("复制成功"), animate: true)
+                        self?.dismiss(animated: true, completion: nil)
+                    } else {
+                        YKAlert.hideHUD(view: self?.view, animate: false)
+                        YKAlert.showAlert(message: ret.errmsg, title: YKLocalizedString("复制失败"), vc: self)
+                    }
+                }
+            }
+        } else if displayConfig.op == .Move {
+            
+            YKAlert.showHUD(view: self.view, message: YKLocalizedString("正在移动"))
+            DispatchQueue.global().async { [weak self] () -> Void in
+                
+                let ret = GKHttpEngine.default.moveFiles(sourceMountID: sourcemountid, sourcePathList: patharr, targetMountID: targetmountid, targetPath: targetwebpath)
+                if self == nil { return }
+                DispatchQueue.main.async {
+                    if ret.statuscode == 200 {
+                        YKAlert.hideHUDSuccess(view: self?.view, str: YKLocalizedString("移动成功"), animate: true)
+                        self?.displayConfig.operationCompletion?(sources,targetwebpath)
+                        self?.dismiss(animated: true, completion: nil)
+                    } else {
+                        YKAlert.hideHUD(view: self?.view, animate: false)
+                        YKAlert.showAlert(message: ret.errmsg, title: YKLocalizedString("移动失败"), vc: self)
+                    }
+                }
+            }
+            
+        }
+    }
+    
+    func onMultiSelectAll() {
+        for i in 0..<self.tableView.numberOfRows(inSection: 0) {
+            let index = IndexPath(row: i, section: 0)
+            self.tableView.selectRow(at: index, animated: false, scrollPosition: .none)
+        }
+        let flexibleSpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
+        self.toolbarItems = [self.multiToolBarItemSelectNone,flexibleSpace,self.multiToolBarItemDelete,flexibleSpace,self.multiToolBarItemCopy,flexibleSpace,self.multiToolBarItemMove,flexibleSpace,self.multiToolBarItemCache]
+    }
+    
+    func onMultiSelectNone() {
+        for i in 0..<self.tableView.numberOfRows(inSection: 0) {
+            let index = IndexPath(row: i, section: 0)
+            self.tableView.deselectRow(at: index, animated: false)
+        }
+        let flexibleSpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
+        self.toolbarItems = [self.multiToolBarItemSelectAll,flexibleSpace,self.multiToolBarItemDelete,flexibleSpace,self.multiToolBarItemCopy,flexibleSpace,self.multiToolBarItemMove,flexibleSpace,self.multiToolBarItemCache]
+    }
+    
+    func onMultiSelectDelete() {
+        var files = [YKFileItemCellWrap]()
+        if let selects = self.tableView.indexPathsForSelectedRows {
+            for index in selects {
+                if let item = self.files[index.row] as? YKFileItemCellWrap {
+                    files.append(item)
+                }
+            }
+        }
+        
+        if !files.isEmpty {
+            self.file_delete(files: files)
+        }
+    }
+    
+    func onMultiSelectCopy() {
+        
+        var files = [YKFileItemCellWrap]()
+        if let selects = self.tableView.indexPathsForSelectedRows {
+            for index in selects {
+                if let item = self.files[index.row] as? YKFileItemCellWrap {
+                    files.append(item)
+                }
+            }
+        }
+        
+        if !files.isEmpty {
+            self.file_copy(files: files)
+        }
+    }
+    
+    func onMultiSelectMove() {
+        var files = [YKFileItemCellWrap]()
+        if let selects = self.tableView.indexPathsForSelectedRows {
+            for index in selects {
+                if let item = self.files[index.row] as? YKFileItemCellWrap {
+                    files.append(item)
+                }
+            }
+        }
+        
+        if !files.isEmpty {
+            self.file_move(files: files)
+        }
+    }
+    
+    func onMultiSelectCache() {
+        
+    }
+    
     func onSelectChanged() {
         let barstr = displayConfig.getSelectBarStr()
         let newbar = UIBarButtonItem(title: barstr, style: .plain, target: self, action: #selector(onConfirmSelect))
@@ -621,6 +832,10 @@ class YKFileListViewController: YKBaseTableViewController,YKFileItemCellDelegate
     
     func onCancelSelect() {
         displayConfig.selectCancelBlock?(self)
+    }
+    
+    func onCancelOperation() {
+        self.dismiss(animated: true, completion: nil)
     }
     
     func onBarMore(send:Any,event:UIEvent) {
@@ -648,7 +863,48 @@ class YKFileListViewController: YKBaseTableViewController,YKFileItemCellDelegate
         }, event: event)
     }
     
+    func onQuitMultiSelect() {
+        if !inMultiSelect { return }
+        for item in self.files {
+            if let file = item as? YKFileItemCellWrap {
+                file.showArrow = true
+            }
+        }
+        self.inMultiSelect = false
+        self.addButton?.isHidden = false
+        self.tableView.allowsMultipleSelection = false
+        self.tableView.setEditing(false, animated: true)
+        self.toolbarItems = nil
+        self.navigationItem.rightBarButtonItem = self.moreBarButton
+        self.tableView.reloadData()
+        self.navigationController?.isToolbarHidden = true
+    }
+    
     func barMultiSelect() {
+        
+        self.foldAllCell(reload: true)
+        
+        DispatchQueue.main.async {
+            for item in self.files {
+                if let file = item as? YKFileItemCellWrap {
+                    file.showArrow = false
+                }
+            }
+            self.addButton?.isHidden = true
+            self.tableView.allowsMultipleSelection = true
+            self.tableView.setEditing(true, animated: true)
+            self.inMultiSelect = true
+            self.tableView.reloadData()
+            self.navigationItem.rightBarButtonItem = self.quitMultiSelectBarButton
+            
+            self.navigationController?.isToolbarHidden = false
+            self.navigationController?.toolbar.barTintColor = YKColor.Blue
+            self.navigationController?.toolbar.tintColor = UIColor.white
+            self.navigationController?.toolbar.isTranslucent = true
+            
+            let flexibleSpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
+            self.setToolbarItems([self.multiToolBarItemSelectAll,flexibleSpace,self.multiToolBarItemDelete,flexibleSpace,self.multiToolBarItemCopy,flexibleSpace,self.multiToolBarItemMove,flexibleSpace,self.multiToolBarItemCache], animated: true)
+        }
         
     }
     
@@ -665,6 +921,30 @@ class YKFileListViewController: YKBaseTableViewController,YKFileItemCellDelegate
     }
     
     
+    func foldAllCell(reload: Bool) {
+        
+        var index = -1
+        for i in 0..<self.files.count {
+            let item = self.files[i]
+            if item is String {
+                if let file = self.files[i-1] as? YKFileItemCellWrap {
+                    file.fold = true
+                }
+                index = i
+                break
+            }
+        }
+        
+        if index >= 0 {
+            self.files.remove(at: index)
+            let indexpath = IndexPath(row: index, section: 0)
+            self.tableView.deleteRows(at: [indexpath], with: .none)
+            if reload {
+                self.tableView.reloadData()
+            }
+        }
+    }
+    
     //MARK: YKFileOperationSheetCellDelegate
     func fileOperationShare(item: YKFileItemCellWrap?) {
         
@@ -675,7 +955,8 @@ class YKFileListViewController: YKBaseTableViewController,YKFileItemCellDelegate
     }
     
     func fileOperationDelete(item: YKFileItemCellWrap?) {
-        
+        if item == nil  { return }
+        self.file_delete(files: [item!])
     }
     
     func fileOperationProperty(item: YKFileItemCellWrap?) {
@@ -731,9 +1012,16 @@ class YKFileListViewController: YKBaseTableViewController,YKFileItemCellDelegate
             
             DispatchQueue.main.async {
                 switch type! {
-                    
+                case .Copy:
+                    self.file_copy(files: [f!])
+                case .Move:
+                    self.file_move(files: [f!])
+                case .Rename:
+                    self.file_rename(file: f!)
                 case .Cache:
                     self.file_cahce(files: [f!])
+                case .Delete:
+                    self.file_delete(files: [f!])
                 default:
                     break
                     
@@ -758,7 +1046,7 @@ class YKFileListViewController: YKBaseTableViewController,YKFileItemCellDelegate
         if YKNetMonitor.shareInstance.status == .WWAN {
             if totalSize >= YKAlertSizeWWAN {
                 let msg = YKLocalizedString("当前处于移动网络, 继续下载将产生\(gkutility.formatSize(size: totalSize))的流量, 是否继续?")
-                YKAlert.showAlert(message: msg, title: nil, okTitle: YKLocalizedString("继续"), cancelTitle: YKString.kYKCancel, okBlock: { () in
+                YKAlert.showAlert(message: msg, okTitle: YKLocalizedString("继续"), okBlock: { () in
 
                     self.doCaches(files: files)
                     
@@ -771,6 +1059,61 @@ class YKFileListViewController: YKBaseTableViewController,YKFileItemCellDelegate
         } else {
             self.doCaches(files: files)
         }
+    }
+    
+    func file_delete(files: [YKFileItemCellWrap]) {
+        var items = [GKFileDataItem]()
+        for f in files {
+            items.append(f.file)
+        }
+        YKFileOperationManager.shareManager.deleteFiles(mountid: self.mountID, files: items, fromVC: self) { () in
+            self.onQuitMultiSelect()
+            self.load()
+        }
+    }
+    
+    func file_copy(files: [YKFileItemCellWrap]) {
+        
+        var source = [GKFileDataItem]()
+        for item in files {
+            source.append(item.file)
+        }
+        
+        YKSelectFileComponent.showCopySelect(mountid: self.mountID, files: source, fromVC: self)
+    }
+    
+    func file_move(files: [YKFileItemCellWrap]) {
+        
+        var source = [GKFileDataItem]()
+        for item in files {
+            source.append(item.file)
+        }
+        
+        YKSelectFileComponent.showMoveSelect(mountid: mountID, files: source, fromVC: self) { (files:[GKFileDataItem], targetParent:String) in
+            
+            self.onQuitMultiSelect()
+            self.load()
+        }
+    }
+    
+    func file_rename(file: YKFileItemCellWrap) {
+        
+        YKFileOperationManager.shareManager.renameFile(file: file.file, fromVC: self, checkSameName: { (newname:String) -> Bool in
+            for item in self.files {
+                if let f = item as? YKFileItemCellWrap {
+                    if f.file.filename == newname {
+                        return true
+                    }
+                }
+            }
+            return false
+            
+        }) { (newname:String) in
+            file.file.filename = newname
+            file.calc()
+            self.tableView.reloadData()
+        }
+        
     }
     
     func doCaches(files:[YKFileItemCellWrap]) {
@@ -934,10 +1277,15 @@ class YKFileListViewController: YKBaseTableViewController,YKFileItemCellDelegate
                 cell = YKFileItemCell(style: .default, reuseIdentifier: item.cellid,delegate:self)
             }
             
-            if item.selectType == .Disable {
+            if item.selectType == .Disable  {
                 cell?.selectionStyle = .none
             } else {
-                cell?.selectedBackgroundView = UIImageView(image: YKImage("cellSelectBkg"))
+                if inMultiSelect {
+                    cell?.selectedBackgroundView = nil
+                } else {
+                    cell?.selectedBackgroundView = UIImageView(image: YKImage("cellSelectBkg"))
+                }
+                
             }
             
             
@@ -1012,6 +1360,9 @@ class YKFileListViewController: YKBaseTableViewController,YKFileItemCellDelegate
         
         if let item = self.files[indexPath.row] as? YKFileItemCellWrap {
             if displayConfig.selectMode == .None {
+                if inMultiSelect {
+                    return
+                }
                 tableView.deselectRow(at: indexPath, animated: true)
                 if item.file.dir {
                     self.showNextFileList(mountID: item.file.mount_id, fullpath: item.file.fullpath)
@@ -1028,8 +1379,17 @@ class YKFileListViewController: YKBaseTableViewController,YKFileItemCellDelegate
                             }
                         }
                         
+                        var selected = 0
+                        for i in 0..<images.count {
+                            let f = images[i]
+                            if f.filename == item.file.filename {
+                                selected = i
+                                break
+                            }
+                        }
+                        
                         if !images.isEmpty {
-                            let controller = YKImagesPreviewController(files: images)
+                            let controller = YKImagesPreviewController(files: images,selected:selected)
                             let nav = UINavigationController(rootViewController: controller)
                             self.present(nav, animated: true, completion: nil)
                         }
@@ -1124,6 +1484,18 @@ class YKFileListViewController: YKBaseTableViewController,YKFileItemCellDelegate
             }
         }
         
+    }
+    
+    func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCellEditingStyle {
+        return unsafeBitCast(3, to: UITableViewCellEditingStyle.self)
+    }
+    
+    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        let item  = self.files[indexPath.row]
+        if !(item is YKFileItemCellWrap) {
+            return false
+        }
+        return true
     }
 }
 

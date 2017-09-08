@@ -20,7 +20,19 @@
 		CB087ACF1F4A902E00EEA799 /* YKFileOperationSheetCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB087ACE1F4A902E00EEA799 /* YKFileOperationSheetCell.swift */; };
 		CB1C8DD21F4ECE7000BA2A69 /* YKFileUploadCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB1C8DD11F4ECE7000BA2A69 /* YKFileUploadCell.swift */; };
 		CB1ED3991F46E385006D82D3 /* YKPopView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB1ED3981F46E385006D82D3 /* YKPopView.swift */; };
+		CB23CFAD1F5FE44A002914A6 /* MBProgressHUD.h in Headers */ = {isa = PBXBuildFile; fileRef = CB23CFAB1F5FE44A002914A6 /* MBProgressHUD.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		CB23CFAE1F5FE44A002914A6 /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = CB23CFAC1F5FE44A002914A6 /* MBProgressHUD.m */; };
+		CB23CFB81F5FFC54002914A6 /* YCLoadMoreView.h in Headers */ = {isa = PBXBuildFile; fileRef = CB23CFB01F5FFC54002914A6 /* YCLoadMoreView.h */; };
+		CB23CFB91F5FFC54002914A6 /* YCLoadMoreView.m in Sources */ = {isa = PBXBuildFile; fileRef = CB23CFB11F5FFC54002914A6 /* YCLoadMoreView.m */; };
+		CB23CFBA1F5FFC54002914A6 /* YCRefreshCircleView.h in Headers */ = {isa = PBXBuildFile; fileRef = CB23CFB21F5FFC54002914A6 /* YCRefreshCircleView.h */; };
+		CB23CFBB1F5FFC54002914A6 /* YCRefreshCircleView.m in Sources */ = {isa = PBXBuildFile; fileRef = CB23CFB31F5FFC54002914A6 /* YCRefreshCircleView.m */; };
+		CB23CFBC1F5FFC54002914A6 /* YCRefreshControl.h in Headers */ = {isa = PBXBuildFile; fileRef = CB23CFB41F5FFC54002914A6 /* YCRefreshControl.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		CB23CFBD1F5FFC54002914A6 /* YCRefreshControl.m in Sources */ = {isa = PBXBuildFile; fileRef = CB23CFB51F5FFC54002914A6 /* YCRefreshControl.m */; };
+		CB23CFBE1F5FFC54002914A6 /* YCRefreshView.h in Headers */ = {isa = PBXBuildFile; fileRef = CB23CFB61F5FFC54002914A6 /* YCRefreshView.h */; };
+		CB23CFBF1F5FFC54002914A6 /* YCRefreshView.m in Sources */ = {isa = PBXBuildFile; fileRef = CB23CFB71F5FFC54002914A6 /* YCRefreshView.m */; };
 		CB2DA4961F556D76002591DA /* YKCacheManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB2DA4951F556D76002591DA /* YKCacheManager.swift */; };
+		CB2DBB9F1F625C7F00CE807D /* YKPhotoManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB2DBB9E1F625C7F00CE807D /* YKPhotoManager.swift */; };
+		CB2DBBA21F626ED100CE807D /* YKAlbumsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB2DBBA11F626ED100CE807D /* YKAlbumsController.swift */; };
 		CB305F651F3AB9EC003A4D8C /* YKMessageMainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB305F641F3AB9EC003A4D8C /* YKMessageMainViewController.swift */; };
 		CB305F671F3ABA14003A4D8C /* YKContactMainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB305F661F3ABA14003A4D8C /* YKContactMainViewController.swift */; };
 		CB305F6A1F3ABA57003A4D8C /* YKSettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB305F691F3ABA57003A4D8C /* YKSettingViewController.swift */; };
@@ -73,6 +85,7 @@
 		CB305FE31F3B10B3003A4D8C /* YKSearchMaskView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB305FE21F3B10B3003A4D8C /* YKSearchMaskView.swift */; };
 		CB305FE51F3B1305003A4D8C /* YKFileSearchResultController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB305FE41F3B1305003A4D8C /* YKFileSearchResultController.swift */; };
 		CB305FE71F3B2F19003A4D8C /* YKCommon.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB305FE61F3B2F19003A4D8C /* YKCommon.swift */; };
+		CB58A4081F627990003DC511 /* YKPhotosViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB58A4071F627990003DC511 /* YKPhotosViewController.swift */; };
 		CB6084471F34290E00CC0091 /* YunkuSDK.h in Headers */ = {isa = PBXBuildFile; fileRef = CB6084451F34290E00CC0091 /* YunkuSDK.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		CB60845B1F34294F00CC0091 /* FMDatabase.h in Headers */ = {isa = PBXBuildFile; fileRef = CB60844F1F34294F00CC0091 /* FMDatabase.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		CB60845C1F34294F00CC0091 /* FMDatabase.m in Sources */ = {isa = PBXBuildFile; fileRef = CB6084501F34294F00CC0091 /* FMDatabase.m */; };
@@ -108,6 +121,7 @@
 		CB7B42DD1F5950510030E56B /* YKImagesPreviewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB7B42DC1F5950510030E56B /* YKImagesPreviewController.swift */; };
 		CB8F2A0D1F56CCA7004B9771 /* SocketIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CB8F2A0B1F56CCA7004B9771 /* SocketIO.framework */; };
 		CB91F5C41F3D8AF0004124F9 /* YKFileItemCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB91F5C31F3D8AF0004124F9 /* YKFileItemCell.swift */; };
+		CBA603E01F5CE98400F8CC75 /* YKRoundProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBA603DF1F5CE98400F8CC75 /* YKRoundProgressView.swift */; };
 		CBABB6EB1F4E6F8E0077CEC8 /* YKAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBABB6EA1F4E6F8E0077CEC8 /* YKAlert.swift */; };
 		CBABB6ED1F4E72690077CEC8 /* YKTextViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBABB6EC1F4E72690077CEC8 /* YKTextViewController.swift */; };
 		CBD79F901F4AF46F000B19B5 /* YKTransDB.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBD79F8F1F4AF46F000B19B5 /* YKTransDB.swift */; };
@@ -139,7 +153,19 @@
 		CB087ACE1F4A902E00EEA799 /* YKFileOperationSheetCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YKFileOperationSheetCell.swift; sourceTree = "<group>"; };
 		CB1C8DD11F4ECE7000BA2A69 /* YKFileUploadCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YKFileUploadCell.swift; sourceTree = "<group>"; };
 		CB1ED3981F46E385006D82D3 /* YKPopView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YKPopView.swift; sourceTree = "<group>"; };
+		CB23CFAB1F5FE44A002914A6 /* MBProgressHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBProgressHUD.h; sourceTree = "<group>"; };
+		CB23CFAC1F5FE44A002914A6 /* MBProgressHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBProgressHUD.m; sourceTree = "<group>"; };
+		CB23CFB01F5FFC54002914A6 /* YCLoadMoreView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YCLoadMoreView.h; sourceTree = "<group>"; };
+		CB23CFB11F5FFC54002914A6 /* YCLoadMoreView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YCLoadMoreView.m; sourceTree = "<group>"; };
+		CB23CFB21F5FFC54002914A6 /* YCRefreshCircleView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YCRefreshCircleView.h; sourceTree = "<group>"; };
+		CB23CFB31F5FFC54002914A6 /* YCRefreshCircleView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YCRefreshCircleView.m; sourceTree = "<group>"; };
+		CB23CFB41F5FFC54002914A6 /* YCRefreshControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YCRefreshControl.h; sourceTree = "<group>"; };
+		CB23CFB51F5FFC54002914A6 /* YCRefreshControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YCRefreshControl.m; sourceTree = "<group>"; };
+		CB23CFB61F5FFC54002914A6 /* YCRefreshView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YCRefreshView.h; sourceTree = "<group>"; };
+		CB23CFB71F5FFC54002914A6 /* YCRefreshView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YCRefreshView.m; sourceTree = "<group>"; };
 		CB2DA4951F556D76002591DA /* YKCacheManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YKCacheManager.swift; sourceTree = "<group>"; };
+		CB2DBB9E1F625C7F00CE807D /* YKPhotoManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YKPhotoManager.swift; sourceTree = "<group>"; };
+		CB2DBBA11F626ED100CE807D /* YKAlbumsController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YKAlbumsController.swift; sourceTree = "<group>"; };
 		CB305F641F3AB9EC003A4D8C /* YKMessageMainViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YKMessageMainViewController.swift; sourceTree = "<group>"; };
 		CB305F661F3ABA14003A4D8C /* YKContactMainViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YKContactMainViewController.swift; sourceTree = "<group>"; };
 		CB305F691F3ABA57003A4D8C /* YKSettingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YKSettingViewController.swift; sourceTree = "<group>"; };
@@ -192,6 +218,7 @@
 		CB305FE21F3B10B3003A4D8C /* YKSearchMaskView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YKSearchMaskView.swift; sourceTree = "<group>"; };
 		CB305FE41F3B1305003A4D8C /* YKFileSearchResultController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YKFileSearchResultController.swift; sourceTree = "<group>"; };
 		CB305FE61F3B2F19003A4D8C /* YKCommon.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YKCommon.swift; sourceTree = "<group>"; };
+		CB58A4071F627990003DC511 /* YKPhotosViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YKPhotosViewController.swift; sourceTree = "<group>"; };
 		CB6084421F34290E00CC0091 /* YunkuSDK.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = YunkuSDK.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CB6084451F34290E00CC0091 /* YunkuSDK.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YunkuSDK.h; sourceTree = "<group>"; };
 		CB6084461F34290E00CC0091 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -229,6 +256,7 @@
 		CB7B42DC1F5950510030E56B /* YKImagesPreviewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YKImagesPreviewController.swift; sourceTree = "<group>"; };
 		CB8F2A0B1F56CCA7004B9771 /* SocketIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SocketIO.framework; path = YunkuSDK/3rd/SocketIO/SocketIO.framework; sourceTree = "<group>"; };
 		CB91F5C31F3D8AF0004124F9 /* YKFileItemCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YKFileItemCell.swift; sourceTree = "<group>"; };
+		CBA603DF1F5CE98400F8CC75 /* YKRoundProgressView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YKRoundProgressView.swift; sourceTree = "<group>"; };
 		CBABB6EA1F4E6F8E0077CEC8 /* YKAlert.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YKAlert.swift; sourceTree = "<group>"; };
 		CBABB6EC1F4E72690077CEC8 /* YKTextViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YKTextViewController.swift; sourceTree = "<group>"; };
 		CBD79F8F1F4AF46F000B19B5 /* YKTransDB.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YKTransDB.swift; sourceTree = "<group>"; };
@@ -273,6 +301,7 @@
 		CB062E601F39B988000A9792 /* ui */ = {
 			isa = PBXGroup;
 			children = (
+				CB2DBB9D1F624EA100CE807D /* PhotoPicker */,
 				CBF972EE1F44321D00C0A7F3 /* Select */,
 				CB305FDF1F3B108C003A4D8C /* Search */,
 				CB062E641F39B9CC000A9792 /* File */,
@@ -284,6 +313,7 @@
 				CB305F7C1F3ACBDB003A4D8C /* YKBaseTableViewController.swift */,
 				CB1ED3981F46E385006D82D3 /* YKPopView.swift */,
 				CBD79F911F4B037F000B19B5 /* YKBottomSheetView.swift */,
+				CBA603DF1F5CE98400F8CC75 /* YKRoundProgressView.swift */,
 			);
 			path = ui;
 			sourceTree = "<group>";
@@ -334,12 +364,47 @@
 		CB062E761F39CC81000A9792 /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				CB23CFAF1F5FFC54002914A6 /* YCRefreshControl */,
 				CB305F821F3ADB09003A4D8C /* YKAppearance.swift */,
 				CB305FE61F3B2F19003A4D8C /* YKCommon.swift */,
 				CB75C3571F4BFA8C0092DD7E /* YKFileOperationManager.swift */,
 				CBABB6EA1F4E6F8E0077CEC8 /* YKAlert.swift */,
 			);
 			path = Common;
+			sourceTree = "<group>";
+		};
+		CB23CFA61F5FE3B0002914A6 /* MBProgressHUD */ = {
+			isa = PBXGroup;
+			children = (
+				CB23CFAB1F5FE44A002914A6 /* MBProgressHUD.h */,
+				CB23CFAC1F5FE44A002914A6 /* MBProgressHUD.m */,
+			);
+			path = MBProgressHUD;
+			sourceTree = "<group>";
+		};
+		CB23CFAF1F5FFC54002914A6 /* YCRefreshControl */ = {
+			isa = PBXGroup;
+			children = (
+				CB23CFB01F5FFC54002914A6 /* YCLoadMoreView.h */,
+				CB23CFB11F5FFC54002914A6 /* YCLoadMoreView.m */,
+				CB23CFB21F5FFC54002914A6 /* YCRefreshCircleView.h */,
+				CB23CFB31F5FFC54002914A6 /* YCRefreshCircleView.m */,
+				CB23CFB41F5FFC54002914A6 /* YCRefreshControl.h */,
+				CB23CFB51F5FFC54002914A6 /* YCRefreshControl.m */,
+				CB23CFB61F5FFC54002914A6 /* YCRefreshView.h */,
+				CB23CFB71F5FFC54002914A6 /* YCRefreshView.m */,
+			);
+			path = YCRefreshControl;
+			sourceTree = "<group>";
+		};
+		CB2DBB9D1F624EA100CE807D /* PhotoPicker */ = {
+			isa = PBXGroup;
+			children = (
+				CB2DBB9E1F625C7F00CE807D /* YKPhotoManager.swift */,
+				CB2DBBA11F626ED100CE807D /* YKAlbumsController.swift */,
+				CB58A4071F627990003DC511 /* YKPhotosViewController.swift */,
+			);
+			path = PhotoPicker;
 			sourceTree = "<group>";
 		};
 		CB305F681F3ABA41003A4D8C /* Setting */ = {
@@ -452,6 +517,7 @@
 		CB60844D1F34292100CC0091 /* 3rd */ = {
 			isa = PBXGroup;
 			children = (
+				CB23CFA61F5FE3B0002914A6 /* MBProgressHUD */,
 				CB305F861F3AFA97003A4D8C /* SDWebImage */,
 				CB60844E1F34294F00CC0091 /* fmdb */,
 			);
@@ -574,6 +640,10 @@
 				CB305FD01F3AFA97003A4D8C /* UIImage+WebP.h in Headers */,
 				CB60845F1F34294F00CC0091 /* FMDatabasePool.h in Headers */,
 				CB305FC51F3AFA97003A4D8C /* SDWebImageManager.h in Headers */,
+				CB23CFAD1F5FE44A002914A6 /* MBProgressHUD.h in Headers */,
+				CB23CFBE1F5FFC54002914A6 /* YCRefreshView.h in Headers */,
+				CB23CFBC1F5FFC54002914A6 /* YCRefreshControl.h in Headers */,
+				CB23CFB81F5FFC54002914A6 /* YCLoadMoreView.h in Headers */,
 				CB60845B1F34294F00CC0091 /* FMDatabase.h in Headers */,
 				CB305FD61F3AFA97003A4D8C /* UIView+WebCache.h in Headers */,
 				CB305FD41F3AFA97003A4D8C /* UIImageView+WebCache.h in Headers */,
@@ -589,6 +659,7 @@
 				CB6084471F34290E00CC0091 /* YunkuSDK.h in Headers */,
 				CB60845D1F34294F00CC0091 /* FMDatabaseAdditions.h in Headers */,
 				CB305FB31F3AFA97003A4D8C /* MKAnnotationView+WebCache.h in Headers */,
+				CB23CFBA1F5FFC54002914A6 /* YCRefreshCircleView.h in Headers */,
 				CB305FCC1F3AFA97003A4D8C /* UIImage+GIF.h in Headers */,
 				CB305FD81F3AFA97003A4D8C /* UIView+WebCacheOperation.h in Headers */,
 			);
@@ -691,6 +762,7 @@
 				CB7B42DD1F5950510030E56B /* YKImagesPreviewController.swift in Sources */,
 				CB305FE11F3B10A0003A4D8C /* YKSearchManager.swift in Sources */,
 				CB305FC91F3AFA97003A4D8C /* SDWebImagePrefetcher.m in Sources */,
+				CB23CFB91F5FFC54002914A6 /* YCLoadMoreView.m in Sources */,
 				CB305FBC1F3AFA97003A4D8C /* SDImageCacheConfig.m in Sources */,
 				CB305F6A1F3ABA57003A4D8C /* YKSettingViewController.swift in Sources */,
 				CBF972B41F42DF6F00C0A7F3 /* YKPermissionManager.swift in Sources */,
@@ -699,11 +771,14 @@
 				CB305FC41F3AFA97003A4D8C /* SDWebImageDownloaderOperation.m in Sources */,
 				CB305FE51F3B1305003A4D8C /* YKFileSearchResultController.swift in Sources */,
 				CB305FC01F3AFA97003A4D8C /* SDWebImageDecoder.m in Sources */,
+				CBA603E01F5CE98400F8CC75 /* YKRoundProgressView.swift in Sources */,
 				CB305FC61F3AFA97003A4D8C /* SDWebImageManager.m in Sources */,
 				CB7B42D01F592AD20030E56B /* YKWebViewPreviewController.swift in Sources */,
 				CBF972E31F4309F500C0A7F3 /* YKNetMonitor.swift in Sources */,
 				CB062E561F399AD2000A9792 /* YKEntManager.swift in Sources */,
+				CB2DBBA21F626ED100CE807D /* YKAlbumsController.swift in Sources */,
 				CBF972E51F431B9F00C0A7F3 /* YKMountItemWrap.swift in Sources */,
+				CB23CFBB1F5FFC54002914A6 /* YCRefreshCircleView.m in Sources */,
 				CBF96DC31F4135C300C0A7F3 /* YKFavDB.swift in Sources */,
 				CB6084C21F380FD600CC0091 /* YKEventNotify.swift in Sources */,
 				CB062E5C1F399DA4000A9792 /* YKMountCenter.swift in Sources */,
@@ -725,10 +800,13 @@
 				CB75C35B1F4BFD2A0092DD7E /* YKDownloadTask.swift in Sources */,
 				CB75C35D1F4BFD380092DD7E /* YKUploadTask.swift in Sources */,
 				CB305FE71F3B2F19003A4D8C /* YKCommon.swift in Sources */,
+				CB2DBB9F1F625C7F00CE807D /* YKPhotoManager.swift in Sources */,
+				CB23CFBF1F5FFC54002914A6 /* YCRefreshView.m in Sources */,
 				CB305FCF1F3AFA97003A4D8C /* UIImage+MultiFormat.m in Sources */,
 				CB1ED3991F46E385006D82D3 /* YKPopView.swift in Sources */,
 				CB305F831F3ADB09003A4D8C /* YKAppearance.swift in Sources */,
 				CB6084B51F3451B800CC0091 /* YKAppDelegate.swift in Sources */,
+				CB23CFBD1F5FFC54002914A6 /* YCRefreshControl.m in Sources */,
 				CB60845E1F34294F00CC0091 /* FMDatabaseAdditions.m in Sources */,
 				CB305FB81F3AFA97003A4D8C /* NSImage+WebCache.m in Sources */,
 				CB305FD11F3AFA97003A4D8C /* UIImage+WebP.m in Sources */,
@@ -738,6 +816,7 @@
 				CB7B42D51F592D1A0030E56B /* YKQuickLookPreviewController.swift in Sources */,
 				CB305FBA1F3AFA97003A4D8C /* SDImageCache.m in Sources */,
 				CBABB6EB1F4E6F8E0077CEC8 /* YKAlert.swift in Sources */,
+				CB23CFAE1F5FE44A002914A6 /* MBProgressHUD.m in Sources */,
 				CBF96DCB1F41424D00C0A7F3 /* YKTransDefine.swift in Sources */,
 				CB2DA4961F556D76002591DA /* YKCacheManager.swift in Sources */,
 				CB305F851F3AE089003A4D8C /* YKMountsListSectionView.swift in Sources */,
@@ -746,6 +825,7 @@
 				CBD79F921F4B037F000B19B5 /* YKBottomSheetView.swift in Sources */,
 				CB305FE31F3B10B3003A4D8C /* YKSearchMaskView.swift in Sources */,
 				CB6084AE1F34499900CC0091 /* YKLog.swift in Sources */,
+				CB58A4081F627990003DC511 /* YKPhotosViewController.swift in Sources */,
 				CB75C3611F4BFD560092DD7E /* YKUploadManager.swift in Sources */,
 				CB6084651F34294F00CC0091 /* FMResultSet.m in Sources */,
 				CB75C35F1F4BFD480092DD7E /* YKDownloadManager.swift in Sources */,

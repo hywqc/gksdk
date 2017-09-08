@@ -43,14 +43,21 @@ class YKMountListViewController : YKBaseTableViewController,YKMountsListSectionV
             } else {
                 return YKLocalizedString("选择文件")
             }
-            
-        default:
+        case .None:
+            if displayConfig.op == .Copy {
+                return YKLocalizedString("选择要复制到的路径")
+            }
             return YKLocalizedString("文件")
+            
         }
     }
     
     var cancelSelectBarButton: UIBarButtonItem {
         return UIBarButtonItem(title: "取消", style: .plain, target: self, action: #selector(onSelectCancel))
+    }
+    
+    var cancelOperationBarButton: UIBarButtonItem {
+        return UIBarButtonItem(title: YKLocalizedString("取消"), style: .plain, target: self, action: #selector(onCancelOperation))
     }
     
     private func setNavButton() {
@@ -95,6 +102,10 @@ class YKMountListViewController : YKBaseTableViewController,YKMountsListSectionV
         displayConfig.selectCancelBlock?(self)
     }
     
+    func onCancelOperation() {
+        self.dismiss(animated: true, completion: nil)
+    }
+    
     func onSelectChanged() {
         let barstr = displayConfig.getSelectBarStr()
         let newbar = UIBarButtonItem(title: barstr, style: .plain, target: self, action: #selector(onSelectConfirm))
@@ -107,13 +118,34 @@ class YKMountListViewController : YKBaseTableViewController,YKMountsListSectionV
         self.edgesForExtendedLayout = .all
         self.automaticallyAdjustsScrollViewInsets = true
         self.title = self.getTitle()
-        if displayConfig.selectMode == .None {
-            self.setupSearch()
+        if displayConfig.selectMode == .None{
+            switch displayConfig.op {
+            case .Normal:
+                self.setupSearch()
+            case .Copy,.Save:
+                self.navigationItem.rightBarButtonItem = self.cancelOperationBarButton
+            default:
+                break
+            }
+            
         }
         NotificationCenter.default.addObserver(self, selector: #selector(reload), name: NSNotification.Name(rawValue: YKNotification_UpdateEnts), object: nil)
         self.setNavButton()
         
     }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        if displayConfig.selectMode == .None {
+            switch displayConfig.op {
+            case .Copy,.Save:
+                self.navigationController?.isToolbarHidden = true
+            default:
+                break
+            }
+        }
+    }
+    
     
     func test() {
 //        YKSelectFileComponent.showSingleMountSelect(title: nil, cancleBlock: { (vc: UIViewController?) in

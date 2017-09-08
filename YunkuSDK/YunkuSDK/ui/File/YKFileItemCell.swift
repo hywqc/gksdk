@@ -441,4 +441,16 @@ class YKFileItemCell: UITableViewCell {
         }
     }
     
+//    override func setEditing(_ editing: Bool, animated: Bool) {
+//        super.setEditing(editing, animated: animated)
+//        
+//        if editing {
+//            self.fileItem.showArrow = false
+//            self.arrow.isHidden = true
+//        } else {
+//            self.fileItem.showArrow = true
+//            self.arrow.isHidden = false
+//        }
+//    }
+    
 }

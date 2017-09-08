@@ -105,7 +105,7 @@ class YKDownloadManager : NSObject, URLSessionDelegate, URLSessionDownloadDelega
                     
                     let rootvc = UIApplication.shared.keyWindow?.rootViewController
                     let msg = YKLocalizedString("当前处于移动网络, 继续下载将产生\(gkutility.formatSize(size: totalSize))的流量, 是否继续")
-                    YKAlert.showAlert(message: msg, title: nil, okTitle: YKLocalizedString("继续"), cancelTitle: YKString.kYKCancel, okBlock: { () in
+                    YKAlert.showAlert(message: msg, okTitle: YKLocalizedString("继续"), okBlock: { () in
                         self.resumeAll()
                         self.bHandNetChange = false
                     }, cancelBlock: { () in

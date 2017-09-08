@@ -89,6 +89,10 @@ class YKFileDisplayConfig: YKBaseDisplayConfig {
     var selectType: SelectType = .File
     var op: Operation = .Normal
     
+    var fromMountID = 0
+    var sourceFiles = [GKFileDataItem]()
+    var operationCompletion: (([GKFileDataItem],String)->Void)?
+    
     //空表示从库列表目录进入
     var rootPath: (mountID:Int,path:String)?
     
@@ -254,6 +258,8 @@ class YKCommon {
     
     private static let convertPreviewExts = ";doc;docx;xls;ppt;pptx;"
     
+    private static let localPreviewExts = ";doc;docx;docm;xls;xlsx;xlsb;xlsm;csv;ppt;pptx;pptm;pps;ppsm;ppsx;pot;potm;potx;pdf;odt;ods;odp;xml;xhtml;txt;rtf;js;json;asp;aspx;php;jsp;htm;html;h;cpp;m;md;gknote;plist;"
+    
     class func isSupportImage(_ filename: String) -> Bool {
         let ext = (filename as NSString).pathExtension
         if imageExts.contains(";\(ext);") {
@@ -267,6 +273,13 @@ class YKCommon {
         if ext.isEmpty { return false }
         ext = ";\(ext);"
         return convertPreviewExts.contains(ext)
+    }
+    
+    class func localSupportPreview(filename: String) -> Bool {
+        var ext = filename.gkExt
+        if ext.isEmpty { return false }
+        ext = ";\(ext);"
+        return localPreviewExts.contains(ext)
     }
     
     @inline(__always) class func avatarURL(memberID: Int, entID: Int, size: Int = 96) -> URL? {
@@ -288,6 +301,17 @@ class YKCommon {
             return YKLocalizedString("请不要在名称中使用 / \\ : * ? \" < > |")
         }
         
+        return nil
+    }
+    
+    class func getTopViewController() -> UIViewController? {
+        if let rootVC = UIApplication.shared.keyWindow?.rootViewController {
+            if let popvc = rootVC.presentedViewController  {
+                return popvc
+            } else {
+                return rootVC;
+            }
+        }
         return nil
     }
 }

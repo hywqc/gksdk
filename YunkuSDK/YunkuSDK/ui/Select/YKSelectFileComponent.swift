@@ -158,4 +158,34 @@ final class YKSelectFileComponent {
         showMultiSelect(filetype: 0, mountid: mountid, fullpath: fullpath, title: title, cancleBlock: cancleBlock, completion: completion, fromVC: fromVC)
     }
     
+    
+    class func showCopySelect(mountid: Int, files:[GKFileDataItem],fromVC: UIViewController) {
+        
+        let config = YKFileDisplayConfig()
+        
+        config.selectMode = .None
+        config.op = .Copy
+        config.fromMountID = mountid
+        config.sourceFiles = files
+        
+        let controller = YKMountListViewController(datasource: YKMountsDataTableSourceNormal(), config: config)
+        let nav = UINavigationController(rootViewController: controller)
+        fromVC.present(nav, animated: true, completion: nil)
+    }
+    
+    class func showMoveSelect(mountid: Int, files:[GKFileDataItem],fromVC: UIViewController,completion: (([GKFileDataItem],String)->Void)?) {
+        
+        let config = YKFileDisplayConfig()
+        
+        config.selectMode = .None
+        config.op = .Move
+        config.fromMountID = mountid
+        config.sourceFiles = files
+        config.operationCompletion = completion
+        
+        let controller = YKFileListViewController(mountID: mountid, fullpath: "/", config: config)
+        
+        let nav = UINavigationController(rootViewController: controller)
+        fromVC.present(nav, animated: true, completion: nil)
+    }
 }

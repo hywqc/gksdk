@@ -101,11 +101,15 @@ class YKFileOperationSheetCell: UITableViewCell {
     }
     
     func onDeleteBtn() {
-        
+        if delegate != nil {
+            delegate!.fileOperationDelete(item: self.fileItem)
+        }
     }
     
     func onPropertyBtn() {
-        
+        if delegate != nil {
+            delegate!.fileOperationProperty(item: self.fileItem)
+        }
     }
     
     func onMoreBtn() {
