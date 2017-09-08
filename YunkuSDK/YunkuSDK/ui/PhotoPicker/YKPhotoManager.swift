@@ -10,6 +10,14 @@ import Foundation
 import Photos
 
 
+struct YKPhotoPickConfig {
+    
+    var ignoreVideo = false
+    var limit = 0
+    var multiSelect = true
+    
+}
+
 class YKAssetItem {
     var original = false
     var isVideo = false
@@ -150,7 +158,7 @@ class YKPhotoManager {
         return result
     }
     
-    class func showPicker(completion:(([YKAssetItem])->Void)?) {
+    class func showMultiPhotoPicker(completion:(([YKAssetItem])->Void)?) {
         
     }
 }
