@@ -148,13 +148,17 @@ public class gkutility : NSObject {
     
     //MARK: --------- System ---------
     
-    @nonobjc private static func appFolderPath(type: FolderType, decorate: String? = "gokuai") -> String {
+    @nonobjc private static func appFolderPath(type: FolderType, groupID: String?, decorate: String? = "gokuai") -> String {
         
         var pathUrl: URL? = nil
         
         switch type {
         case .Document:
-            pathUrl = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first
+            if groupID != nil {
+                pathUrl = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: groupID!)
+            } else {
+                pathUrl = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first
+            }
         case .Cache:
             pathUrl = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask).first
         case .Temp:
@@ -183,16 +187,20 @@ public class gkutility : NSObject {
     }
     
     @objc public static func docPath(decorate: String? = kDefaultPathDecorate) -> String {
-        return self.appFolderPath(type: .Document, decorate: decorate)
+        return self.appFolderPath(type: .Document,groupID: nil, decorate: decorate)
+    }
+    
+    @objc public static func docPath(groupID:String?,decorate: String? = kDefaultPathDecorate) -> String {
+        return self.appFolderPath(type: .Document,groupID: groupID, decorate: decorate)
     }
     
     
     public static func cachePath(decorate: String? = kDefaultPathDecorate ) -> String {
-        return self.appFolderPath(type: .Cache, decorate: decorate)
+        return self.appFolderPath(type: .Cache,groupID: nil, decorate: decorate)
     }
     
     public static func tempPath(decorate: String? = kDefaultPathDecorate ) -> String {
-        return self.appFolderPath(type: .Temp, decorate: decorate)
+        return self.appFolderPath(type: .Temp,groupID: nil, decorate: decorate)
     }
     
     
@@ -231,7 +239,7 @@ public class gkutility : NSObject {
     public static func screenScale() -> Double {
         if gkScreenScale < 1.0 {
             let s = UIScreen.main.scale
-            gkScreenScale = s.native
+            gkScreenScale = Double(s.native)
         }
         
         return gkScreenScale
@@ -424,6 +432,23 @@ public class gkutility : NSObject {
         return kIconImageNameOther
     }
     
+    public func clearInboxFiles() {
+        
+        if let pathUrl = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first {
+            let dir = pathUrl.path.gkAddLastSlash + "Inbox"
+            if gkutility.isDir(path: dir) {
+                if let files = try? FileManager.default.contentsOfDirectory(atPath: dir) {
+                    for fname in files {
+                        let p = dir.appending(fname)
+                        let _ = gkutility.deleteFile(path: p)
+                    }
+                    
+                }
+            }
+        }
+    
+    }
+    
     
     //MARK: --------- Json ---------
     
@@ -530,7 +555,7 @@ public class gkutility : NSObject {
         return formatter.string(from: date)
     }
     
-    public class func genFileNameSuffix() -> String {
+    public class func genFileNameSuffixByDate() -> String {
         return formatDateline(Date().timeIntervalSince1970, format: "_YYYY_MM_dd_HH_mm_ss")
     }
     

@@ -159,7 +159,7 @@ final class YKSelectFileComponent {
     }
     
     
-    class func showCopySelect(mountid: Int, files:[GKFileDataItem],fromVC: UIViewController) {
+    class func showCopySelect(mountid: Int, files:[GKFileDataItem],fromVC: UIViewController,cancelBlock:((UIViewController?)->Void)?,completion: (([GKFileDataItem],String,UIViewController?)->Void)?) {
         
         let config = YKFileDisplayConfig()
         
@@ -167,13 +167,15 @@ final class YKSelectFileComponent {
         config.op = .Copy
         config.fromMountID = mountid
         config.sourceFiles = files
+        config.operationCancelBlock = cancelBlock
+        config.operationCompletion = completion
         
         let controller = YKMountListViewController(datasource: YKMountsDataTableSourceNormal(), config: config)
         let nav = UINavigationController(rootViewController: controller)
         fromVC.present(nav, animated: true, completion: nil)
     }
     
-    class func showMoveSelect(mountid: Int, files:[GKFileDataItem],fromVC: UIViewController,completion: (([GKFileDataItem],String)->Void)?) {
+    class func showMoveSelect(mountid: Int, files:[GKFileDataItem],fromVC: UIViewController,cancelBlock:((UIViewController?)->Void)?,completion: (([GKFileDataItem],String,UIViewController?)->Void)?) {
         
         let config = YKFileDisplayConfig()
         
@@ -182,10 +184,38 @@ final class YKSelectFileComponent {
         config.fromMountID = mountid
         config.sourceFiles = files
         config.operationCompletion = completion
+        config.operationCancelBlock = cancelBlock
         
         let controller = YKFileListViewController(mountID: mountid, fullpath: "/", config: config)
         
         let nav = UINavigationController(rootViewController: controller)
         fromVC.present(nav, animated: true, completion: nil)
+    }
+    
+    class func showOutSaveSelect(localFiles:[String:String],fromVC: UIViewController) {
+        
+        let config = YKFileDisplayConfig()
+        
+        config.selectMode = .None
+        config.op = .Save
+        config.saveLocalFileInfo = localFiles
+        
+        let controller = YKMountListViewController(datasource: YKMountsDataTableSourceNormal(), config: config)
+        let nav = UINavigationController(rootViewController: controller)
+        fromVC.present(nav, animated: true, completion: nil)
+    }
+    
+    class func getShareExtensionSelect(localFiles:[String:String],cancelBlock:((UIViewController?)->Void)?,completion:(([GKFileDataItem],String,UIViewController?)->Void)?) -> UIViewController {
+        
+        let config = YKFileDisplayConfig()
+        
+        config.selectMode = .None
+        config.op = .Save
+        config.saveLocalFileInfo = localFiles
+        config.operationCancelBlock = cancelBlock
+        config.operationCompletion = completion
+        
+        let controller = YKMountListViewController(datasource: YKMountsDataTableSourceNormal(), config: config)
+        return controller
     }
 }

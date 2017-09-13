@@ -106,7 +106,7 @@ class YKTextViewController : YKBaseViewController, UITextViewDelegate {
         
         if editFile == nil {
             
-            let defname = "note\(gkutility.genFileNameSuffix()).txt"
+            let defname = "note\(gkutility.genFileNameSuffixByDate()).txt"
             
             let alert = UIAlertController(title: YKLocalizedString("请输入文件名称(不含后缀名)"), message: nil, preferredStyle: .alert)
             alert.addTextField { (textField: UITextField) in

@@ -12,6 +12,7 @@ class YKBaseViewController : UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.edgesForExtendedLayout = []
         self.automaticallyAdjustsScrollViewInsets = false
         self.view.backgroundColor = YKColor.BKG
         

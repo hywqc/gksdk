@@ -16,13 +16,13 @@ class YKAlert {
     
     class func showAlert(message:String, title: String, okTitle: String, destructive:Bool , cancelTitle: String, okBlock:((Void)->Void)?, cancelBlock:((Void)->Void)?, vc: UIViewController?) {
         
-        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        let alert = UIAlertController(title: (title.isEmpty ? DefaultTitle : title), message: message, preferredStyle: .alert)
         
-        let actOK = UIAlertAction(title: okTitle, style: (destructive ? .destructive : .default)) { (act:UIAlertAction) in
+        let actOK = UIAlertAction(title: (okTitle.isEmpty ? DefaultOKTitle : okTitle), style: (destructive ? .destructive : .default)) { (act:UIAlertAction) in
             okBlock?()
         }
         
-        let actCancel = UIAlertAction(title: cancelTitle, style: .cancel) { (act:UIAlertAction) in
+        let actCancel = UIAlertAction(title: (cancelTitle.isEmpty ? DefaultCancelTitle : cancelTitle), style: .cancel) { (act:UIAlertAction) in
             cancelBlock?()
         }
         

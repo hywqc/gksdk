@@ -17,6 +17,12 @@ let YKAlertSizeWifi: Int64 = 100*1024*1024
 let YKMEMBER_AVATER_URLFORMAT = ""
 
 
+enum YKFechType {
+    case Both
+    case OnlyNet
+    case OnlyLocal
+}
+
 enum YKSelectIconType {
     case None
     case Selected
@@ -89,9 +95,12 @@ class YKFileDisplayConfig: YKBaseDisplayConfig {
     var selectType: SelectType = .File
     var op: Operation = .Normal
     
+    //复制、移动、存储
     var fromMountID = 0
     var sourceFiles = [GKFileDataItem]()
-    var operationCompletion: (([GKFileDataItem],String)->Void)?
+    var saveLocalFileInfo:[String:String] = [:]
+    var operationCancelBlock:((UIViewController?)->Void)?
+    var operationCompletion: (([GKFileDataItem],String,UIViewController?)->Void)?
     
     //空表示从库列表目录进入
     var rootPath: (mountID:Int,path:String)?

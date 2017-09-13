@@ -20,9 +20,6 @@
 		CB062E871F39E18A000A9792 /* GKColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB062E861F39E18A000A9792 /* GKColor.swift */; };
 		CB062E8B1F39E60A000A9792 /* loginAvatar.png in Resources */ = {isa = PBXBuildFile; fileRef = CB062E8A1F39E60A000A9792 /* loginAvatar.png */; };
 		CB062E8D1F39E94B000A9792 /* back@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CB062E8C1F39E94B000A9792 /* back@2x.png */; };
-		CB2DA4871F550AEE002591DA /* YunkuSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CB2DA4861F550AEE002591DA /* YunkuSDK.framework */; };
-		CB2DA4891F550AF2002591DA /* gkutility.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CB2DA4881F550AF2002591DA /* gkutility.framework */; };
-		CB2DA48B1F550AF5002591DA /* gknet.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CB2DA48A1F550AF5002591DA /* gknet.framework */; };
 		CB2DA4921F55308D002591DA /* bbb.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = CB2DA4911F55308D002591DA /* bbb.mp3 */; };
 		CB305F5C1F3AABB8003A4D8C /* AlertUtility.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB305F5B1F3AABB8003A4D8C /* AlertUtility.swift */; };
 		CB305F5E1F3AB8E2003A4D8C /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB305F5D1F3AB8E2003A4D8C /* MainViewController.swift */; };
@@ -34,14 +31,37 @@
 		CB305F791F3AC8F4003A4D8C /* messageTabSelect@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CB305F711F3AC8F4003A4D8C /* messageTabSelect@2x.png */; };
 		CB305F7A1F3AC8F4003A4D8C /* settingTab@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CB305F721F3AC8F4003A4D8C /* settingTab@2x.png */; };
 		CB305F7B1F3AC8F4003A4D8C /* settingTabSelect@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CB305F731F3AC8F4003A4D8C /* settingTabSelect@2x.png */; };
-		CB33FCB81F57B1600052DFC2 /* SocketIO.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = CB33FCB71F57B1600052DFC2 /* SocketIO.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		CB33FCBC1F57B25A0052DFC2 /* StarscreamSocketIO.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = CB33FCBB1F57B25A0052DFC2 /* StarscreamSocketIO.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		CB33FCBE1F57B7BC0052DFC2 /* YunkuSDK.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = CB6084731F34397F00CC0091 /* YunkuSDK.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		CB33FCBF1F57B7CA0052DFC2 /* gknet.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = CB006BC61F264D05002D692F /* gknet.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		CB33FCC01F57B7CA0052DFC2 /* gkutility.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = CB006BC11F2646B1002D692F /* gkutility.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		CB6E9A7B1F6786B80090D953 /* ShareViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB6E9A7A1F6786B80090D953 /* ShareViewController.swift */; };
+		CB6E9A7E1F6786B80090D953 /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CB6E9A7C1F6786B80090D953 /* MainInterface.storyboard */; };
+		CB6E9A831F6786B80090D953 /* ShareExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = CB6E9A781F6786B80090D953 /* ShareExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		CB6E9A881F6787820090D953 /* GKShareViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB6E9A871F6787820090D953 /* GKShareViewController.swift */; };
 		CBAB6F231F307B0E00E5130F /* GKBaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBAB6F221F307B0E00E5130F /* GKBaseViewController.swift */; };
 		CBAB6F251F307B3F00E5130F /* GKDef.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBAB6F241F307B3F00E5130F /* GKDef.swift */; };
+		CBBFC05E1F67C3D80087F137 /* gknet.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CBBFC05B1F67C3D80087F137 /* gknet.framework */; };
+		CBBFC05F1F67C3D80087F137 /* gkutility.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CBBFC05C1F67C3D80087F137 /* gkutility.framework */; };
+		CBBFC0601F67C3D80087F137 /* YunkuSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CBBFC05D1F67C3D80087F137 /* YunkuSDK.framework */; };
+		CBBFC0631F67C4060087F137 /* SocketIO.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = CBBFC0611F67C4060087F137 /* SocketIO.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		CBBFC0641F67C4060087F137 /* StarscreamSocketIO.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = CBBFC0621F67C4060087F137 /* StarscreamSocketIO.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		CBBFC0651F67C4360087F137 /* YunkuSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CBBFC05D1F67C3D80087F137 /* YunkuSDK.framework */; };
+		CBBFC0681F67C4490087F137 /* SocketIO.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = CBBFC0661F67C4490087F137 /* SocketIO.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		CBBFC0691F67C4490087F137 /* StarscreamSocketIO.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = CBBFC0671F67C4490087F137 /* StarscreamSocketIO.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		CBBFC06A1F67C45A0087F137 /* YunkuSDK.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = CBBFC05D1F67C3D80087F137 /* YunkuSDK.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		CBBFC06B1F67C4740087F137 /* gknet.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = CBBFC05B1F67C3D80087F137 /* gknet.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		CBBFC06C1F67C4740087F137 /* gkutility.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = CBBFC05C1F67C3D80087F137 /* gkutility.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		CBBFC06D1F67C47F0087F137 /* gknet.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = CBBFC05B1F67C3D80087F137 /* gknet.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		CBBFC06E1F67C47F0087F137 /* gkutility.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = CBBFC05C1F67C3D80087F137 /* gkutility.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		CBBFC06F1F67C47F0087F137 /* YunkuSDK.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = CBBFC05D1F67C3D80087F137 /* YunkuSDK.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		CB6E9A801F6786B80090D953 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = CB006B7A1F2615D0002D692F /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = CB6E9A771F6786B80090D953;
+			remoteInfo = ShareExtension;
+		};
+/* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
 		CB062E741F39CA89000A9792 /* Embed Frameworks */ = {
@@ -50,13 +70,38 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				CB33FCBF1F57B7CA0052DFC2 /* gknet.framework in Embed Frameworks */,
-				CB33FCC01F57B7CA0052DFC2 /* gkutility.framework in Embed Frameworks */,
-				CB33FCBE1F57B7BC0052DFC2 /* YunkuSDK.framework in Embed Frameworks */,
-				CB33FCBC1F57B25A0052DFC2 /* StarscreamSocketIO.framework in Embed Frameworks */,
-				CB33FCB81F57B1600052DFC2 /* SocketIO.framework in Embed Frameworks */,
+				CBBFC06D1F67C47F0087F137 /* gknet.framework in Embed Frameworks */,
+				CBBFC06E1F67C47F0087F137 /* gkutility.framework in Embed Frameworks */,
+				CBBFC06F1F67C47F0087F137 /* YunkuSDK.framework in Embed Frameworks */,
+				CBBFC0631F67C4060087F137 /* SocketIO.framework in Embed Frameworks */,
+				CBBFC0641F67C4060087F137 /* StarscreamSocketIO.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CB6E9A821F6786B80090D953 /* Embed App Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				CB6E9A831F6786B80090D953 /* ShareExtension.appex in Embed App Extensions */,
+			);
+			name = "Embed App Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CBBFC0551F67BFE80087F137 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				CBBFC06B1F67C4740087F137 /* gknet.framework in CopyFiles */,
+				CBBFC06C1F67C4740087F137 /* gkutility.framework in CopyFiles */,
+				CBBFC06A1F67C45A0087F137 /* YunkuSDK.framework in CopyFiles */,
+				CBBFC0681F67C4490087F137 /* SocketIO.framework in CopyFiles */,
+				CBBFC0691F67C4490087F137 /* StarscreamSocketIO.framework in CopyFiles */,
+			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
@@ -69,8 +114,6 @@
 		CB006B8C1F2615D1002D692F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		CB006B8F1F2615D1002D692F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		CB006B911F2615D1002D692F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		CB006BC11F2646B1002D692F /* gkutility.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = gkutility.framework; path = "../../../../../../Library/Developer/Xcode/DerivedData/Build/Products/Debug-iphonesimulator/gkutility.framework"; sourceTree = "<group>"; };
-		CB006BC61F264D05002D692F /* gknet.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = gknet.framework; path = "../../../../../../Library/Developer/Xcode/DerivedData/Build/Products/Debug-iphonesimulator/gknet.framework"; sourceTree = "<group>"; };
 		CB062E7A1F39CDB4000A9792 /* GKLoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GKLoginViewController.swift; sourceTree = "<group>"; };
 		CB062E7D1F39CE98000A9792 /* GKCommon.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GKCommon.swift; sourceTree = "<group>"; };
 		CB062E7F1F39D473000A9792 /* GKNavigationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GKNavigationController.swift; sourceTree = "<group>"; };
@@ -79,9 +122,6 @@
 		CB062E861F39E18A000A9792 /* GKColor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GKColor.swift; sourceTree = "<group>"; };
 		CB062E8A1F39E60A000A9792 /* loginAvatar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = loginAvatar.png; sourceTree = "<group>"; };
 		CB062E8C1F39E94B000A9792 /* back@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "back@2x.png"; sourceTree = "<group>"; };
-		CB2DA4861F550AEE002591DA /* YunkuSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = YunkuSDK.framework; path = "../../../../../../Library/Developer/Xcode/DerivedData/Build/Products/Debug-iphoneos/YunkuSDK.framework"; sourceTree = "<group>"; };
-		CB2DA4881F550AF2002591DA /* gkutility.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = gkutility.framework; path = "../../../../../../Library/Developer/Xcode/DerivedData/Build/Products/Debug-iphoneos/gkutility.framework"; sourceTree = "<group>"; };
-		CB2DA48A1F550AF5002591DA /* gknet.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = gknet.framework; path = "../../../../../../Library/Developer/Xcode/DerivedData/Build/Products/Debug-iphoneos/gknet.framework"; sourceTree = "<group>"; };
 		CB2DA4911F55308D002591DA /* bbb.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = bbb.mp3; sourceTree = "<group>"; };
 		CB305F5B1F3AABB8003A4D8C /* AlertUtility.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlertUtility.swift; sourceTree = "<group>"; };
 		CB305F5D1F3AB8E2003A4D8C /* MainViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
@@ -93,12 +133,22 @@
 		CB305F711F3AC8F4003A4D8C /* messageTabSelect@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "messageTabSelect@2x.png"; sourceTree = "<group>"; };
 		CB305F721F3AC8F4003A4D8C /* settingTab@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "settingTab@2x.png"; sourceTree = "<group>"; };
 		CB305F731F3AC8F4003A4D8C /* settingTabSelect@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "settingTabSelect@2x.png"; sourceTree = "<group>"; };
-		CB33FCB71F57B1600052DFC2 /* SocketIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = SocketIO.framework; sourceTree = "<group>"; };
-		CB33FCB91F57B1B60052DFC2 /* SocketIOClientSwift.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = SocketIOClientSwift.framework; sourceTree = "<group>"; };
-		CB33FCBB1F57B25A0052DFC2 /* StarscreamSocketIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = StarscreamSocketIO.framework; sourceTree = "<group>"; };
-		CB6084731F34397F00CC0091 /* YunkuSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = YunkuSDK.framework; path = "../../../../../../Library/Developer/Xcode/DerivedData/Build/Products/Debug-iphonesimulator/YunkuSDK.framework"; sourceTree = "<group>"; };
+		CB6E9A781F6786B80090D953 /* ShareExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = ShareExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		CB6E9A7A1F6786B80090D953 /* ShareViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareViewController.swift; sourceTree = "<group>"; };
+		CB6E9A7D1F6786B80090D953 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/MainInterface.storyboard; sourceTree = "<group>"; };
+		CB6E9A7F1F6786B80090D953 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		CB6E9A871F6787820090D953 /* GKShareViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GKShareViewController.swift; sourceTree = "<group>"; };
+		CB6E9A891F6787DD0090D953 /* testsw.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = testsw.entitlements; sourceTree = "<group>"; };
+		CB6E9A8A1F6787F80090D953 /* ShareExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = ShareExtension.entitlements; sourceTree = "<group>"; };
 		CBAB6F221F307B0E00E5130F /* GKBaseViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GKBaseViewController.swift; sourceTree = "<group>"; };
 		CBAB6F241F307B3F00E5130F /* GKDef.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GKDef.swift; sourceTree = "<group>"; };
+		CBBFC05B1F67C3D80087F137 /* gknet.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = gknet.framework; path = "../../../../../../Library/Developer/Xcode/DerivedData/Build/Products/Debug-iphonesimulator/gknet.framework"; sourceTree = "<group>"; };
+		CBBFC05C1F67C3D80087F137 /* gkutility.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = gkutility.framework; path = "../../../../../../Library/Developer/Xcode/DerivedData/Build/Products/Debug-iphonesimulator/gkutility.framework"; sourceTree = "<group>"; };
+		CBBFC05D1F67C3D80087F137 /* YunkuSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = YunkuSDK.framework; path = "../../../../../../Library/Developer/Xcode/DerivedData/Build/Products/Debug-iphonesimulator/YunkuSDK.framework"; sourceTree = "<group>"; };
+		CBBFC0611F67C4060087F137 /* SocketIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SocketIO.framework; path = Simulate/SocketIO.framework; sourceTree = "<group>"; };
+		CBBFC0621F67C4060087F137 /* StarscreamSocketIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StarscreamSocketIO.framework; path = Simulate/StarscreamSocketIO.framework; sourceTree = "<group>"; };
+		CBBFC0661F67C4490087F137 /* SocketIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SocketIO.framework; path = Simulate/SocketIO.framework; sourceTree = "<group>"; };
+		CBBFC0671F67C4490087F137 /* StarscreamSocketIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StarscreamSocketIO.framework; path = Simulate/StarscreamSocketIO.framework; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -106,9 +156,17 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CB2DA4891F550AF2002591DA /* gkutility.framework in Frameworks */,
-				CB2DA48B1F550AF5002591DA /* gknet.framework in Frameworks */,
-				CB2DA4871F550AEE002591DA /* YunkuSDK.framework in Frameworks */,
+				CBBFC05E1F67C3D80087F137 /* gknet.framework in Frameworks */,
+				CBBFC05F1F67C3D80087F137 /* gkutility.framework in Frameworks */,
+				CBBFC0601F67C3D80087F137 /* YunkuSDK.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CB6E9A751F6786B80090D953 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CBBFC0651F67C4360087F137 /* YunkuSDK.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -118,10 +176,12 @@
 		CB006B791F2615D0002D692F = {
 			isa = PBXGroup;
 			children = (
-				CB33FCBB1F57B25A0052DFC2 /* StarscreamSocketIO.framework */,
-				CB33FCB91F57B1B60052DFC2 /* SocketIOClientSwift.framework */,
-				CB33FCB71F57B1600052DFC2 /* SocketIO.framework */,
+				CBBFC0661F67C4490087F137 /* SocketIO.framework */,
+				CBBFC0671F67C4490087F137 /* StarscreamSocketIO.framework */,
+				CBBFC0611F67C4060087F137 /* SocketIO.framework */,
+				CBBFC0621F67C4060087F137 /* StarscreamSocketIO.framework */,
 				CB006B841F2615D1002D692F /* testsw */,
+				CB6E9A791F6786B80090D953 /* ShareExtension */,
 				CB006B831F2615D0002D692F /* Products */,
 				CB006BC01F2646B1002D692F /* Frameworks */,
 			);
@@ -131,6 +191,7 @@
 			isa = PBXGroup;
 			children = (
 				CB006B821F2615D0002D692F /* testsw.app */,
+				CB6E9A781F6786B80090D953 /* ShareExtension.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -138,6 +199,7 @@
 		CB006B841F2615D1002D692F /* testsw */ = {
 			isa = PBXGroup;
 			children = (
+				CB6E9A891F6787DD0090D953 /* testsw.entitlements */,
 				CB2DA4911F55308D002591DA /* bbb.mp3 */,
 				CB305F5F1F3AB96A003A4D8C /* UI */,
 				CB062E831F39DFDD000A9792 /* Image */,
@@ -160,12 +222,9 @@
 		CB006BC01F2646B1002D692F /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				CB2DA48A1F550AF5002591DA /* gknet.framework */,
-				CB2DA4881F550AF2002591DA /* gkutility.framework */,
-				CB2DA4861F550AEE002591DA /* YunkuSDK.framework */,
-				CB6084731F34397F00CC0091 /* YunkuSDK.framework */,
-				CB006BC61F264D05002D692F /* gknet.framework */,
-				CB006BC11F2646B1002D692F /* gkutility.framework */,
+				CBBFC05B1F67C3D80087F137 /* gknet.framework */,
+				CBBFC05C1F67C3D80087F137 /* gkutility.framework */,
+				CBBFC05D1F67C3D80087F137 /* YunkuSDK.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -254,6 +313,18 @@
 			path = TabIcon;
 			sourceTree = "<group>";
 		};
+		CB6E9A791F6786B80090D953 /* ShareExtension */ = {
+			isa = PBXGroup;
+			children = (
+				CB6E9A8A1F6787F80090D953 /* ShareExtension.entitlements */,
+				CB6E9A871F6787820090D953 /* GKShareViewController.swift */,
+				CB6E9A7A1F6786B80090D953 /* ShareViewController.swift */,
+				CB6E9A7C1F6786B80090D953 /* MainInterface.storyboard */,
+				CB6E9A7F1F6786B80090D953 /* Info.plist */,
+			);
+			path = ShareExtension;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -265,15 +336,35 @@
 				CB006B7F1F2615D0002D692F /* Frameworks */,
 				CB006B801F2615D0002D692F /* Resources */,
 				CB062E741F39CA89000A9792 /* Embed Frameworks */,
+				CB6E9A821F6786B80090D953 /* Embed App Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				CB6E9A811F6786B80090D953 /* PBXTargetDependency */,
 			);
 			name = testsw;
 			productName = testsw;
 			productReference = CB006B821F2615D0002D692F /* testsw.app */;
 			productType = "com.apple.product-type.application";
+		};
+		CB6E9A771F6786B80090D953 /* ShareExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = CB6E9A861F6786B80090D953 /* Build configuration list for PBXNativeTarget "ShareExtension" */;
+			buildPhases = (
+				CB6E9A741F6786B80090D953 /* Sources */,
+				CB6E9A751F6786B80090D953 /* Frameworks */,
+				CB6E9A761F6786B80090D953 /* Resources */,
+				CBBFC0551F67BFE80087F137 /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = ShareExtension;
+			productName = ShareExtension;
+			productReference = CB6E9A781F6786B80090D953 /* ShareExtension.appex */;
+			productType = "com.apple.product-type.app-extension";
 		};
 /* End PBXNativeTarget section */
 
@@ -290,7 +381,20 @@
 						DevelopmentTeam = EQL936BY9A;
 						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
+							com.apple.ApplicationGroups.iOS = {
+								enabled = 1;
+							};
 							com.apple.BackgroundModes = {
+								enabled = 1;
+							};
+						};
+					};
+					CB6E9A771F6786B80090D953 = {
+						CreatedOnToolsVersion = 8.3;
+						DevelopmentTeam = EQL936BY9A;
+						ProvisioningStyle = Automatic;
+						SystemCapabilities = {
+							com.apple.ApplicationGroups.iOS = {
 								enabled = 1;
 							};
 						};
@@ -311,6 +415,7 @@
 			projectRoot = "";
 			targets = (
 				CB006B811F2615D0002D692F /* testsw */,
+				CB6E9A771F6786B80090D953 /* ShareExtension */,
 			);
 		};
 /* End PBXProject section */
@@ -338,6 +443,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		CB6E9A761F6786B80090D953 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CB6E9A7E1F6786B80090D953 /* MainInterface.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -359,7 +472,24 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		CB6E9A741F6786B80090D953 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CB6E9A881F6787820090D953 /* GKShareViewController.swift in Sources */,
+				CB6E9A7B1F6786B80090D953 /* ShareViewController.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		CB6E9A811F6786B80090D953 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = CB6E9A771F6786B80090D953 /* ShareExtension */;
+			targetProxy = CB6E9A801F6786B80090D953 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		CB006B891F2615D1002D692F /* Main.storyboard */ = {
@@ -376,6 +506,14 @@
 				CB006B8F1F2615D1002D692F /* Base */,
 			);
 			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+		CB6E9A7C1F6786B80090D953 /* MainInterface.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				CB6E9A7D1F6786B80090D953 /* Base */,
+			);
+			name = MainInterface.storyboard;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
@@ -477,7 +615,9 @@
 		CB006B951F2615D1002D692F /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = testsw/testsw.entitlements;
 				DEVELOPMENT_TEAM = EQL936BY9A;
 				INFOPLIST_FILE = testsw/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
@@ -491,13 +631,43 @@
 		CB006B961F2615D1002D692F /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = testsw/testsw.entitlements;
 				DEVELOPMENT_TEAM = EQL936BY9A;
 				INFOPLIST_FILE = testsw/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.gokuai.wqc.testsw;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
+			};
+			name = Release;
+		};
+		CB6E9A841F6786B80090D953 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = ShareExtension/ShareExtension.entitlements;
+				DEVELOPMENT_TEAM = EQL936BY9A;
+				INFOPLIST_FILE = ShareExtension/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.gokuai.wqc.testsw.ShareExtension;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 3.0;
+			};
+			name = Debug;
+		};
+		CB6E9A851F6786B80090D953 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = ShareExtension/ShareExtension.entitlements;
+				DEVELOPMENT_TEAM = EQL936BY9A;
+				INFOPLIST_FILE = ShareExtension/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.gokuai.wqc.testsw.ShareExtension;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
 				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
@@ -519,6 +689,15 @@
 			buildConfigurations = (
 				CB006B951F2615D1002D692F /* Debug */,
 				CB006B961F2615D1002D692F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		CB6E9A861F6786B80090D953 /* Build configuration list for PBXNativeTarget "ShareExtension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CB6E9A841F6786B80090D953 /* Debug */,
+				CB6E9A851F6786B80090D953 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

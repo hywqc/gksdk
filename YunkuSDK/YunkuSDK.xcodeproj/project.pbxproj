@@ -85,6 +85,7 @@
 		CB305FE31F3B10B3003A4D8C /* YKSearchMaskView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB305FE21F3B10B3003A4D8C /* YKSearchMaskView.swift */; };
 		CB305FE51F3B1305003A4D8C /* YKFileSearchResultController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB305FE41F3B1305003A4D8C /* YKFileSearchResultController.swift */; };
 		CB305FE71F3B2F19003A4D8C /* YKCommon.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB305FE61F3B2F19003A4D8C /* YKCommon.swift */; };
+		CB3FE7A21F692643007C30FC /* YKShareExtensionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB3FE7A11F692643007C30FC /* YKShareExtensionController.swift */; };
 		CB58A4081F627990003DC511 /* YKPhotosViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB58A4071F627990003DC511 /* YKPhotosViewController.swift */; };
 		CB6084471F34290E00CC0091 /* YunkuSDK.h in Headers */ = {isa = PBXBuildFile; fileRef = CB6084451F34290E00CC0091 /* YunkuSDK.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		CB60845B1F34294F00CC0091 /* FMDatabase.h in Headers */ = {isa = PBXBuildFile; fileRef = CB60844F1F34294F00CC0091 /* FMDatabase.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -106,6 +107,8 @@
 		CB6084B01F344B0000CC0091 /* YKDef.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB6084AF1F344B0000CC0091 /* YKDef.swift */; };
 		CB6084B51F3451B800CC0091 /* YKAppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB6084B41F3451B800CC0091 /* YKAppDelegate.swift */; };
 		CB6084C21F380FD600CC0091 /* YKEventNotify.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB6084C11F380FD600CC0091 /* YKEventNotify.swift */; };
+		CB6E9A921F678C670090D953 /* gknet.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CB6E9A911F678C670090D953 /* gknet.framework */; };
+		CB6E9A941F678C6B0090D953 /* gkutility.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CB6E9A931F678C6B0090D953 /* gkutility.framework */; };
 		CB75C3581F4BFA8C0092DD7E /* YKFileOperationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB75C3571F4BFA8C0092DD7E /* YKFileOperationManager.swift */; };
 		CB75C35B1F4BFD2A0092DD7E /* YKDownloadTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB75C35A1F4BFD2A0092DD7E /* YKDownloadTask.swift */; };
 		CB75C35D1F4BFD380092DD7E /* YKUploadTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB75C35C1F4BFD380092DD7E /* YKUploadTask.swift */; };
@@ -119,11 +122,13 @@
 		CB7B42D51F592D1A0030E56B /* YKQuickLookPreviewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB7B42D41F592D1A0030E56B /* YKQuickLookPreviewController.swift */; };
 		CB7B42D91F593F660030E56B /* YKPDFPreviewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB7B42D81F593F660030E56B /* YKPDFPreviewController.swift */; };
 		CB7B42DD1F5950510030E56B /* YKImagesPreviewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB7B42DC1F5950510030E56B /* YKImagesPreviewController.swift */; };
-		CB8F2A0D1F56CCA7004B9771 /* SocketIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CB8F2A0B1F56CCA7004B9771 /* SocketIO.framework */; };
 		CB91F5C41F3D8AF0004124F9 /* YKFileItemCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB91F5C31F3D8AF0004124F9 /* YKFileItemCell.swift */; };
 		CBA603E01F5CE98400F8CC75 /* YKRoundProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBA603DF1F5CE98400F8CC75 /* YKRoundProgressView.swift */; };
 		CBABB6EB1F4E6F8E0077CEC8 /* YKAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBABB6EA1F4E6F8E0077CEC8 /* YKAlert.swift */; };
 		CBABB6ED1F4E72690077CEC8 /* YKTextViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBABB6EC1F4E72690077CEC8 /* YKTextViewController.swift */; };
+		CBBFC0541F67A8D60087F137 /* YKBaseExtensionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBBFC0531F67A8D60087F137 /* YKBaseExtensionViewController.swift */; };
+		CBBFC0591F67C3620087F137 /* SocketIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CBBFC0571F67C3620087F137 /* SocketIO.framework */; };
+		CBBFC05A1F67C3620087F137 /* StarscreamSocketIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CBBFC0581F67C3620087F137 /* StarscreamSocketIO.framework */; };
 		CBD79F901F4AF46F000B19B5 /* YKTransDB.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBD79F8F1F4AF46F000B19B5 /* YKTransDB.swift */; };
 		CBD79F921F4B037F000B19B5 /* YKBottomSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBD79F911F4B037F000B19B5 /* YKBottomSheetView.swift */; };
 		CBF96DC31F4135C300C0A7F3 /* YKFavDB.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBF96DC21F4135C300C0A7F3 /* YKFavDB.swift */; };
@@ -218,6 +223,7 @@
 		CB305FE21F3B10B3003A4D8C /* YKSearchMaskView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YKSearchMaskView.swift; sourceTree = "<group>"; };
 		CB305FE41F3B1305003A4D8C /* YKFileSearchResultController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YKFileSearchResultController.swift; sourceTree = "<group>"; };
 		CB305FE61F3B2F19003A4D8C /* YKCommon.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YKCommon.swift; sourceTree = "<group>"; };
+		CB3FE7A11F692643007C30FC /* YKShareExtensionController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YKShareExtensionController.swift; sourceTree = "<group>"; };
 		CB58A4071F627990003DC511 /* YKPhotosViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YKPhotosViewController.swift; sourceTree = "<group>"; };
 		CB6084421F34290E00CC0091 /* YunkuSDK.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = YunkuSDK.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CB6084451F34290E00CC0091 /* YunkuSDK.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YunkuSDK.h; sourceTree = "<group>"; };
@@ -241,6 +247,8 @@
 		CB6084AF1F344B0000CC0091 /* YKDef.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YKDef.swift; sourceTree = "<group>"; };
 		CB6084B41F3451B800CC0091 /* YKAppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YKAppDelegate.swift; sourceTree = "<group>"; };
 		CB6084C11F380FD600CC0091 /* YKEventNotify.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YKEventNotify.swift; sourceTree = "<group>"; };
+		CB6E9A911F678C670090D953 /* gknet.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = gknet.framework; path = "../../../../../../Library/Developer/Xcode/DerivedData/Build/Products/Debug-iphoneos/gknet.framework"; sourceTree = "<group>"; };
+		CB6E9A931F678C6B0090D953 /* gkutility.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = gkutility.framework; path = "../../../../../../Library/Developer/Xcode/DerivedData/Build/Products/Debug-iphoneos/gkutility.framework"; sourceTree = "<group>"; };
 		CB75C3571F4BFA8C0092DD7E /* YKFileOperationManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YKFileOperationManager.swift; sourceTree = "<group>"; };
 		CB75C35A1F4BFD2A0092DD7E /* YKDownloadTask.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YKDownloadTask.swift; sourceTree = "<group>"; };
 		CB75C35C1F4BFD380092DD7E /* YKUploadTask.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YKUploadTask.swift; sourceTree = "<group>"; };
@@ -254,11 +262,13 @@
 		CB7B42D41F592D1A0030E56B /* YKQuickLookPreviewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YKQuickLookPreviewController.swift; sourceTree = "<group>"; };
 		CB7B42D81F593F660030E56B /* YKPDFPreviewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YKPDFPreviewController.swift; sourceTree = "<group>"; };
 		CB7B42DC1F5950510030E56B /* YKImagesPreviewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YKImagesPreviewController.swift; sourceTree = "<group>"; };
-		CB8F2A0B1F56CCA7004B9771 /* SocketIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SocketIO.framework; path = YunkuSDK/3rd/SocketIO/SocketIO.framework; sourceTree = "<group>"; };
 		CB91F5C31F3D8AF0004124F9 /* YKFileItemCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YKFileItemCell.swift; sourceTree = "<group>"; };
 		CBA603DF1F5CE98400F8CC75 /* YKRoundProgressView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YKRoundProgressView.swift; sourceTree = "<group>"; };
 		CBABB6EA1F4E6F8E0077CEC8 /* YKAlert.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YKAlert.swift; sourceTree = "<group>"; };
 		CBABB6EC1F4E72690077CEC8 /* YKTextViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YKTextViewController.swift; sourceTree = "<group>"; };
+		CBBFC0531F67A8D60087F137 /* YKBaseExtensionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YKBaseExtensionViewController.swift; sourceTree = "<group>"; };
+		CBBFC0571F67C3620087F137 /* SocketIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SocketIO.framework; path = YunkuSDK/3rd/SocketIO/Simulate/SocketIO.framework; sourceTree = "<group>"; };
+		CBBFC0581F67C3620087F137 /* StarscreamSocketIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StarscreamSocketIO.framework; path = YunkuSDK/3rd/SocketIO/Simulate/StarscreamSocketIO.framework; sourceTree = "<group>"; };
 		CBD79F8F1F4AF46F000B19B5 /* YKTransDB.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YKTransDB.swift; sourceTree = "<group>"; };
 		CBD79F911F4B037F000B19B5 /* YKBottomSheetView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YKBottomSheetView.swift; sourceTree = "<group>"; };
 		CBF96DC21F4135C300C0A7F3 /* YKFavDB.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YKFavDB.swift; sourceTree = "<group>"; };
@@ -278,8 +288,11 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CB6E9A941F678C6B0090D953 /* gkutility.framework in Frameworks */,
+				CB6E9A921F678C670090D953 /* gknet.framework in Frameworks */,
 				CB6084691F34297600CC0091 /* libsqlite3.tbd in Frameworks */,
-				CB8F2A0D1F56CCA7004B9771 /* SocketIO.framework in Frameworks */,
+				CBBFC05A1F67C3620087F137 /* StarscreamSocketIO.framework in Frameworks */,
+				CBBFC0591F67C3620087F137 /* SocketIO.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -301,6 +314,7 @@
 		CB062E601F39B988000A9792 /* ui */ = {
 			isa = PBXGroup;
 			children = (
+				CBBFC0521F67A8C20087F137 /* Extension */,
 				CB2DBB9D1F624EA100CE807D /* PhotoPicker */,
 				CBF972EE1F44321D00C0A7F3 /* Select */,
 				CB305FDF1F3B108C003A4D8C /* Search */,
@@ -545,7 +559,10 @@
 		CB6084671F34297600CC0091 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				CB8F2A0B1F56CCA7004B9771 /* SocketIO.framework */,
+				CBBFC0571F67C3620087F137 /* SocketIO.framework */,
+				CBBFC0581F67C3620087F137 /* StarscreamSocketIO.framework */,
+				CB6E9A931F678C6B0090D953 /* gkutility.framework */,
+				CB6E9A911F678C670090D953 /* gknet.framework */,
 				CB6084681F34297600CC0091 /* libsqlite3.tbd */,
 			);
 			name = Frameworks;
@@ -574,6 +591,15 @@
 				CB7B42DC1F5950510030E56B /* YKImagesPreviewController.swift */,
 			);
 			path = Preview;
+			sourceTree = "<group>";
+		};
+		CBBFC0521F67A8C20087F137 /* Extension */ = {
+			isa = PBXGroup;
+			children = (
+				CBBFC0531F67A8D60087F137 /* YKBaseExtensionViewController.swift */,
+				CB3FE7A11F692643007C30FC /* YKShareExtensionController.swift */,
+			);
+			path = Extension;
 			sourceTree = "<group>";
 		};
 		CBF96DC81F4141FC00C0A7F3 /* Trans */ = {
@@ -767,6 +793,7 @@
 				CB305F6A1F3ABA57003A4D8C /* YKSettingViewController.swift in Sources */,
 				CBF972B41F42DF6F00C0A7F3 /* YKPermissionManager.swift in Sources */,
 				CB305FBE1F3AFA97003A4D8C /* SDWebImageCompat.m in Sources */,
+				CB3FE7A21F692643007C30FC /* YKShareExtensionController.swift in Sources */,
 				CB305FC21F3AFA97003A4D8C /* SDWebImageDownloader.m in Sources */,
 				CB305FC41F3AFA97003A4D8C /* SDWebImageDownloaderOperation.m in Sources */,
 				CB305FE51F3B1305003A4D8C /* YKFileSearchResultController.swift in Sources */,
@@ -787,6 +814,7 @@
 				CB7B42C01F58FCB50030E56B /* Reachability.swift in Sources */,
 				CB062E5A1F399BE1000A9792 /* YKSyncDB.swift in Sources */,
 				CB062E5F1F39A94E000A9792 /* YKCustomConfig.swift in Sources */,
+				CBBFC0541F67A8D60087F137 /* YKBaseExtensionViewController.swift in Sources */,
 				CBABB6ED1F4E72690077CEC8 /* YKTextViewController.swift in Sources */,
 				CBF96DC71F413EA800C0A7F3 /* YKFileItemWrap.swift in Sources */,
 				CB75C3631F4BFDA90092DD7E /* YKTransfer.swift in Sources */,
@@ -965,6 +993,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/YunkuSDK/3rd/SocketIO",
+					"$(PROJECT_DIR)/YunkuSDK/3rd/SocketIO/Simulate",
 				);
 				INFOPLIST_FILE = YunkuSDK/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
@@ -993,6 +1022,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/YunkuSDK/3rd/SocketIO",
+					"$(PROJECT_DIR)/YunkuSDK/3rd/SocketIO/Simulate",
 				);
 				INFOPLIST_FILE = YunkuSDK/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";

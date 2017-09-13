@@ -51,16 +51,11 @@ class YKEntForTable {
 
 class YKMountsDataTableSourceNormal : YKMountsDataTableSource {
     
-    static var theSources = [YKMountsDataTableSourceNormal]()
     
     var entList = [YKEntForTable]()
     
     init() {
         self.reload()
-    }
-    
-    deinit {
-        //YKMountsDataTableSourceNormal.theSources.removeAll()
     }
     
    func reload() {

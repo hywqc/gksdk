@@ -17,6 +17,7 @@ class GKLoginViewController : GKBaseViewController {
     var accountTextField: UITextField!
     var passwordTextField: UITextField!
     
+    
     var peddingAccounts = [GKRequestAccountInfo]()
     
     private let BlueDisable = GKColor.Hex(0x00a0e9,0.3)

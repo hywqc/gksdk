@@ -140,6 +140,22 @@ class YKTransDB : YKBaseDB {
         return result
     }
     
+    func getUploadItemBy(localPath: String) -> YKUploadItemData? {
+        var result: YKUploadItemData?
+        let rpath = localPath.gkReplaceToSQL
+        self.dbQueue.inDatabase { (db:FMDatabase) in
+            let sql = "select * from Uploads where localpath='\(rpath)' ;"
+            if let rs = db.executeQuery(sql, withParameterDictionary: nil) {
+                while rs.next() {
+                    let item = uploadItemFromRs(rs)
+                    result = item
+                }
+                rs.close()
+            }
+        }
+        return result
+    }
+    
     func updateUploadFilehash(taskID: Int,filehash: String,filesize: Int64?) {
         self.dbQueue.inDatabase { (db:FMDatabase) in
             let sql: String

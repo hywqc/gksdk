@@ -12,7 +12,7 @@ import gknet
 class YKMountManager {
     
     var mountItem: GKMountDataItem
-    var syncDB: YKSyncDB
+    var syncDB: YKSyncDB?
     var bremoved = false
     
     init(mount: GKMountDataItem) {
@@ -26,12 +26,14 @@ class YKMountManager {
         
     }
     
-    func getFiles(fullpath:String, completion: (([GKFileDataItem],String?)->Void)? ) -> GKRequestID {
+    func getFiles(fullpath:String, type: YKFechType, updateDB: Bool, completion: (([GKFileDataItem],String?)->Void)? ) -> GKRequestID {
         
         let taskID = GKHttpEngine.default.fetchFileList(reget: false, mountID: mountItem.mount_id, fullpath: fullpath, dir: 0, hashs: nil, start: 0, size: 10000, dialog_id: nil, message_id: nil) { (retFiles:GKRequestRetFiles) in
             
             if retFiles.statuscode == 200 {
-                self.syncDB.updateFiles(retFiles.files, fullpath)
+                if updateDB {
+                    self.syncDB?.updateFiles(retFiles.files, fullpath)
+                }
                 if completion != nil {
                     completion!(retFiles.files,nil)
                 }

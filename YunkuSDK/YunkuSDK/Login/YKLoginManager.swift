@@ -40,11 +40,11 @@ final class YKLoginManager {
                         GKHttpEngine.default.setToken(tokens.accesstoken, tokens.refreshtoken)
                         
                         self.userInfo = acc
-                        YKClient.shareInstance.status = .unloadData
+                        YKClient.shareInstance.isLogined = true
                         DispatchQueue.main.async {
                             completion?(YKErrorCode_OK,"")
                         }
-                        YKMountCenter.shareInstance.start()
+                        self.startAfterLogin()
                         YKAppDelegate.shareInstance.settingDB.updateDateline(userid)
                         self.updateUserInfo()
                         return
@@ -72,11 +72,11 @@ final class YKLoginManager {
                     YKAppDelegate.shareInstance.settingDB.addAccount(token: tokenRet.accessToken, refreshtoken: tokenRet.refreshToken, accountRet)
                     
                     self.userInfo = accountRet
-                    YKClient.shareInstance.status = .unloadData
+                    YKClient.shareInstance.isLogined = true
                     DispatchQueue.main.async {
                         completion(YKErrorCode_OK,"")
                     }
-                    YKMountCenter.shareInstance.start()
+                    self.startAfterLogin()
                 } else {
                     DispatchQueue.main.async {
                         completion(accountRet.errcode,accountRet.errmsg)
@@ -99,6 +99,12 @@ final class YKLoginManager {
     }
     
     
+    func startAfterLogin() {
+        //YKNetMonitor.shareInstance.start()
+        YKTransfer.shanreInstance.start()
+        YKMountCenter.shareInstance.reload(type: .Both, updateDB: true, notifyUI: true)
+    }
+    
     
     func updateUserInfo() {
         DispatchQueue.global().async {
@@ -117,7 +123,7 @@ final class YKLoginManager {
     }
     
     func getUserFolder() -> String {
-        var userpath = gkutility.docPath().gkAddLastSlash
+        var userpath = gkutility.docPath(groupID: YKClient.shareInstance.appGroupID).gkAddLastSlash
         if let userid = YKLoginManager.shareInstance.userInfo?.member_id {
             userpath = userpath.appendingFormat("%ld", userid)
             let _ = gkutility.createDir(path: userpath)

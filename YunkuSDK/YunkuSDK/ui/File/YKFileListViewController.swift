@@ -152,6 +152,27 @@ class YKFileListViewController: YKBaseTableViewController,YKFileItemCellDelegate
         return UIBarButtonItem(title: YKLocalizedString("移动"), style: .plain, target: self, action: #selector(onPastFile))
     }
     
+    var outSaveToolBarItem: UIBarButtonItem {
+        let v = UIView(frame: CGRect(x: 0, y: 0, width: self.view.frame.size.width, height: 44))
+        v.autoresizingMask = [.flexibleWidth,.flexibleHeight]
+        var btn = UIButton(type: .custom)
+        btn.setTitle(YKLocalizedString("新建文件夹"), for: .normal)
+        btn.setTitleColor(UIColor.white, for: .normal)
+        btn.titleLabel?.font = YKFont.make(12)
+        btn.sizeToFit()
+        btn.frame = CGRect(x: 10, y: 0, width: btn.frame.size.width, height: 44)
+        v.addSubview(btn)
+        btn.addTarget(self, action: #selector(add_folder), for: .touchUpInside)
+        
+        btn = UIButton(type: .custom)
+        btn.setTitle(YKLocalizedString("保存"), for: .normal)
+        btn.setTitleColor(UIColor.white, for: .normal)
+        btn.frame = CGRect(x: (self.view.frame.size.width-150)/2, y: 0, width: 150, height: 44)
+        v.addSubview(btn)
+        btn.addTarget(self, action: #selector(onSaveOutFile), for: .touchUpInside)
+        return UIBarButtonItem(customView: v)
+    }
+    
     func onTestUpload() {
         DispatchQueue.global().async {
             
@@ -241,6 +262,8 @@ class YKFileListViewController: YKBaseTableViewController,YKFileItemCellDelegate
                     self.toolbarItems = [flexibleSpace,self.pastToolBarItem,flexibleSpace]
                 } else if displayConfig.op == .Move {
                     self.toolbarItems = [flexibleSpace,self.movehereToolBarItem,flexibleSpace]
+                } else if displayConfig.op == .Save {
+                    self.toolbarItems = [flexibleSpace,self.outSaveToolBarItem,flexibleSpace]
                 }
                 
             default:
@@ -397,13 +420,16 @@ class YKFileListViewController: YKBaseTableViewController,YKFileItemCellDelegate
             let parentpath = self.webpath
             let manager = YKMountCenter.shareInstance.mountManagerBy(mountID: mountID)
             if manager != nil {
-                requestID = manager!.getFiles(fullpath: webpath, completion: { [weak self] (files:[GKFileDataItem], errmsg:String?) in
+                requestID = manager!.getFiles(fullpath: webpath, type: .Both, updateDB: (YKClient.shareInstance.extensionType == .None ? true : false), completion: { [weak self] (files:[GKFileDataItem], errmsg:String?) in
                     
                     if errmsg != nil {
                         
                     } else {
                         
-                        let downloads = YKTransfer.shanreInstance.transDB?.getDownloadItems(mountID: mountid, parent: (parentpath == "/" ? "" : parentpath), expand: .Cache)
+                        var downloads:[YKDownloadItemData]?
+                        if YKClient.shareInstance.extensionType == .None {
+                            downloads = YKTransfer.shanreInstance.transDB?.getDownloadItems(mountID: mountid, parent: (parentpath == "/" ? "" : parentpath), expand: .Cache)
+                        }
                         
                         var result = [Any]()
                         for f in files {
@@ -415,12 +441,13 @@ class YKFileListViewController: YKBaseTableViewController,YKFileItemCellDelegate
                         if self == nil {
                             return
                         }
-                        if let uploads =  YKTransfer.shanreInstance.transDB?.getUploadItems(mountID: mountid, parent: (parentpath == "/" ? "" : parentpath)) {
-                            for item in uploads {
-                                result.append(item)
+                        if YKClient.shareInstance.extensionType == .None {
+                            if let uploads =  YKTransfer.shanreInstance.transDB?.getUploadItems(mountID: mountid, parent: (parentpath == "/" ? "" : parentpath)) {
+                                for item in uploads {
+                                    result.append(item)
+                                }
                             }
                         }
-                        
                         
                         DispatchQueue.main.async {
                             self?.files = result
@@ -681,6 +708,22 @@ class YKFileListViewController: YKBaseTableViewController,YKFileItemCellDelegate
         self.navigationController?.popViewController(animated: true)
     }
     
+    func onSaveOutFile() {
+        var tasks: Array<YKUploadManager.TaskAddItem> = []
+        for item in self.displayConfig.saveLocalFileInfo {
+            let localpath = item.key
+            var filename = item.value
+            if filename.isEmpty {
+                filename = localpath.gkFileName
+            }
+            let webpath = self.webpath.gkAddLastSlash + filename
+            let t = YKUploadManager.TaskAddItem(mount_id: self.mountID, webpath: webpath, localpath: localpath, override: false, expand: .None)
+            tasks.append(t)
+        }
+        let _ = YKTransfer.shanreInstance.uploadManager.addTasks(tasks)
+        self.displayConfig.operationCompletion?([],"",self)
+    }
+    
     func onPastFile() {
         
         let sources = displayConfig.sourceFiles
@@ -722,7 +765,8 @@ class YKFileListViewController: YKBaseTableViewController,YKFileItemCellDelegate
                 DispatchQueue.main.async {
                     if ret.statuscode == 200 {
                         YKAlert.hideHUDSuccess(view: self?.view, str: YKLocalizedString("复制成功"), animate: true)
-                        self?.dismiss(animated: true, completion: nil)
+                        self?.displayConfig.operationCompletion?(sources,targetwebpath,self)
+                        
                     } else {
                         YKAlert.hideHUD(view: self?.view, animate: false)
                         YKAlert.showAlert(message: ret.errmsg, title: YKLocalizedString("复制失败"), vc: self)
@@ -739,8 +783,7 @@ class YKFileListViewController: YKBaseTableViewController,YKFileItemCellDelegate
                 DispatchQueue.main.async {
                     if ret.statuscode == 200 {
                         YKAlert.hideHUDSuccess(view: self?.view, str: YKLocalizedString("移动成功"), animate: true)
-                        self?.displayConfig.operationCompletion?(sources,targetwebpath)
-                        self?.dismiss(animated: true, completion: nil)
+                        self?.displayConfig.operationCompletion?(sources,targetwebpath,self)
                     } else {
                         YKAlert.hideHUD(view: self?.view, animate: false)
                         YKAlert.showAlert(message: ret.errmsg, title: YKLocalizedString("移动失败"), vc: self)
@@ -835,7 +878,7 @@ class YKFileListViewController: YKBaseTableViewController,YKFileItemCellDelegate
     }
     
     func onCancelOperation() {
-        self.dismiss(animated: true, completion: nil)
+        self.displayConfig.operationCancelBlock?(self)
     }
     
     func onBarMore(send:Any,event:UIEvent) {
@@ -1079,7 +1122,11 @@ class YKFileListViewController: YKBaseTableViewController,YKFileItemCellDelegate
             source.append(item.file)
         }
         
-        YKSelectFileComponent.showCopySelect(mountid: self.mountID, files: source, fromVC: self)
+        YKSelectFileComponent.showCopySelect(mountid: self.mountID, files: source, fromVC: self, cancelBlock: { (vc:UIViewController?) in
+            self.dismiss(animated: true, completion: nil)
+        }) { (files:[GKFileDataItem], targetParent:String, vc:UIViewController?) in
+            self.dismiss(animated: true, completion: nil)
+        }
     }
     
     func file_move(files: [YKFileItemCellWrap]) {
@@ -1089,8 +1136,10 @@ class YKFileListViewController: YKBaseTableViewController,YKFileItemCellDelegate
             source.append(item.file)
         }
         
-        YKSelectFileComponent.showMoveSelect(mountid: mountID, files: source, fromVC: self) { (files:[GKFileDataItem], targetParent:String) in
-            
+        YKSelectFileComponent.showMoveSelect(mountid: mountID, files: source, fromVC: self, cancelBlock: { (vc:UIViewController?) in
+            self.dismiss(animated: true, completion: nil)
+        }) { (files:[GKFileDataItem], targetParent:String, vc:UIViewController?) in
+            self.dismiss(animated: true, completion: nil)
             self.onQuitMultiSelect()
             self.load()
         }

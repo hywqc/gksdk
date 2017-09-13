@@ -11,25 +11,19 @@ import gkutility
 import gknet
 
 
-let YKInnerCode_OK : Int = 0
-let YKInnerCode_DBError : Int = 1003
-
 final class YKMountCenter {
     
     static let shareInstance = YKMountCenter()
     
-    var thread: Thread?
-    var semaphore: DispatchSemaphore?
     var lock: gklock?
     var bStop = false
-    var mountsDB: YKMountsDB?
+    private var mountsDB: YKMountsDB?
     
-    var first = false
     
     var entManagers = [YKEntManager]()
     
-    var status = (errcode:YKInnerCode_OK,errmsg:"")
-    
+    var isReseting = false
+    var status = (errcode:200,errmsg:"")
     
     
     required init() {
@@ -42,88 +36,115 @@ final class YKMountCenter {
         return path
     }
     
-    func start() {
-        bStop = false
-        self.mountsDB = YKMountsDB(path: self.getMountsDBPath())
-        YKNetMonitor.shareInstance.start()
-        YKTransfer.shanreInstance.start()
-        self.lock = gklock()
-        self.semaphore = DispatchSemaphore(value: 0)
-        let thread = Thread(target: self, selector: #selector(run), object: nil)
-        self.thread = thread
-        thread.start()
-        
-    }
-    
     func stop() {
-        self.semaphore?.signal()
         bStop = true
-        first = true
     }
+
     
-    @objc func run() {
+    func reload(type: YKFechType, updateDB: Bool , notifyUI:Bool,reason: String? = nil) {
+        if self.isReseting {
+            return
+        }
         
-        while !bStop {
+        self.isReseting = true
+        
+        DispatchQueue.global().async {
             
-            if !first {
-                self.loadEnts()
-                self.loadMounts()
-                self.loadShortcuts()
-                YKEventNotify.notify(nil, type: .updateEnts)
-            }
-            
-            
-            var ret = resetEnt()
-            if ret.errcode == YKInnerCode_OK {
-                ret = resetMount()
-                if ret.errcode == YKInnerCode_OK {
-                    let _ = resetShortcuts()
+            if updateDB {
+                if self.mountsDB == nil {
+                    self.mountsDB = YKMountsDB(path: self.getMountsDBPath())
                 }
             }
             
-            if ret.errcode == GKOperationExitCode {
-                break
+            if type == .OnlyLocal || type == .Both {
+                if self.mountsDB == nil {
+                    self.isReseting = false
+                    return
+                }
+                self.loadEnts(source: self.mountsDB!.getEnts())
+                self.loadMounts(source: self.mountsDB!.getMounts())
+                self.loadShortcuts(source: self.mountsDB!.getShortcuts())
+                if notifyUI {
+                    YKEventNotify.notify(nil, type: .updateEnts)
+                }
+                if type == .OnlyLocal {
+                    self.isReseting = false
+                    return
+                }
             }
             
-            self.status = ret
-            if ret.errcode == YKInnerCode_OK {
-                self.loadEnts()
-                self.loadMounts()
-                self.loadShortcuts()
+            if updateDB {
+                if self.mountsDB != nil {
+                    var ret = self.resetEnt()
+                    if ret.errcode == 200 {
+                        ret = self.resetMount()
+                        if ret.errcode == 200 {
+                            let _ = self.resetShortcuts()
+                        }
+                    }
+                    
+                    if ret.errcode == GKOperationExitCode {
+                        self.isReseting = false
+                        return
+                    }
+                    
+                    self.status = ret
+                    self.loadEnts(source: self.mountsDB!.getEnts())
+                    self.loadMounts(source: self.mountsDB!.getMounts())
+                    self.loadShortcuts(source: self.mountsDB!.getShortcuts())
+                }
                 
-                first = true
+            } else {
+                let retEnts = GKHttpEngine.default.fetchEnts()
+                if retEnts.statuscode != 200 {
+                    self.status = (retEnts.errcode,retEnts.errmsg)
+                    if notifyUI {
+                        YKEventNotify.notify(nil, type: .updateEnts)
+                    }
+                    self.isReseting = false
+                    return
+                }
+                
+                if self.bStop {
+                    self.isReseting = false
+                    return
+                }
+                
+                let retMounts = GKHttpEngine.default.fetchMounts(org_id: nil)
+                if retMounts.statuscode != 200 {
+                    self.status = (retEnts.errcode,retEnts.errmsg)
+                    if notifyUI {
+                        YKEventNotify.notify(nil, type: .updateEnts)
+                    }
+                    self.isReseting = false
+                    return
+                }
+                
+                if self.bStop {
+                    self.isReseting = false
+                    return
+                }
+                
+                self.status = (200,"")
+                self.loadEnts(source: retEnts.ents)
+                self.loadMounts(source: retMounts.mounts)
             }
             
-            YKClient.shareInstance.status = .ready
-            
-            YKEventNotify.notify(nil, type: .updateEnts)
-            
-            if bStop {
-                break
+            if notifyUI {
+                YKEventNotify.notify(nil, type: .updateEnts)
             }
             
-            print("status: \(ret.errcode):\(ret.errmsg)")
-            let _ = self.semaphore?.wait(timeout: .distantFuture)
+            self.isReseting = false
+            print("reload mounts finish")
         }
     }
     
-    func loadFromLocal() {
-        DispatchQueue.global().async {
-            self.loadEnts()
-            self.loadMounts()
-            self.loadShortcuts()
-            YKEventNotify.notify(nil, type: .updateEnts)
-        }
-    }
     
-    func resetAll() {
-        self.semaphore?.signal()
-    }
-    
+
     func resetEnt() -> (errcode:Int,errmsg:String) {
         
         if mountsDB == nil{
-            return (YKInnerCode_DBError,self.getMountsDBPath())
+            return (1,"mount db open error: \(self.getMountsDBPath())")
         }
         
         let retEnts = GKHttpEngine.default.fetchEnts()
@@ -180,12 +201,12 @@ final class YKMountCenter {
             YKEventNotify.notify(nil, type: .updateEnts)
         }
         
-        return (YKInnerCode_OK,"")
+        return (200,"")
     }
     
     func resetMount() -> (errcode:Int,errmsg:String) {
         if mountsDB == nil{
-            return (YKInnerCode_DBError,self.getMountsDBPath())
+            return (1,"mount db open error: \(self.getMountsDBPath())")
         }
         
         let retMounts = GKHttpEngine.default.fetchMounts(org_id: nil)
@@ -238,17 +259,17 @@ final class YKMountCenter {
             YKEventNotify.notify(nil, type: .updateMounts)
         }
         
-        return (YKInnerCode_OK,"")
+        return (200,"")
     }
     
     func resetShortcuts() -> (errcode:Int,errmsg:String) {
         
         if !YKCustomConfig.showShortcut {
-            return (YKInnerCode_OK,"")
+            return (200,"")
         }
         
         if mountsDB == nil{
-            return (YKInnerCode_DBError,self.getMountsDBPath())
+            return (1,"mount db open error: \(self.getMountsDBPath())")
         }
         
         let retShortcuts = GKHttpEngine.default.fetchShortcuts()
@@ -296,110 +317,103 @@ final class YKMountCenter {
             YKEventNotify.notify(nil, type: .updateShortcuts)
         }
         
-        return (YKInnerCode_OK,"")
+        return (200,"")
     }
     
-    func loadEnts() {
+    func loadEnts(source:[GKEntDataItem]) {
         
-        if let locals = self.mountsDB?.getEnts() {
+        var result = [YKEntManager]()
+        
+        for em in self.entManagers {
             
-            var result = [YKEntManager]()
-            
+            if em.isShortcut || em.isPersonEnt{
+                em.bremoved = true
+                continue
+            }
+            em.bremoved = false
+        }
+        
+        var exist: YKEntManager? = nil
+        for item in source {
+            exist = nil
             for em in self.entManagers {
-                
-                if em.isShortcut || em.isPersonEnt{
+                if em.ent.ent_id == item.ent_id {
+                    exist = em
                     em.bremoved = true
-                    continue
-                }
-                em.bremoved = false
-            }
-            
-            var exist: YKEntManager? = nil
-            for item in locals {
-                exist = nil
-                for em in self.entManagers {
-                    if em.ent.ent_id == item.ent_id {
-                        exist = em
-                        em.bremoved = true
-                        break
-                    }
-                }
-                
-                if exist == nil {
-                    exist = YKEntManager(ent: item)
-                } else {
-                    exist!.ent = item
-                }
-                result.append(exist!)
-            }
-            
-            
-            for item in self.entManagers {
-                if !item.bremoved {
-                    item.stop()
+                    break
                 }
             }
             
-            result.sort(by: { (item1:YKEntManager, item2:YKEntManager) -> Bool in
-                if item1.ent.add_dateline <= item2.ent.add_dateline {
-                    return true
-                } else {
-                    return false
-                }
-            })
-            
-            var personem: YKEntManager?
-            var shortem: YKEntManager?
-            for em in entManagers {
-                if em.ent.ent_id == YKPERSONAL_ENTID {
-                    personem = em
-                }
-                if em.isShortcut {
-                    shortem = em
-                }
+            if exist == nil {
+                exist = YKEntManager(ent: item)
+            } else {
+                exist!.ent = item
             }
-            
-            if personem == nil {
-                personem = YKEntManager.personalEntManager()
-            }
-            
-            result.insert(personem!, at: 0)
-            
-            if YKCustomConfig.showShortcut {
-                if shortem == nil { shortem = YKEntManager.shortcutEntManager() }
-                result.insert(shortem!, at: 0)
-            }
-            
-            self.entManagers = result
+            result.append(exist!)
         }
+        
+        
+        for item in self.entManagers {
+            if !item.bremoved {
+                item.stop()
+            }
+        }
+        
+        result.sort(by: { (item1:YKEntManager, item2:YKEntManager) -> Bool in
+            if item1.ent.add_dateline <= item2.ent.add_dateline {
+                return true
+            } else {
+                return false
+            }
+        })
+        
+        var personem: YKEntManager?
+        var shortem: YKEntManager?
+        for em in entManagers {
+            if em.ent.ent_id == YKPERSONAL_ENTID {
+                personem = em
+            }
+            if em.isShortcut {
+                shortem = em
+            }
+        }
+        
+        if personem == nil {
+            personem = YKEntManager.personalEntManager()
+        }
+        
+        result.insert(personem!, at: 0)
+        
+        if YKCustomConfig.showShortcut {
+            if shortem == nil { shortem = YKEntManager.shortcutEntManager() }
+            result.insert(shortem!, at: 0)
+        }
+        
+        self.entManagers = result
         
     }
     
-    func loadMounts() {
+    func loadMounts(source:[GKMountDataItem]) {
         
-        if let mounts = self.mountsDB?.getMounts() {
-            for em in self.entManagers {
-                if em.ent.ent_id == YKSHORTCUT_ENTID {
-                    continue
-                }
-                em.updateWithMounts(mounts)
-                if self.bStop {
-                    return
-                }
+        for em in self.entManagers {
+            if em.ent.ent_id == YKSHORTCUT_ENTID {
+                continue
+            }
+            em.updateWithMounts(source)
+            if self.bStop {
+                return
             }
         }
     }
     
-    func loadShortcuts() {
+    func loadShortcuts(source:[GKShortcutItem]) {
         if !YKCustomConfig.showShortcut {
             return
         }
-        if let shortcuts = self.mountsDB?.getShortcuts() {
-            for em in self.entManagers {
-                if em.ent.ent_id == YKSHORTCUT_ENTID {
-                    em.updateWithShortcuts(shortcuts)
-                    break
-                }
+        for em in self.entManagers {
+            if em.ent.ent_id == YKSHORTCUT_ENTID {
+                em.updateWithShortcuts(source)
+                break
             }
         }
     }

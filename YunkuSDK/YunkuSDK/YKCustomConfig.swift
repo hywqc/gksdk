@@ -10,5 +10,5 @@ import Foundation
 
 class YKCustomConfig {
     
-    static let showShortcut = true
+    static let showShortcut = false
 }

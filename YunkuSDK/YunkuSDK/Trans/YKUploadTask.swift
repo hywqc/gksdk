@@ -352,10 +352,7 @@ class YKUploadTask : Operation {
     
     private func upload_init(host:String) -> (errcode:Int, errmsg:String){
         
-        if self.pItem.filehash.isEmpty {
-            print("_000_")
-        }
-        let ret = GKHttpEngine.default.uploadFileInit(host: host, mountid: pItem.mountid, filename: self.pItem.filename, uuidhash: self.pItem.uuidhash, filehash: self.pItem.filehash, filesize: self.pItem.filesize)
+        let ret = GKHttpEngine.default.uploadFileInit(host: host, mountid: pItem.mountid, filename: self.pItem.filename.gkUrlEncode, uuidhash: self.pItem.uuidhash, filehash: self.pItem.filehash, filesize: self.pItem.filesize)
         
         if ret.statuscode == 202 {
             return (ret.statuscode,"")

@@ -35,7 +35,7 @@ class YKAppDelegate {
     public static let shareInstance = YKAppDelegate()
     
     private init() {
-        var path = gkutility.docPath().gkAddLastSlash
+        var path = gkutility.docPath(groupID: YKClient.shareInstance.appGroupID).gkAddLastSlash
         path.append("yksetting.db")
         self.settingDB = YKSettingDB(path: path)
     }
@@ -44,6 +44,7 @@ class YKAppDelegate {
         
         let logpath = gkutility.docPath().gkAddLastSlash + "gklog.log"
         YKLog.shanreLog.setpath(logpath)
+        
         
         if let frameworkpath = Bundle.main.privateFrameworksPath {
             let path = frameworkpath.gkRemoveLastSlash.appending("/YunkuSDK.framework")

@@ -43,6 +43,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
 
+        YKClient.shareInstance.config(client_id: "qDFdSoMJtm6Yb2gAmaigmisc", client_secret: "5QdJ0zqAP1ICDCUGrcxtyloKKQ", host: nil, apiPort: nil, webPort: nil, https: true, groupID: "group.com.gokuai.wqc.extension")
         
         self.window = UIWindow(frame: UIScreen.main.bounds)
         self.window?.backgroundColor = UIColor.white
@@ -58,9 +59,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         print(gkutility.docPath())
         
-        YKClient.shareInstance.config(client_id: "qDFdSoMJtm6Yb2gAmaigmisc", client_secret: "5QdJ0zqAP1ICDCUGrcxtyloKKQ")
-        
         NotificationCenter.default.addObserver(self, selector: #selector(onForceLogout(notification:)), name: NSNotification.Name(YKNotification_ForceLogout), object: nil)
+        
+        
         
         return true
     }
@@ -159,6 +160,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, supportedInterfaceOrientationsFor window: UIWindow?) -> UIInterfaceOrientationMask {
         return .allButUpsideDown
+    }
+    
+    func application(_ app: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey : Any] = [:]) -> Bool {
+        if FileManager.default.fileExists(atPath: url.path) {
+            
+            YKClient.shareInstance.showSaveSelect(url: url, fromVC: (app.keyWindow?.rootViewController!)!)
+            
+        }
+        return true
     }
 
 }

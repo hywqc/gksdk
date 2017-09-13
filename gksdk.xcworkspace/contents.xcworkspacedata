@@ -5,10 +5,10 @@
       location = "group:YunkuSDK/YunkuSDK.xcodeproj">
    </FileRef>
    <FileRef
-      location = "group:testobjc/testobjc.xcodeproj">
+      location = "group:testsw/testsw.xcodeproj">
    </FileRef>
    <FileRef
-      location = "group:testsw/testsw.xcodeproj">
+      location = "group:testobjc/testobjc.xcodeproj">
    </FileRef>
    <FileRef
       location = "group:gknet/gknet.xcodeproj">

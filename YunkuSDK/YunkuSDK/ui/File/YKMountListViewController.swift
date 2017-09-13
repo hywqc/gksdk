@@ -46,6 +46,10 @@ class YKMountListViewController : YKBaseTableViewController,YKMountsListSectionV
         case .None:
             if displayConfig.op == .Copy {
                 return YKLocalizedString("选择要复制到的路径")
+            } else if displayConfig.op == .Save {
+                return YKLocalizedString("选择要保存到的路径")
+            }  else if displayConfig.op == .Move {
+                return YKLocalizedString("选择要移动到的路径")
             }
             return YKLocalizedString("文件")
             
@@ -66,7 +70,10 @@ class YKMountListViewController : YKBaseTableViewController,YKMountsListSectionV
         }
         
         if displayConfig.selectMode == .None {
-            self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "test", style: .plain, target: self, action: #selector(test))
+            if displayConfig.op == .Normal {
+                self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "test", style: .plain, target: self, action: #selector(test))
+            }
+            
         } else {
             switch displayConfig.selectType {
             case .Mount:
@@ -103,7 +110,7 @@ class YKMountListViewController : YKBaseTableViewController,YKMountsListSectionV
     }
     
     func onCancelOperation() {
-        self.dismiss(animated: true, completion: nil)
+        self.displayConfig.operationCancelBlock?(self)
     }
     
     func onSelectChanged() {

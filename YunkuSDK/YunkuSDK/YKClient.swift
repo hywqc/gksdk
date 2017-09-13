@@ -11,11 +11,6 @@ import UIKit
 import gkutility
 import gknet
 
-enum YKStatus : Int {
-    case unlogin = 0
-    case unloadData
-    case ready
-}
 
 @objc public enum YKSDKLanguage : Int {
     case CH = 1
@@ -29,16 +24,26 @@ public final class YKClient : NSObject {
     
     var webHost: String = ""
     var https = false
+    var appGroupID: String?
     
-    var status: YKStatus = .unlogin
+    var isLogined = false
+    
+    public enum ExtensionType : Int {
+        case None = 0
+        case Share
+        case Action
+        case Document
+        case iCloud
+    }
+    var extensionType: ExtensionType = .None
     
     required public override init() {
         super.init()
-        YKAppDelegate.shareInstance.setup()
+        
     }
     
     private func getDeviceID() -> String {
-        var devicePath = gkutility.docPath()
+        var devicePath = gkutility.docPath(groupID: appGroupID)
         devicePath.append("/gkdeviceid")
         var deviceid = ""
         if let s = try? String(contentsOfFile: devicePath, encoding: .utf8) {
@@ -55,7 +60,13 @@ public final class YKClient : NSObject {
         return deviceid
     }
     
-    public func config(client_id: String, client_secret: String, host: String? = nil, apiPort: String? = nil, webPort: String? = nil,https: Bool = false) {
+    public func config(client_id: String, client_secret: String, host: String? = nil, apiPort: String? = nil, webPort: String? = nil,https: Bool = false, groupID: String? = nil,extensionType: ExtensionType = .None) {
+        
+        self.appGroupID = groupID
+        self.extensionType = extensionType
+        
+        YKAppDelegate.shareInstance.setup()
+        
         let webhost = (host ?? "yk3.gokuai.com")
         self.webHost = webhost
         self.https = https
@@ -141,6 +152,14 @@ public final class YKClient : NSObject {
         return YKSettingViewController()
     }
     
+    public func showSaveSelect(url:URL, fromVC: UIViewController) {
+        let localpath = url.path
+        let filename = localpath.gkFileName
+        YKSelectFileComponent.showOutSaveSelect(localFiles: [localpath:filename], fromVC: fromVC)
+    }
+    
+    
+    
     //0:没有 1:移动网络  2:wifi
     public func setNetStatus(_ status: Int) {
         switch status {
@@ -151,6 +170,21 @@ public final class YKClient : NSObject {
         default:
             YKNetMonitor.shareInstance.status = .Wifi
         }
+    }
+    
+}
+
+public extension YKClient {
+    
+    public func checkHaveLoginInfo() -> Bool {
+        
+        return false
+    }
+    
+    public func getShareExtensionViewController(title: String, extensionContext: NSExtensionContext) -> UIViewController {
+        
+        let vc = YKShareExtensionController(title: title, extensionContext: extensionContext)
+        return vc
     }
     
 }

@@ -19,14 +19,22 @@ class YKAssetCell : UICollectionViewCell {
     
     var asset: YKAssetItem?
     
+    let selectIconSize: CGFloat = 27
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        let rect = CGRect(x: 0, y: 0, width: frame.size.width, height: frame.size.height)
+        var rect = CGRect(x: 0, y: 0, width: frame.size.width, height: frame.size.height)
         self.imageView = UIImageView(frame: rect)
         imageView.contentMode = .scaleAspectFill
         imageView.clipsToBounds = true
         self.addSubview(imageView)
+        
+        rect.size = CGSize(width: selectIconSize, height: selectIconSize)
+        selectIcon = UIImageView(frame: rect)
+        selectIcon.image = YKImage("unselect", nil, "PhotoPicker")
+        selectIcon.contentMode = .scaleAspectFill
+        self.addSubview(selectIcon)
     }
     
     func bindAsset(_ asset: YKAssetItem) {
@@ -36,13 +44,19 @@ class YKAssetCell : UICollectionViewCell {
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        let rect = CGRect(x: 0, y: 0, width: frame.size.width, height: frame.size.height)
+        var rect = CGRect(x: 0, y: 0, width: frame.size.width, height: frame.size.height)
         self.imageView.frame = rect
+        
+        rect.origin.x = self.frame.size.width - selectIconSize
+        rect.origin.y = self.frame.size.height - selectIconSize
+        rect.size = CGSize(width: selectIconSize, height: selectIconSize)
+        self.selectIcon.frame = rect
     }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+
 
 }
 
@@ -96,6 +110,7 @@ class YKPhotosViewController: YKBaseViewController,UICollectionViewDelegate,UICo
         collectionView.showsHorizontalScrollIndicator = false
         collectionView.delegate = self
         collectionView.dataSource = self
+        collectionView.allowsMultipleSelection = true
         self.view.addSubview(collectionView)
         
         collectionView.register(YKAssetCell.self, forCellWithReuseIdentifier: "YKAssetCell")
