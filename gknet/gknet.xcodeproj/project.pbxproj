@@ -15,6 +15,7 @@
 		CB4BD2031F26E4F6004C8075 /* GKHttpBaseSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB4BD2021F26E4F6004C8075 /* GKHttpBaseSession.swift */; };
 		CB4F9A831F2B1C4600D998C0 /* GKAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB4F9A821F2B1C4600D998C0 /* GKAPI.swift */; };
 		CB5F0D431F2AE3F00017D4A3 /* GKRequestRet.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB5F0D421F2AE3F00017D4A3 /* GKRequestRet.swift */; };
+		CB85FC851F6A699F00449D1D /* GKServerInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB85FC841F6A699F00449D1D /* GKServerInfo.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -28,6 +29,7 @@
 		CB4BD2021F26E4F6004C8075 /* GKHttpBaseSession.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GKHttpBaseSession.swift; sourceTree = "<group>"; };
 		CB4F9A821F2B1C4600D998C0 /* GKAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GKAPI.swift; sourceTree = "<group>"; };
 		CB5F0D421F2AE3F00017D4A3 /* GKRequestRet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GKRequestRet.swift; sourceTree = "<group>"; };
+		CB85FC841F6A699F00449D1D /* GKServerInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GKServerInfo.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -70,6 +72,7 @@
 				CB006BCA1F264D53002D692F /* GKHttpEngine.swift */,
 				CB4BD2021F26E4F6004C8075 /* GKHttpBaseSession.swift */,
 				CB4F9A821F2B1C4600D998C0 /* GKAPI.swift */,
+				CB85FC841F6A699F00449D1D /* GKServerInfo.swift */,
 			);
 			path = gknet;
 			sourceTree = "<group>";
@@ -165,6 +168,7 @@
 				CB006BCD1F264DCB002D692F /* GKDataItem.swift in Sources */,
 				CB006BC91F264D21002D692F /* gknet.swift in Sources */,
 				CB4F9A831F2B1C4600D998C0 /* GKAPI.swift in Sources */,
+				CB85FC851F6A699F00449D1D /* GKServerInfo.swift in Sources */,
 				CB006BCB1F264D53002D692F /* GKHttpEngine.swift in Sources */,
 				CB4BD2031F26E4F6004C8075 /* GKHttpBaseSession.swift in Sources */,
 				CB5F0D431F2AE3F00017D4A3 /* GKRequestRet.swift in Sources */,

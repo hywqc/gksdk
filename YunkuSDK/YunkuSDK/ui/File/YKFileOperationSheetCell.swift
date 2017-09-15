@@ -97,7 +97,9 @@ class YKFileOperationSheetCell: UITableViewCell {
     }
     
     func onShareBtn() {
-        
+        if delegate != nil {
+            delegate!.fileOperationShare(item: self.fileItem)
+        }
     }
     
     func onDeleteBtn() {

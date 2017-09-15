@@ -64,7 +64,7 @@ final class YKFileOperationManager {
             
             YKAlert.showHUD(view: fromVC?.view, message: YKLocalizedString("正在删除"))
             DispatchQueue.global().async {
-                let ret = GKHttpEngine.default.deleteFiles(sourceMountID: mountid, sourcePathList: patharr)
+                let ret = GKHttpEngine.default.deleteFiles(mount_id: mountid, pathList: patharr)
                 DispatchQueue.main.async {
                     if ret.statuscode == 200 {
                         YKAlert.hideHUDSuccess(view: fromVC?.view, str: YKLocalizedString("删除成功"), animate: true)

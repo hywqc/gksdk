@@ -384,3 +384,49 @@ public class GKRequestRetGetServerSite : GKRequestBaseRet {
     }
 }
 
+public class GKRequestRetFileLinkList : GKRequestBaseRet {
+    
+    public var owner = [GKFileLinkItem]()
+    public var other = [GKFileLinkItem]()
+    
+    override func parse() {
+        if let dic = self.data?.gkDic {
+            if let arr = dic["owner"] as? Array<Any> {
+                for item in arr {
+                    if let itemdic = item as? [AnyHashable:Any] {
+                        if let link = GKFileLinkItem(json: itemdic) {
+                            owner.append(link)
+                        }
+                    }
+                }
+            }
+            
+            if let arr = dic["other"] as? Array<Any> {
+                for item in arr {
+                    if let itemdic = item as? [AnyHashable:Any] {
+                        if let link = GKFileLinkItem(json: itemdic) {
+                            other.append(link)
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+public class GKRequestRetCreateFileLink : GKRequestBaseRet {
+    
+    public var code = ""
+    public var link = ""
+    public var qr_url = ""
+    
+    override func parse() {
+        if let dic = self.data?.gkDic {
+            self.code = gkSafeString(dic: dic, key: "code")
+            self.link = gkSafeString(dic: dic, key: "link")
+            self.qr_url = gkSafeString(dic: dic, key: "qr_url")
+        }
+    }
+    
+}
+

@@ -272,13 +272,55 @@ public class GKFileDataItem : GKBaseDataItem {
     
     public func thumb(webhost: String, big: Bool = false) -> String {
         let ext = (self.filename as NSString).pathExtension
-        let url = "\(webhost)/index/thumb?hash=\(self.uuidhash)&filehash=\(self.filehash)&type=\(ext)&mount_id=\(self.mount_id)"
+        let web = webhost.gkAddLastSlash
+        let url = "\(web)index/thumb?hash=\(self.uuidhash)&filehash=\(self.filehash)&type=\(ext)&mount_id=\(self.mount_id)"
         if big {
             return url.appending("&big=1")
         }
         return url
     }
     
+}
+
+
+public class GKFileLinkItem : GKBaseDataItem {
     
+    public var url = ""
+    public var mount_id = 0
+    public var ent_id = 0
+    public var setting_url = ""
+    public var code = ""
+    public var member_id = 0
+    public var member_name = ""
+    public var deadline: Int64 = 0
+    public var dateline: Int64 = 0
     
+    public var scope = 0
+    public var preview = 1
+    public var download = 0
+    public var upload = 0
+    public var password: String?
+    public var day = 0
+    
+    public override func setWithJsonDic(_ dic: [AnyHashable : Any]) {
+        
+        mount_id = gkSafeInt(dic: dic, key: "mount_id")
+        ent_id = gkSafeInt(dic: dic, key: "ent_id")
+        url = gkSafeString(dic: dic, key: "url")
+        setting_url = gkSafeString(dic: dic, key: "setting_url")
+        code = gkSafeString(dic: dic, key: "code")
+        member_id = gkSafeInt(dic: dic, key: "member_id")
+        member_name = gkSafeString(dic: dic, key: "member_name")
+        deadline = gkSafeLongLong(dic: dic, key: "deadline")
+        dateline = gkSafeLongLong(dic: dic, key: "dateline")
+        
+        if let property = gkSafeDic(dic: dic, key: "property") {
+            scope = gkSafeInt(dic: property, key: "scope")
+            preview = gkSafeInt(dic: property, key: "preview")
+            download = gkSafeInt(dic: property, key: "download")
+            upload = gkSafeInt(dic: property, key: "upload")
+            password = gkSafeString(dic: dic, key: "password")
+            day = gkSafeInt(dic: property, key: "day")
+        }
+    }
 }

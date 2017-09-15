@@ -10,16 +10,6 @@ import Foundation
 import gkutility
 
 
-public struct GKServerInfo {
-    
-    var https = false
-    var apiHost = ""
-    var apiHostPort: String? = ""
-    var webHost: String? = ""
-    var webHostPort: String? = ""
-    var client_id = ""
-    var client_secret = ""
-}
 
 fileprivate let kTokenInvalidCode = 40101
 fileprivate let kTokenExpiredCode = 40102
@@ -48,20 +38,19 @@ public class GKHttpEngine : GKHttpBaseSession {
     
     public var refreshTokenNotifyCallback: ((String,String,Int?,String?)->Void)?
     
-    public func configServerInfo(https: Bool, apiHost: String, apiPort: String?, webHost: String?, webPort: String?, client_id: String, client_secret: String, deviceID: String, errorLog: GKRequestLogger? = nil ) {
+    public func configServerInfo(_ serverInfo: GKServerInfo, deviceID: String,errorLog: GKRequestLogger? = nil ) {
         
-        let s = GKServerInfo(https: https, apiHost: apiHost, apiHostPort: apiPort, webHost: webHost, webHostPort: webPort, client_id: client_id, client_secret: client_secret)
-        self.serverInfo = s
+        self.serverInfo = serverInfo
         self.errorLog = errorLog
-        
         self.deviceID = deviceID
+        
         let brand = UIDevice.current.model
         let version = UIDevice.current.systemName+UIDevice.current.systemVersion
         let display = UIDevice.current.name
         let info = ["BRAND":brand,
                     "VERSION":version,
                     "DISPLAY":display,
-                    "CLIENT_ID":(serverInfo.client_id)]
+                    "CLIENT_ID":(serverInfo.clientID)]
         clientInfo = info.gkStr
         
     }
@@ -71,29 +60,28 @@ public class GKHttpEngine : GKHttpBaseSession {
     }
     
     private func sign(_ param: [String:String]) -> String {
-        return param.gkSign(key: serverInfo.client_secret)
+        return param.gkSign(key: serverInfo.clientSecret)
     }
     
     private func generateurl(_ url: String) -> String {
-        let proto = (serverInfo.https ? "https://" : "http://")
         
-        if serverInfo.https {
-            if url.hasPrefix("https:") {
+        if url.hasPrefix("https://") {
+            if serverInfo.https {
                 return url
-            } else if url.hasPrefix("http:") {
+            } else {
+                let r = Range(uncheckedBounds: (lower: url.startIndex, upper: url.characters.index(url.startIndex, offsetBy: 6)))
+                return url.replacingCharacters(in: r, with: "http:")
+            }
+        } else if url.hasPrefix("http://") {
+            if !serverInfo.https {
+                return url
+            } else {
                 let r = Range(uncheckedBounds: (lower: url.startIndex, upper: url.characters.index(url.startIndex, offsetBy: 5)))
                 return url.replacingCharacters(in: r, with: "https:")
             }
         } else {
-            if url.hasPrefix("http:") {
-                return url
-            } else if url.hasPrefix("https:") {
-                let r = Range(uncheckedBounds: (lower: url.startIndex, upper: url.characters.index(url.startIndex, offsetBy: 6)))
-                return url.replacingCharacters(in: r, with: "http:")
-            }
+            return serverInfo.fullApiURL(path:url)
         }
-        
-        return proto + serverInfo.apiHost + (serverInfo.apiHostPort ?? "") + "/m-api" + url
     }
     
     public func refreshToken() -> GKRequestRetToken {
@@ -102,7 +90,7 @@ public class GKHttpEngine : GKHttpBaseSession {
                      "refresh_token":refresh_token,
                      "info":clientInfo,
                      "device":deviceID,
-                     "client_id":serverInfo.client_id]
+                     "client_id":serverInfo.clientID]
         let d: Int64 = Int64(Date().timeIntervalSince1970)
         param["dateline"] = "\(d)"
         param["sign"] = sign(param)
@@ -134,7 +122,7 @@ public class GKHttpEngine : GKHttpBaseSession {
                      "password":password,
                      "device":deviceID,
                      "info":clientInfo,
-                     "client_id":serverInfo.client_id]
+                     "client_id":serverInfo.clientID]
         param["sign"] = sign(param)
         
         let ret = self.POST(url: generateurl(GKAPI.OAUTH_TOKEN), headers: nil, param: param, reqType: GKRequestRetToken.self) as! GKRequestRetToken
@@ -150,7 +138,7 @@ public class GKHttpEngine : GKHttpBaseSession {
         assert(serverInfo != nil,"you should config server info first")
         
         var param = ["source":"wanda",
-                     "client_id":serverInfo.client_id]
+                     "client_id":serverInfo.clientID]
         param["sign"] = sign(param)
         
         let ret = self.GET(url: generateurl(GKAPI.SOURCE_INFO), headers: nil, param: param, reqType: GKRequestRetSource.self)
@@ -564,16 +552,59 @@ public class GKHttpEngine : GKHttpBaseSession {
         
     }
     
-    public func deleteFiles(sourceMountID: Int, sourcePathList:[String]) -> GKRequestBaseRet{
+    
+    
+    /// 删除文件
+    ///
+    /// - Parameters:
+    ///   - mount_id: 库id
+    ///   - pathList: 文件路径数组
+    /// - Returns: 是否成功
+    public func deleteFiles(mount_id: Int, pathList:[String]) -> GKRequestBaseRet{
         
         var result: GKRequestBaseRet!
         for _ in 0..<kTryCount {
             var param = ["token":access_token]
-            param["mount_id"] = "\(sourceMountID)"
-            param["fullpaths"] = sourcePathList.joined(separator: "|")
+            param["mount_id"] = "\(mount_id)"
+            param["fullpaths"] = pathList.joined(separator: "|")
             param["sign"] = sign(param)
             
             result = self.POST(url: generateurl(GKAPI.FILE_DELETE), headers: nil, param: param, reqType: GKRequestBaseRet.self)
+            if result.statuscode == 200 {
+                break
+            } else if result.errcode == kTokenExpiredCode || result.errcode == kTokenInvalidCode {
+                if bStop { break }
+                let _ = self.refreshToken()
+            }
+        }
+        
+        if bStop {
+            result.errcode = GKOperationExitCode
+        }
+        
+        return result
+        
+    }
+    
+    
+    /// 锁定/解锁文件
+    ///
+    /// - Parameters:
+    ///   - mount_id: 库id
+    ///   - fullpath: 文件路径
+    ///   - lock: 是否锁定
+    /// - Returns: 成功200
+    public func lockFile(mount_id: Int, fullpath:String, lock: Bool) -> GKRequestBaseRet{
+        
+        var result: GKRequestBaseRet!
+        for _ in 0..<kTryCount {
+            var param = ["token":access_token]
+            param["mount_id"] = "\(mount_id)"
+            param["fullpath"] = fullpath
+            param["lock"] = (lock ? "lock" : "unlock")
+            param["sign"] = sign(param)
+            
+            result = self.POST(url: generateurl(GKAPI.FILE_LOCK), headers: nil, param: param, reqType: GKRequestBaseRet.self)
             if result.statuscode == 200 {
                 break
             } else if result.errcode == kTokenExpiredCode || result.errcode == kTokenInvalidCode {

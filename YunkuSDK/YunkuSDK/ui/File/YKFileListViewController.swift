@@ -990,7 +990,42 @@ class YKFileListViewController: YKBaseTableViewController,YKFileItemCellDelegate
     
     //MARK: YKFileOperationSheetCellDelegate
     func fileOperationShare(item: YKFileItemCellWrap?) {
+        if item == nil { return }
         
+        let fileItem = item!
+        let mount = YKMountCenter.shareInstance.mountItemBy(mountID: fileItem.file.mount_id)
+        var arr: Array<YKBottomSheetView.Item>!
+        
+        var entid = 0
+        if mount != nil {
+            entid = mount!.ent_id
+        }
+        
+        arr = [
+            YKBottomSheetView.Item(title: "发送给同事", id: 1, image: "fileshare/fellow"),
+            YKBottomSheetView.Item(title: "外链", id: 2, image: "fileshare/link"),
+        ]
+        
+        YKBottomSheetView.show(items: arr, title: nil, message: nil, cancelTitle: YKLocalizedString("取消"), param: fileItem, parentView: self.view, completion: { (id:Int, param: Any?) in
+            
+            let f = param as? YKFileItemCellWrap
+            if f == nil { return }
+            
+            DispatchQueue.main.async {
+                switch id {
+                case 1:
+                    break
+                case 2:
+                    let controller = YKFileLinkConfigController(file: fileItem.file, permission: nil)
+                    self.navigationController?.pushViewController(controller, animated: true)
+                    break
+                default:
+                    break
+                    
+                }
+            }
+            
+        })
     }
     
     func fileOperationRemark(item: YKFileItemCellWrap?) {
@@ -1065,6 +1100,8 @@ class YKFileListViewController: YKBaseTableViewController,YKFileItemCellDelegate
                     self.file_cahce(files: [f!])
                 case .Delete:
                     self.file_delete(files: [f!])
+                case .Lock:
+                    self.file_lock(file: f!)
                 default:
                     break
                     
@@ -1113,6 +1150,41 @@ class YKFileListViewController: YKBaseTableViewController,YKFileItemCellDelegate
             self.onQuitMultiSelect()
             self.load()
         }
+    }
+    
+    func file_lock(file: YKFileItemCellWrap) {
+        if file.file.lock == 1 {
+            YKAlert.showAlert(message: YKLocalizedString("只能解锁自己锁定的文件"), vc: self)
+            return
+        }
+        
+        let successmsg: String
+        let successlock = (file.file.lock == 0 ? 2 : 0)
+        if file.file.lock > 0{
+            successmsg = YKLocalizedString("解锁成功")
+        } else {
+            successmsg = YKLocalizedString("文件已锁定")
+        }
+        
+        YKAlert.showHUD(view: self.view, message: "")
+        DispatchQueue.global().async { [weak self] (Void)->Void in
+            let ret = GKHttpEngine.default.lockFile(mount_id: file.file.mount_id, fullpath: file.file.fullpath, lock: (file.file.lock == 0))
+            if self == nil {
+                return
+            }
+            DispatchQueue.main.async {
+                if ret.statuscode == 200 {
+                    file.file.lock = successlock
+                    YKAlert.hideHUDSuccess(view: self?.view, str: successmsg, animate: true)
+                    self?.tableView.reloadData()
+                } else {
+                    YKAlert.hideHUD(view: self?.view, animate: false)
+                    YKAlert.showAlert(message: ret.errmsg, vc: self)
+                }
+            }
+            
+        }
+        
     }
     
     func file_copy(files: [YKFileItemCellWrap]) {

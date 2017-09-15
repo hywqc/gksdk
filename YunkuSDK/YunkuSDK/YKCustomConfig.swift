@@ -10,5 +10,14 @@ import Foundation
 
 class YKCustomConfig {
     
+    static let shareConfig = YKCustomConfig()
+    
     static let showShortcut = false
+    
+    static let allowWeChatShare = false
+    static let allowQQShare = false
+    
+    
+    var linkAccessControls = ["all","ent","password"];
+    
 }

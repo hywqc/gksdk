@@ -17,7 +17,7 @@ class GKShareViewController : UIViewController {
         super.viewDidLoad()
         let pathUrl = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first
         print("share app path: \(pathUrl)")
-        YKClient.shareInstance.config(client_id: "qDFdSoMJtm6Yb2gAmaigmisc", client_secret: "5QdJ0zqAP1ICDCUGrcxtyloKKQ", host: nil, apiPort: nil, webPort: nil, https: true, groupID: "group.com.gokuai.wqc.extension", extensionType: YKClient.ExtensionType.Share)
+        YKClient.shareInstance.config(host:"yk3.gokuai.com",client_id: "qDFdSoMJtm6Yb2gAmaigmisc", client_secret: "5QdJ0zqAP1ICDCUGrcxtyloKKQ", https: true, groupID: "group.com.gokuai.wqc.extension", extensionType: YKClient.ExtensionType.Share)
     }
 
     override func viewWillAppear(_ animated: Bool) {

@@ -117,7 +117,7 @@ class YKFileItemCell: UITableViewCell {
             let icon = YKFileIcon(file.file.filename, file.file.dir)
             avatar.image = icon
         } else {
-            let webhost = (YKClient.shareInstance.https ? "https://" : "http://") +  YKClient.shareInstance.webHost
+            let webhost = YKClient.shareInstance.serverInfo.fullWebURL(path: "")
             avatar.sd_setImage(with: URL(string: file.file.thumb(webhost: webhost)), placeholderImage: YKFileIcon("1.xxx"), completed: nil)
         }
         

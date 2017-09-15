@@ -216,7 +216,7 @@ class YKImagePreView : UIView {
     }
     
     func start() {
-        let webhost = (YKClient.shareInstance.https ? "https://" : "http://") +  YKClient.shareInstance.webHost
+        let webhost = YKClient.shareInstance.serverInfo.fullWebURL(path: "")
         let fullurl = fileItem.thumb(webhost: webhost, big: true)
         let cache = YKCacheManager.shareManager.cachePath(key: fileItem.filehash, type: .Original)
         if gkutility.fileExist(path: cache) {

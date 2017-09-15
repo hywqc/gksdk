@@ -293,8 +293,9 @@ class YKCommon {
     
     @inline(__always) class func avatarURL(memberID: Int, entID: Int, size: Int = 96) -> URL? {
         
-        let str = (YKClient.shareInstance.https ? "https://" : "http://") + YKClient.shareInstance.webHost + "index/avatar?id=\(memberID)&ent_id=\(entID)&size=\(size)"
-        return URL(string: str)
+        let urlpath = "index/avatar?id=\(memberID)&ent_id=\(entID)&size=\(size)"
+        let url = YKClient.shareInstance.serverInfo.fullWebURL(path: urlpath)
+        return URL(string: url)
     }
     
     class func verifyFilename(_ filename: String) -> String? {

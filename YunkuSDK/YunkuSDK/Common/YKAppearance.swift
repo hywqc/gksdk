@@ -60,6 +60,15 @@ class YKString {
     static let kYKUnLock = YKLocalizedString("解锁")
     static let kYKHistory = YKLocalizedString("历史版本")
     static let kYKPermission = YKLocalizedString("权限")
+    
+    
+    static let kYKShareCopy = YKLocalizedString("复制链接")
+    static let kYKShareEmail = YKLocalizedString("邮件")
+    static let kYKShareSMS = YKLocalizedString("短信")
+    static let kYKShareFellow = YKLocalizedString("同事")
+    static let kYKShareChat = YKLocalizedString("讨论组")
+    static let kYKShareWeChat = YKLocalizedString("微信")
+    static let kYKShareQQ = "QQ"
 }
 
 
@@ -79,10 +88,10 @@ class YKAppearance {
     static let mlShowSubtitle = true
     
     //MARK: 文件列表
-    static let flAvatarSize: CGFloat = 36
+    static let flAvatarSize: CGFloat = 32
     static let flRowHeight: CGFloat = 64
-    static let flTitleFont = YKFont.make(15)
-    static let flSubtitleFont = YKFont.make(12)
+    static let flTitleFont = YKFont.make(14)
+    static let flSubtitleFont = YKFont.make(11)
     static let flTitleColor = YKColor.Hex(0x3b4f61) // YKColor.Title
     static let flSubtitleColor = YKColor.SubTitle
     static let flAllowMultiLines = true

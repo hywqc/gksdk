@@ -22,12 +22,6 @@ public final class YKClient : NSObject {
     
     public static let shareInstance = YKClient()
     
-    var webHost: String = ""
-    var https = false
-    var appGroupID: String?
-    
-    var isLogined = false
-    
     public enum ExtensionType : Int {
         case None = 0
         case Share
@@ -35,7 +29,11 @@ public final class YKClient : NSObject {
         case Document
         case iCloud
     }
+    
+    var isLogined = false
+    var appGroupID: String?
     var extensionType: ExtensionType = .None
+    var serverInfo = GKServerInfo()
     
     required public override init() {
         super.init()
@@ -60,22 +58,32 @@ public final class YKClient : NSObject {
         return deviceid
     }
     
-    public func config(client_id: String, client_secret: String, host: String? = nil, apiPort: String? = nil, webPort: String? = nil,https: Bool = false, groupID: String? = nil,extensionType: ExtensionType = .None) {
+    public func config(host: String,client_id: String, client_secret: String,https: Bool,groupID: String? = nil,extensionType: ExtensionType = .None) {
+        self.config(https: https, client_id: client_id, client_secret: client_secret, webHost: host, apiHost: nil, webPort: nil, webHttpsPort: nil, apiPort: nil, apiHttpsPort: nil, groupID: groupID, extensionType: extensionType)
+    }
+    
+    public func config(https: Bool,client_id: String, client_secret: String, webHost: String, apiHost: String?, webPort: String? = nil,webHttpsPort: String? = nil,apiPort: String? = nil,apiHttpsPort: String? = nil, groupID: String? = nil,extensionType: ExtensionType = .None) {
+        
+        serverInfo.https = https
+        serverInfo.clientID = client_id
+        serverInfo.clientSecret = client_secret
+        serverInfo.webHost = webHost
+        serverInfo.apiHost = (apiHost ?? webHost)
+        serverInfo.webPort = webPort
+        serverInfo.apiPort = apiPort
+        serverInfo.webHttpsPort = webHttpsPort
+        serverInfo.apiHttpsPort = apiHttpsPort
         
         self.appGroupID = groupID
         self.extensionType = extensionType
         
         YKAppDelegate.shareInstance.setup()
         
-        let webhost = (host ?? "yk3.gokuai.com")
-        self.webHost = webhost
-        self.https = https
         let deviceID = getDeviceID()
-        GKHttpEngine.default.configServerInfo(https: https, apiHost: webhost, apiPort: apiPort, webHost: webhost, webPort: webPort, client_id: client_id, client_secret: client_secret, deviceID: deviceID) { (ret: GKRequestBaseRet) in 
+        GKHttpEngine.default.configServerInfo(serverInfo, deviceID: deviceID) { (ret: GKRequestBaseRet) in
             print(ret.errorLogInfo)
             YKLog.shanreLog.log(msg: ret.errorLogInfo)
         }
-        
         GKHttpEngine.default.refreshTokenNotifyCallback = { (accessToken:String, refreshToken:String,errcode: Int?, errmsg:String?) -> Void in
             DispatchQueue.global().async {
                 if errcode != nil {

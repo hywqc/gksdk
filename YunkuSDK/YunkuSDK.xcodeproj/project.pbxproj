@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		CB05D2D91F6A4D080018C213 /* YKFileLinkConfigController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB05D2D81F6A4D080018C213 /* YKFileLinkConfigController.swift */; };
+		CB05D2E21F6A5BEC0018C213 /* YKMessageCenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB05D2E11F6A5BEC0018C213 /* YKMessageCenter.swift */; };
 		CB062E561F399AD2000A9792 /* YKEntManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB062E551F399AD2000A9792 /* YKEntManager.swift */; };
 		CB062E581F399ADF000A9792 /* YKMountManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB062E571F399ADF000A9792 /* YKMountManager.swift */; };
 		CB062E5A1F399BE1000A9792 /* YKSyncDB.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB062E591F399BE1000A9792 /* YKSyncDB.swift */; };
@@ -144,6 +146,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		CB05D2D81F6A4D080018C213 /* YKFileLinkConfigController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YKFileLinkConfigController.swift; sourceTree = "<group>"; };
+		CB05D2E11F6A5BEC0018C213 /* YKMessageCenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YKMessageCenter.swift; sourceTree = "<group>"; };
 		CB062E551F399AD2000A9792 /* YKEntManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YKEntManager.swift; sourceTree = "<group>"; };
 		CB062E571F399ADF000A9792 /* YKMountManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YKMountManager.swift; sourceTree = "<group>"; };
 		CB062E591F399BE1000A9792 /* YKSyncDB.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YKSyncDB.swift; sourceTree = "<group>"; };
@@ -307,6 +311,7 @@
 				CB062E5B1F399DA4000A9792 /* YKMountCenter.swift */,
 				CBF96DC41F41368A00C0A7F3 /* YKFavManager.swift */,
 				CB2DA4951F556D76002591DA /* YKCacheManager.swift */,
+				CB05D2E11F6A5BEC0018C213 /* YKMessageCenter.swift */,
 			);
 			path = core;
 			sourceTree = "<group>";
@@ -354,6 +359,7 @@
 				CBF96DC61F413EA800C0A7F3 /* YKFileItemWrap.swift */,
 				CB087ACE1F4A902E00EEA799 /* YKFileOperationSheetCell.swift */,
 				CBABB6EC1F4E72690077CEC8 /* YKTextViewController.swift */,
+				CB05D2D81F6A4D080018C213 /* YKFileLinkConfigController.swift */,
 				CB7B42CA1F592AD20030E56B /* Preview */,
 			);
 			path = File;
@@ -788,6 +794,7 @@
 				CB7B42DD1F5950510030E56B /* YKImagesPreviewController.swift in Sources */,
 				CB305FE11F3B10A0003A4D8C /* YKSearchManager.swift in Sources */,
 				CB305FC91F3AFA97003A4D8C /* SDWebImagePrefetcher.m in Sources */,
+				CB05D2E21F6A5BEC0018C213 /* YKMessageCenter.swift in Sources */,
 				CB23CFB91F5FFC54002914A6 /* YCLoadMoreView.m in Sources */,
 				CB305FBC1F3AFA97003A4D8C /* SDImageCacheConfig.m in Sources */,
 				CB305F6A1F3ABA57003A4D8C /* YKSettingViewController.swift in Sources */,
@@ -809,6 +816,7 @@
 				CBF96DC31F4135C300C0A7F3 /* YKFavDB.swift in Sources */,
 				CB6084C21F380FD600CC0091 /* YKEventNotify.swift in Sources */,
 				CB062E5C1F399DA4000A9792 /* YKMountCenter.swift in Sources */,
+				CB05D2D91F6A4D080018C213 /* YKFileLinkConfigController.swift in Sources */,
 				CB305FDB1F3B088E003A4D8C /* YKFileListViewController.swift in Sources */,
 				CB7B42CF1F592AD20030E56B /* YKTextPreviewController.swift in Sources */,
 				CB7B42C01F58FCB50030E56B /* Reachability.swift in Sources */,
